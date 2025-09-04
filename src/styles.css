@@ -1,2 +1,44 @@
 @import "primeicons/primeicons.css";
+
 /* You can add global styles to this file, and also import other style files */
+
+/* Center the app and limit width */
+:root {
+  /* Allow content to occupy up to 80% of viewport width (≈10% margin on each side). */
+  --app-max-width: 70vw;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f5f5f5;
+}
+
+.app-container {
+  width: 100%;
+  max-width: var(--app-max-width);
+  margin: 0 auto;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make menubar not full-bleed and inherit container width */
+.p-menubar {
+  border-radius: 0;
+}
+
+/* Content area */
+.content {
+  flex: 1 1 auto;
+}
+
+/* Responsive smaller max-width on very small screens (still centered) */
+@media (max-width: 640px) {
+  :root { --app-max-width: 100%; }
+}
