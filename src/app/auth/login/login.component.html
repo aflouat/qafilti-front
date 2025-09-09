@@ -1,0 +1,16 @@
+<div class="flex flex-column gap-3" style="max-width:420px;margin:2rem auto;">
+  <h2 class="m-0">Se connecter</h2>
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+    <input pInputText type="email" [(ngModel)]="form.email" placeholder="Email" />
+  </div>
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
+    <input pInputText type="password" [(ngModel)]="form.password" placeholder="Mot de passe" />
+  </div>
+  <div *ngIf="error" class="p-error">{{ error }}</div>
+  <button pButton label="Connexion" (click)="submit()"></button>
+  <div class="text-sm">
+    Pas de compte ? <a routerLink="/inscription">Inscrivez-vous</a>
+  </div>
+</div>

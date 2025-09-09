@@ -1,0 +1,24 @@
+<div class="flex flex-column gap-3" style="max-width:460px;margin:2rem auto;">
+  <h2 class="m-0">Inscription</h2>
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
+    <input pInputText type="text" [(ngModel)]="form.name" placeholder="Nom complet" />
+  </div>
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon"><i class="pi pi-envelope"></i></span>
+    <input pInputText type="email" [(ngModel)]="form.email" placeholder="Email" />
+  </div>
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon"><i class="pi pi-lock"></i></span>
+    <input pInputText type="password" [(ngModel)]="form.password" placeholder="Mot de passe" />
+  </div>
+  <label class="flex align-items-center gap-2">
+    <input type="checkbox" [(ngModel)]="form.terms" />
+    <span>J'accepte les conditions d'utilisation</span>
+  </label>
+  <div *ngIf="error" class="p-error">{{ error }}</div>
+  <button pButton label="Créer mon compte" (click)="submit()"></button>
+  <div class="text-sm">
+    Déjà un compte ? <a routerLink="/login">Se connecter</a>
+  </div>
+</div>

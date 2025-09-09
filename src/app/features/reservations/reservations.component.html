@@ -1,0 +1,62 @@
+<div class="flex justify-content-between align-items-center mb-3">
+  <h2 class="m-0">Réservations</h2>
+  <div class="flex gap-2">
+    <input pInputText [(ngModel)]="globalFilter" placeholder="Rechercher..." />
+    <button pButton label="Nouvelle" (click)="openNew()"></button>
+  </div>
+</div>
+
+<p-table [value]="reservations" [paginator]="true" [rows]="10" [globalFilterFields]="['code','passager','trajet','statut']" [filters]="{ 'global': { value: globalFilter, matchMode: 'contains' } }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Code</th><th>Passager</th><th>Trajet</th><th>Date</th><th>Prix</th><th>Statut</th><th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-r>
+    <tr>
+      <td>{{ r.code }}</td>
+      <td>{{ r.passager }}</td>
+      <td>{{ r.trajet }}</td>
+      <td>{{ r.date | date:'shortDate' }}</td>
+      <td>{{ r.prix | currency:'EUR' }}</td>
+      <td><p-tag [value]="r.statut" [severity]="r.statut==='Confirmée' ? 'success' : 'warning'"/></td>
+      <td class="flex gap-2">
+        <button pButton icon="pi pi-pencil" (click)="edit(r)"></button>
+        <button pButton *ngIf="r.statut==='Brouillon'" icon="pi pi-check" severity="success" (click)="confirm(r)" tooltip="Confirmer"></button>
+        <button pButton icon="pi pi-print" (click)="print(r)" tooltip="Imprimer"></button>
+        <button pButton icon="pi pi-times" (click)="remove(r)" severity="danger"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog [(visible)]="dialog" [modal]="true" [style]="{width:'450px'}" [header]="current?.id ? 'Modifier' : 'Nouvelle réservation'">
+  <div class="flex flex-column gap-3">
+    <div>
+      <label>Passager</label>
+      <input pInputText [(ngModel)]="form.passager" />
+    </div>
+    <div>
+      <label>Trajet</label>
+      <input pInputText [(ngModel)]="form.trajet" placeholder="Casa → Rabat" />
+    </div>
+    <div class="grid">
+      <div class="col-6">
+        <label>Date</label>
+        <p-datepicker [(ngModel)]="form.date" dateFormat="dd/mm/yy"></p-datepicker>
+      </div>
+      <div class="col-6">
+        <label>Prix</label>
+        <p-inputNumber [(ngModel)]="form.prix" mode="currency" currency="EUR"></p-inputNumber>
+      </div>
+    </div>
+    <div>
+      <label>Statut</label>
+      <p-select [options]="statuts" optionLabel="label" optionValue="value" [(ngModel)]="form.statut"></p-select>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton label="Annuler" (click)="dialog=false" text></button>
+    <button pButton label="Enregistrer" (click)="save()"></button>
+  </ng-template>
+</p-dialog>
