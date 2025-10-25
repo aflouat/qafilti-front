@@ -48,6 +48,40 @@
 **Développement** : `http://localhost:4200`
 **Production** : `https://votre-domaine.com`
 
+### Prérequis Techniques
+
+⚠️ **Important** : L'application nécessite le serveur API Mockoon pour fonctionner.
+
+#### Démarrer le Serveur API (Mockoon)
+
+**Option 1 - Mockoon Desktop (Recommandé)** :
+1. Télécharger Mockoon Desktop : [https://mockoon.com/download/](https://mockoon.com/download/)
+2. Ouvrir Mockoon Desktop
+3. Menu : File → Open Environment
+4. Sélectionner le fichier : `src/assets/qafilti-mockoon.json`
+5. Cliquer sur **"Start server"** (le serveur démarre sur le port 3002)
+6. Vérifier que le serveur est actif (indicateur vert)
+
+**Option 2 - Ligne de commande** :
+```bash
+# Installer Mockoon CLI
+npm install -g @mockoon/cli
+
+# Démarrer le serveur
+mockoon-cli start --data src/assets/qafilti-mockoon.json
+```
+
+**Vérification** :
+- Le serveur Mockoon doit afficher : `Server started on port 3002`
+- L'application Angular pourra alors se connecter à l'API
+
+#### Démarrer l'Application Angular
+
+```bash
+npm start
+# Ouvre automatiquement http://localhost:4200
+```
+
 ### Navigation
 
 L'application dispose d'un menu principal en haut de page permettant d'accéder à toutes les fonctionnalités selon vos permissions.
@@ -657,7 +691,7 @@ L'interface est organisée en 3 onglets :
 R: Oui, l'application est responsive et fonctionne sur mobile, tablette et ordinateur.
 
 **Q: Mes données sont-elles sauvegardées ?**
-R: Actuellement, les données sont en mode "démo" et se réinitialisent au rafraîchissement de la page. En production, toutes les données seront sauvegardées sur le serveur.
+R: L'application utilise Mockoon API pour simuler un serveur backend. Les données sont conservées tant que le serveur Mockoon est actif. En production, toutes les données seront sauvegardées sur le serveur réel.
 
 **Q: Puis-je changer mon mot de passe ?**
 R: Cette fonctionnalité sera disponible dans une version future.
@@ -714,10 +748,30 @@ R: Cette fonctionnalité sera disponible dans une version future (export Excel/P
 R: Aucune limite stricte, mais restez raisonnables (nom: ~50 caractères, notes: ~200 caractères).
 
 **Q: L'application fonctionne-t-elle hors ligne ?**
-R: Non, une connexion internet est requise.
+R: Non, une connexion au serveur Mockoon (ou serveur de production) est requise.
 
 **Q: Quels navigateurs sont supportés ?**
 R: Chrome, Firefox, Safari et Edge (versions récentes).
+
+### Problèmes avec l'API Mockoon
+
+**Q: L'application affiche des listes vides / pas de données**
+R: Vérifiez que le serveur Mockoon est démarré sur le port 3002. Ouvrez la console du navigateur (F12) pour voir les erreurs de connexion.
+
+**Q: Erreur "Failed to fetch" ou "ERR_CONNECTION_REFUSED"**
+R: Le serveur Mockoon n'est pas démarré. Suivez les instructions dans "Accès à l'Application → Prérequis Techniques" pour lancer Mockoon.
+
+**Q: Comment vérifier que Mockoon fonctionne ?**
+R:
+1. Ouvrez votre navigateur
+2. Allez sur : `http://localhost:3002/api/passagers`
+3. Vous devriez voir une liste de passagers en format JSON
+4. Si vous voyez une erreur, Mockoon n'est pas actif
+
+**Q: Le port 3002 est déjà utilisé**
+R: Un autre programme utilise le port 3002. Vous pouvez :
+- Arrêter l'autre programme
+- OU modifier le port dans le fichier `src/assets/qafilti-mockoon.json` et dans `src/environements/environment.ts`
 
 ---
 

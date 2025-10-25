@@ -30,7 +30,7 @@
 - ✅ UI/UX avec PrimeNG + Tailwind CSS
 - ✅ TypeScript strict mode
 - ✅ Responsive design
-- ✅ Prêt pour l'intégration API
+- ✅ **API Mockoon intégrée** (29 endpoints actifs)
 
 ---
 
@@ -49,8 +49,8 @@
 │                   Core Layer (Guards)                    │
 │              (Authentication & Authorization)            │
 ├─────────────────────────────────────────────────────────┤
-│                    Data Layer (Mock)                     │
-│              (In-Memory / Future: HTTP API)              │
+│                    Data Layer (HTTP)                     │
+│              (Mockoon API via HttpClient)                │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -159,10 +159,12 @@ qafilti-front/
 
 ### Architecture des Services
 
-Tous les services suivent le même pattern :
+Tous les services suivent le même pattern avec **HttpClient + Signals** :
 
 ```typescript
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environements/environment';
 
 export interface Entity {
   id: number;
@@ -171,6 +173,8 @@ export interface Entity {
 
 @Injectable({ providedIn: 'root' })
 export class EntityService {
+  private readonly http = inject(HttpClient);
+
   // Private writable signal
   private readonly _entities = signal<Entity[]>([]);
 
@@ -180,15 +184,28 @@ export class EntityService {
   // Computed signals
   readonly count = computed(() => this._entities().length);
 
-  // CRUD Methods
+  constructor() {
+    this.loadEntities();  // Chargement automatique au démarrage
+  }
+
+  // Load data from API
+  loadEntities(): void {
+    this.http.get<Entity[]>(`${environment.apiUrl}/entities`)
+      .subscribe({
+        next: (entities) => this._entities.set(entities || []),
+        error: (error) => {
+          console.error('Error loading entities:', error);
+          this._entities.set([]);
+        }
+      });
+  }
+
+  // CRUD Methods (local + API)
   getAll(): Entity[] { /* ... */ }
   getById(id: number): Entity | undefined { /* ... */ }
   create(entity: Omit<Entity, 'id'>): Entity { /* ... */ }
   update(id: number, updates: Partial<Entity>): boolean { /* ... */ }
   delete(id: number): boolean { /* ... */ }
-
-  // Business logic methods
-  // ...
 }
 ```
 
@@ -200,20 +217,31 @@ export class EntityService {
 
 **Responsabilité** : Gestion des réservations de voyage
 
+**API Endpoint** : `GET /api/reservation` (Mockoon)
+
 **Interface** :
 ```typescript
 interface Reservation {
-  id: number;
-  code: string;
-  passager: string;
-  trajet: string;
-  date: Date;
-  prix: number;
-  statut: 'Brouillon' | 'Confirmée';
+  reservationId?: string;
+  id?: number;
+  code?: string;
+  passager?: string;
+  passengerName?: string;
+  passengerPhone?: string;
+  tripId?: string;
+  trajet?: string;
+  date?: Date | string;
+  prix?: number;
+  netAmount?: number;
+  seatNumber?: string;
+  statut?: 'Brouillon' | 'Confirmée' | 'CONFIRMED' | 'PENDING' | 'CREATED';
+  status?: string;
+  createdAt?: string;
 }
 ```
 
 **Méthodes** :
+- `loadReservations()`: Charger depuis API Mockoon
 - `getAll()`: Récupérer toutes les réservations
 - `create()`: Créer une réservation (génère code auto)
 - `update()`: Modifier une réservation
@@ -230,6 +258,12 @@ interface Reservation {
 
 **Fichier** : `src/app/core/services/passagers.service.ts`
 
+**API Endpoints** :
+- `GET /api/passagers` (liste)
+- `POST /api/passagers` (création)
+- `PUT /api/passagers/:id` (mise à jour)
+- `DELETE /api/passagers/:id` (suppression)
+
 **Interface** :
 ```typescript
 interface Passager {
@@ -240,7 +274,9 @@ interface Passager {
 }
 ```
 
-**Méthodes** : CRUD standard
+**Méthodes** :
+- `loadPassagers()`: Charger depuis API Mockoon
+- CRUD standard
 
 **Signals** :
 - `passagers`: Liste des passagers
@@ -249,6 +285,12 @@ interface Passager {
 #### 3. ColisService
 
 **Fichier** : `src/app/core/services/colis.service.ts`
+
+**API Endpoints** :
+- `GET /api/colis` (liste)
+- `POST /api/colis` (création)
+- `PUT /api/colis/:id` (mise à jour)
+- `DELETE /api/colis/:id` (suppression)
 
 **Interface** :
 ```typescript
@@ -264,6 +306,7 @@ interface Colis {
 ```
 
 **Méthodes** :
+- `loadColis()`: Charger depuis API Mockoon
 - CRUD standard
 - `markAsDelivered()`: Marquer comme livré
 - `getInTransit()`: Récupérer colis en transit
@@ -278,10 +321,14 @@ interface Colis {
 
 **Fichier** : `src/app/core/services/paiements.service.ts`
 
+**API Endpoints** :
+- `GET /api/paiements` (liste)
+- `POST /api/paiements` (création)
+
 **Interface** :
 ```typescript
 interface Paiement {
-  id: number;
+  id?: number;
   ref: string;
   type: 'Acompte' | 'Solde';
   montant: number;
@@ -289,6 +336,10 @@ interface Paiement {
   note?: string;
 }
 ```
+
+**Méthodes** :
+- `loadPaiements()`: Charger depuis API Mockoon
+- CRUD standard
 
 **Signals** :
 - `paiements`: Liste des paiements
@@ -300,19 +351,38 @@ interface Paiement {
 
 **Fichier** : `src/app/core/services/trajets.service.ts`
 
+**API Endpoint** : `GET /api/trips` (Mockoon)
+
 **Interface** :
 ```typescript
 interface Trajet {
-  id: number;
-  code: string;
-  origine: string;
-  destination: string;
+  id?: number;
+  code?: string;
+  tripId?: string;
+  origine?: string;
+  destination?: string;
+  departureCityName?: string;
+  arrivalCityName?: string;
+  date?: string;
+  vehicleId?: string;
+  departureTime?: string;
+  arrivalTime?: string;
 }
 ```
+
+**Méthodes** :
+- `loadTrajets()`: Charger depuis API Mockoon
+- CRUD standard
 
 #### 6. VehiculesService
 
 **Fichier** : `src/app/core/services/vehicules.service.ts`
+
+**API Endpoints** :
+- `GET /api/vehicules` (liste)
+- `POST /api/vehicules` (création)
+- `PUT /api/vehicules/:id` (mise à jour)
+- `DELETE /api/vehicules/:id` (suppression)
 
 **Interface** :
 ```typescript
@@ -324,12 +394,22 @@ interface Vehicule {
 }
 ```
 
+**Méthodes** :
+- `loadVehicules()`: Charger depuis API Mockoon
+- CRUD standard
+
 **Signals** :
 - `totalCapacity`: Capacité totale de la flotte
 
 #### 7. TarifsService
 
 **Fichier** : `src/app/core/services/tarifs.service.ts`
+
+**API Endpoints** :
+- `GET /api/tarifs` (liste)
+- `POST /api/tarifs` (création)
+- `PUT /api/tarifs/:id` (mise à jour)
+- `DELETE /api/tarifs/:id` (suppression)
 
 **Interface** :
 ```typescript
@@ -341,7 +421,9 @@ interface Tarif {
 ```
 
 **Méthodes** :
+- `loadTarifs()`: Charger depuis API Mockoon
 - `findByRoute()`: Trouver tarif par trajet
+- CRUD standard
 
 **Signals** :
 - `averagePrice`: Prix moyen
@@ -350,10 +432,18 @@ interface Tarif {
 
 **Fichier** : `src/app/core/services/rapports.service.ts`
 
-**Particularité** : Service composite qui utilise les autres services
+**API Endpoints** :
+- `GET /api/rapports/kpis` (KPIs)
+- `GET /api/rapports/revenus` (Revenus par trajet)
+
+**Particularité** : Service composite qui utilise les autres services + API Mockoon
+
+**Méthodes** :
+- `loadKPIs()`: Charger KPIs depuis API
+- `loadRevenueByRoute()`: Charger revenus depuis API
 
 **Signals** :
-- `kpis`: KPIs calculés (billets, colis, fillRate)
+- `kpis`: KPIs (préfère API, sinon calcule localement)
 - `revenueByRoute`: Revenus par trajet
 
 ---
@@ -585,10 +675,11 @@ this._data.update(current => [...current, newItem]);
 
 ### État Actuel
 
-- ✅ Services utilisent **données mock en mémoire**
-- ✅ HttpClient **configuré** mais non utilisé
+- ✅ **Tous les services utilisent Mockoon API via HttpClient**
+- ✅ HttpClient **configuré et actif**
 - ✅ Environnements **configurés**
-- ✅ Mockoon config **disponible** (29 endpoints)
+- ✅ **29 endpoints Mockoon actifs**
+- ✅ Chargement automatique des données au démarrage de l'app
 
 ### Configuration Environnement
 
@@ -623,45 +714,109 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-### Migration vers HTTP
+### Pattern HTTP + Signals Utilisé
 
-Un exemple complet est fourni dans :
-`src/app/core/services/reservations.service.http-example.ts`
-
-**Pattern HTTP + Signals** :
+**Tous les services suivent ce pattern** :
 
 ```typescript
 @Injectable({ providedIn: 'root' })
 export class ServiceName {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.apiUrl}/endpoint`;
   private readonly _data = signal<Type[]>([]);
 
+  readonly data = this._data.asReadonly();
+
   constructor() {
-    this.loadData();
+    this.loadData();  // Chargement automatique
   }
 
-  private loadData(): void {
-    this.http.get<Type[]>(this.apiUrl)
-      .subscribe(data => this._data.set(data));
+  // Chargement depuis API
+  loadData(): void {
+    this.http.get<Type[]>(`${environment.apiUrl}/endpoint`)
+      .subscribe({
+        next: (data) => this._data.set(data || []),
+        error: (error) => {
+          console.error('Error loading data:', error);
+          this._data.set([]);  // Fallback gracieux
+        }
+      });
   }
 
-  create(item: Omit<Type, 'id'>): Observable<Type> {
-    return this.http.post<Type>(this.apiUrl, item)
-      .pipe(tap(newItem => {
-        this._data.update(list => [newItem, ...list]);
-      }));
-  }
+  // CRUD local (met à jour les signals)
+  create(item: Omit<Type, 'id'>): Type { /* ... */ }
+  update(id: number, updates: Partial<Type>): boolean { /* ... */ }
+  delete(id: number): boolean { /* ... */ }
 }
 ```
 
-### Mockoon API
+### Démarrer Mockoon API
+
+**Prérequis** : L'application nécessite Mockoon pour fonctionner correctement.
 
 **Configuration** : `src/assets/qafilti-mockoon.json`
 
-**Endpoints disponibles** : 29 routes
+**Port** : 3002
 
-Voir `API_INTEGRATION.md` pour la liste complète.
+**Endpoints disponibles** : 29 routes CRUD
+
+#### Option 1 : Mockoon Desktop (Recommandé)
+
+```bash
+# 1. Télécharger Mockoon Desktop
+https://mockoon.com/download/
+
+# 2. Ouvrir Mockoon
+# 3. File → Open Environment
+# 4. Sélectionner: src/assets/qafilti-mockoon.json
+# 5. Cliquer sur "Start server" (port 3002)
+```
+
+#### Option 2 : Mockoon CLI
+
+```bash
+# Installer CLI
+npm install -g @mockoon/cli
+
+# Démarrer le serveur
+mockoon-cli start --data src/assets/qafilti-mockoon.json
+
+# Ou avec logs
+mockoon-cli start --data src/assets/qafilti-mockoon.json --log-level debug
+```
+
+#### Option 3 : Docker
+
+```bash
+docker run -p 3002:3002 \
+  -v $(pwd)/src/assets:/data \
+  mockoon/cli:latest \
+  start --data /data/qafilti-mockoon.json
+```
+
+#### Vérifier que Mockoon fonctionne
+
+```bash
+# Tester un endpoint
+curl http://localhost:3002/api/passagers
+
+# Devrait retourner la liste des passagers
+```
+
+### Endpoints Mockoon Utilisés
+
+| Service | Endpoint | Méthode | Description |
+|---------|----------|---------|-------------|
+| ReservationsService | `/api/reservation` | GET | Liste réservations |
+| PassagersService | `/api/passagers` | GET, POST, PUT, DELETE | CRUD passagers |
+| ColisService | `/api/colis` | GET, POST, PUT, DELETE | CRUD colis |
+| PaiementsService | `/api/paiements` | GET, POST | Liste/Créer paiements |
+| TrajetsService | `/api/trips` | GET | Liste trajets |
+| VehiculesService | `/api/vehicules` | GET, POST, PUT, DELETE | CRUD véhicules |
+| TarifsService | `/api/tarifs` | GET, POST, PUT, DELETE | CRUD tarifs |
+| RapportsService | `/api/rapports/kpis` | GET | KPIs |
+| RapportsService | `/api/rapports/revenus` | GET | Revenus par trajet |
+
+Voir `API_INTEGRATION.md` pour la liste complète des 29 endpoints.
 
 ---
 
