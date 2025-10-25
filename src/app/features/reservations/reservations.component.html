@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<p-table [value]="reservations" [paginator]="true" [rows]="10" [globalFilterFields]="['code','passager','trajet','statut']" [filters]="{ 'global': { value: globalFilter, matchMode: 'contains' } }">
+<p-table [value]="reservations()" [paginator]="true" [rows]="10" [globalFilterFields]="['code','passager','trajet','statut']" [filters]="{ 'global': { value: globalFilter, matchMode: 'contains' } }">
   <ng-template pTemplate="header">
     <tr>
       <th>Code</th><th>Passager</th><th>Trajet</th><th>Date</th><th>Prix</th><th>Statut</th><th>Actions</th>
@@ -30,7 +30,7 @@
   </ng-template>
 </p-table>
 
-<p-dialog [(visible)]="dialog" [modal]="true" [style]="{width:'450px'}" [header]="current?.id ? 'Modifier' : 'Nouvelle réservation'">
+<p-dialog [(visible)]="dialog" [modal]="true" [style]="{width:'450px'}" [header]="currentId ? 'Modifier' : 'Nouvelle réservation'">
   <div class="flex flex-column gap-3">
     <div>
       <label>Passager</label>

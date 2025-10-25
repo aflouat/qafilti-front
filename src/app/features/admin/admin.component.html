@@ -10,7 +10,7 @@
         <h3 class="m-0">Trajets</h3>
         <button pButton label="Ajouter" (click)="openTrajet()"></button>
       </div>
-      <p-table [value]="trajets">
+      <p-table [value]="trajets()">
         <ng-template pTemplate="header">
           <tr><th>Code</th><th>Origine</th><th>Destination</th><th>Actions</th></tr>
         </ng-template>
@@ -32,7 +32,7 @@
         <h3 class="m-0">Véhicules</h3>
         <button pButton label="Ajouter" (click)="openVehicule()"></button>
       </div>
-      <p-table [value]="vehicules">
+      <p-table [value]="vehicules()">
         <ng-template pTemplate="header">
           <tr><th>Matricule</th><th>Modèle</th><th>Capacité</th><th>Actions</th></tr>
         </ng-template>
@@ -54,7 +54,7 @@
         <h3 class="m-0">Tarifs</h3>
         <button pButton label="Ajouter" (click)="openTarif()"></button>
       </div>
-      <p-table [value]="tarifs">
+      <p-table [value]="tarifs()">
         <ng-template pTemplate="header">
           <tr><th>Trajet</th><th>Prix (€)</th><th>Actions</th></tr>
         </ng-template>

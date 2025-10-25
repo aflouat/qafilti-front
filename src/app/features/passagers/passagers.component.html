@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<p-table [value]="rows" [paginator]="true" [rows]="10" [filters]="{ 'global': { value: filter, matchMode: 'contains' } }" [globalFilterFields]="['nom','telephone','document']">
+<p-table [value]="passagers()" [paginator]="true" [rows]="10" [filters]="{ 'global': { value: filter, matchMode: 'contains' } }" [globalFilterFields]="['nom','telephone','document']">
   <ng-template pTemplate="header">
     <tr><th>Nom</th><th>Téléphone</th><th>Document</th><th>Actions</th></tr>
   </ng-template>
@@ -16,8 +16,8 @@
       <td>{{ p.telephone }}</td>
       <td>{{ p.document }}</td>
       <td class="flex gap-2">
-        <button pButton icon="pi pi-pencil" (click)="open()"></button>
-        <button pButton icon="pi pi-times" severity="danger" (click)="open()"></button>
+        <button pButton icon="pi pi-pencil" (click)="edit(p)"></button>
+        <button pButton icon="pi pi-times" severity="danger" (click)="remove(p)"></button>
       </td>
     </tr>
   </ng-template>
@@ -27,7 +27,7 @@
   <div class="flex flex-column gap-3">
     <input pInputText placeholder="Nom complet" [(ngModel)]="form.nom" />
     <input pInputText placeholder="Téléphone" [(ngModel)]="form.telephone" />
-    <input pInputText placeholder="Document (CIN/Passport)" [(ngModel)]="form" />
+    <input pInputText placeholder="Document (CIN/Passport)" [(ngModel)]="form.document" />
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="dialog=false" text></button>
