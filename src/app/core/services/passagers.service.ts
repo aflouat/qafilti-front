@@ -1,4 +1,6 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environements/environment';
 
 export interface Passager {
   id: number;
@@ -9,16 +11,32 @@ export interface Passager {
 
 @Injectable({ providedIn: 'root' })
 export class PassagersService {
+  private readonly http = inject(HttpClient);
+
   // Private state with signals
-  private readonly _passagers = signal<Passager[]>([
-    { id: 1, nom: 'Jean Dupont', telephone: '0601020304', document: 'CIN123456' },
-    { id: 2, nom: 'Marie Curie', telephone: '0605060708', document: 'CIN654321' },
-    { id: 3, nom: 'Ali Ben Ali', telephone: '0611121314', document: 'CIN112233' }
-  ]);
+  private readonly _passagers = signal<Passager[]>([]);
 
   // Public readonly signals
   readonly passagers = this._passagers.asReadonly();
   readonly passagersCount = computed(() => this._passagers().length);
+
+  constructor() {
+    this.loadPassagers();
+  }
+
+  // Load data from API
+  loadPassagers(): void {
+    this.http.get<Passager[]>(`${environment.apiUrl}/passagers`)
+      .subscribe({
+        next: (passagers) => {
+          this._passagers.set(passagers || []);
+        },
+        error: (error) => {
+          console.error('Error loading passagers:', error);
+          this._passagers.set([]);
+        }
+      });
+  }
 
   // CRUD Methods
   getAll(): Passager[] {

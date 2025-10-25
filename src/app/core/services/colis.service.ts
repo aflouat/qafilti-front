@@ -1,4 +1,6 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environements/environment';
 
 export interface Colis {
   id: number;
@@ -12,16 +14,34 @@ export interface Colis {
 
 @Injectable({ providedIn: 'root' })
 export class ColisService {
+  private readonly http = inject(HttpClient);
+
   // Private state with signals
-  private readonly _colis = signal<Colis[]>([
-    { id: 1, code: 'CLS-0001', expediteur: 'Nadia', destinataire: 'Karim', poids: 3.2, tarif: 8, statut: 'En transit' },
-  ]);
+  private readonly _colis = signal<Colis[]>([]);
 
   // Public readonly signals
   readonly colis = this._colis.asReadonly();
   readonly colisCount = computed(() => this._colis().length);
   readonly inTransitCount = computed(() => this._colis().filter(c => c.statut === 'En transit').length);
   readonly deliveredCount = computed(() => this._colis().filter(c => c.statut === 'Livré').length);
+
+  constructor() {
+    this.loadColis();
+  }
+
+  // Load data from API
+  loadColis(): void {
+    this.http.get<Colis[]>(`${environment.apiUrl}/colis`)
+      .subscribe({
+        next: (colis) => {
+          this._colis.set(colis || []);
+        },
+        error: (error) => {
+          console.error('Error loading colis:', error);
+          this._colis.set([]);
+        }
+      });
+  }
 
   // CRUD Methods
   getAll(): Colis[] {

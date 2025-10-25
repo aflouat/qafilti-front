@@ -1,4 +1,6 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environements/environment';
 
 export interface Tarif {
   id: number;
@@ -8,10 +10,10 @@ export interface Tarif {
 
 @Injectable({ providedIn: 'root' })
 export class TarifsService {
+  private readonly http = inject(HttpClient);
+
   // Private state with signals
-  private readonly _tarifs = signal<Tarif[]>([
-    { id: 1, trajet: 'Casa → Rabat', prix: 12 },
-  ]);
+  private readonly _tarifs = signal<Tarif[]>([]);
 
   // Public readonly signals
   readonly tarifs = this._tarifs.asReadonly();
@@ -21,6 +23,24 @@ export class TarifsService {
     if (tarifs.length === 0) return 0;
     return tarifs.reduce((sum, t) => sum + t.prix, 0) / tarifs.length;
   });
+
+  constructor() {
+    this.loadTarifs();
+  }
+
+  // Load data from API
+  loadTarifs(): void {
+    this.http.get<Tarif[]>(`${environment.apiUrl}/tarifs`)
+      .subscribe({
+        next: (tarifs) => {
+          this._tarifs.set(tarifs || []);
+        },
+        error: (error) => {
+          console.error('Error loading tarifs:', error);
+          this._tarifs.set([]);
+        }
+      });
+  }
 
   // CRUD Methods
   getAll(): Tarif[] {

@@ -1,4 +1,6 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environements/environment';
 
 export interface Vehicule {
   id: number;
@@ -9,15 +11,33 @@ export interface Vehicule {
 
 @Injectable({ providedIn: 'root' })
 export class VehiculesService {
+  private readonly http = inject(HttpClient);
+
   // Private state with signals
-  private readonly _vehicules = signal<Vehicule[]>([
-    { id: 1, matricule: 'ABC-123', modele: 'Mercedes Sprinter', capacite: 18 },
-  ]);
+  private readonly _vehicules = signal<Vehicule[]>([]);
 
   // Public readonly signals
   readonly vehicules = this._vehicules.asReadonly();
   readonly vehiculesCount = computed(() => this._vehicules().length);
   readonly totalCapacity = computed(() => this._vehicules().reduce((sum, v) => sum + v.capacite, 0));
+
+  constructor() {
+    this.loadVehicules();
+  }
+
+  // Load data from API
+  loadVehicules(): void {
+    this.http.get<Vehicule[]>(`${environment.apiUrl}/vehicules`)
+      .subscribe({
+        next: (vehicules) => {
+          this._vehicules.set(vehicules || []);
+        },
+        error: (error) => {
+          console.error('Error loading vehicules:', error);
+          this._vehicules.set([]);
+        }
+      });
+  }
 
   // CRUD Methods
   getAll(): Vehicule[] {

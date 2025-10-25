@@ -29,7 +29,7 @@ export class AdminComponent {
 
   // Trajets
   trajetDialog = false;
-  currentTrajetId: number | null = null;
+  currentTrajetId: number | null | undefined = null;
   trajetForm: Partial<Trajet> = {};
 
   openTrajet() {
@@ -60,7 +60,9 @@ export class AdminComponent {
   }
 
   removeTrajet(t: Trajet) {
-    this.trajetsService.delete(t.id);
+    if (t.id !== undefined) {
+      this.trajetsService.delete(t.id);
+    }
   }
 
   // Véhicules
