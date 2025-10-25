@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<p-table [value]="colis" [paginator]="true" [rows]="10" [globalFilterFields]="['code','expediteur','destinataire','statut']" [filters]="{ 'global': { value: globalFilter, matchMode: 'contains' } }">
+<p-table [value]="colis()" [paginator]="true" [rows]="10" [globalFilterFields]="['code','expediteur','destinataire','statut']" [filters]="{ 'global': { value: globalFilter, matchMode: 'contains' } }">
   <ng-template pTemplate="header">
     <tr><th>Code</th><th>Expéditeur</th><th>Destinataire</th><th>Poids (kg)</th><th>Tarif</th><th>Statut</th><th>Actions</th></tr>
   </ng-template>

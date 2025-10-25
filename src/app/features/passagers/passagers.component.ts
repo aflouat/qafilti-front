@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
+import { PassagersService, Passager } from '../../core/services/passagers.service';
 
 @Component({
   standalone: true,
@@ -13,29 +14,48 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./passagers.component.css']
 })
 export class PassagersComponent {
-  form: any = {};
+  private readonly passagersService = inject(PassagersService);
 
-  rows = [
-    { id: 1, nom: 'Jean Dupont', telephone: '0601020304', document: 'CIN123456' },
-    { id: 2, nom: 'Marie Curie', telephone: '0605060708', document: 'CIN654321' },
-    { id: 3, nom: 'Ali Ben Ali', telephone: '0611121314', document: 'CIN112233' }
-  ];
+  // Use service signals directly in the template
+  readonly passagers = this.passagersService.passagers;
+
+  form: Partial<Passager> = {};
   filter = '';
   dialog = false;
-   open() {
+  currentId: number | null = null;
+
+  open() {
     this.form = {};
+    this.currentId = null;
+    this.dialog = true;
+  }
+
+  edit(passager: Passager) {
+    this.form = { ...passager };
+    this.currentId = passager.id;
     this.dialog = true;
   }
 
   save() {
-    if (this.form.id) {
-      const index = this.rows.findIndex((r: any) => r.id === this.form.id);
-      this.rows[index] = this.form;
+    if (this.currentId) {
+      // Update existing
+      this.passagersService.update(this.currentId, this.form);
     } else {
-      this.form.id = this.rows.length ? Math.max(...this.rows.map((r: any) => r.id)) + 1 : 1;
-      this.rows.push(this.form);
+      // Create new
+      if (this.form.nom && this.form.telephone && this.form.document) {
+        this.passagersService.create({
+          nom: this.form.nom,
+          telephone: this.form.telephone,
+          document: this.form.document
+        });
+      }
     }
     this.dialog = false;
     this.form = {};
+    this.currentId = null;
   }
-   }
+
+  remove(passager: Passager) {
+    this.passagersService.delete(passager.id);
+  }
+}

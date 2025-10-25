@@ -3,7 +3,7 @@
   <button pButton label="Enregistrer un paiement" (click)="test()"></button>
 </div>
 
-<p-table [value]="rows" [paginator]="true" [rows]="10">
+<p-table [value]="paiements()" [paginator]="true" [rows]="10">
   <ng-template pTemplate="header">
     <tr><th>Réf</th><th>Type</th><th>Montant</th><th>Mode</th><th>Note</th><th>Actions</th></tr>
   </ng-template>

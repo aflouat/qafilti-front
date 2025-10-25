@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
+import { ReservationsService } from '../../core/services/reservations.service';
+import { ColisService } from '../../core/services/colis.service';
+import { PaiementsService } from '../../core/services/paiements.service';
 
 @Component({
   standalone: true,
@@ -12,9 +15,14 @@ import { CurrencyPipe } from '@angular/common';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-  kpis = {
-    resaToday: 12,
-    parcelsTransit: 27,
-    revenueMonth: 15840
-  };
+  private readonly reservationsService = inject(ReservationsService);
+  private readonly colisService = inject(ColisService);
+  private readonly paiementsService = inject(PaiementsService);
+
+  // Computed KPIs from services
+  readonly kpis = computed(() => ({
+    resaToday: this.reservationsService.todayCount(),
+    parcelsTransit: this.colisService.inTransitCount(),
+    revenueMonth: this.paiementsService.totalAmount()
+  }));
 }
