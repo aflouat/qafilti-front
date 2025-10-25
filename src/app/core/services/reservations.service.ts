@@ -1,55 +1,92 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environements/environment';
 
 export interface Reservation {
-  id: number;
-  code: string;
-  passager: string;
-  trajet: string;
-  date: Date;
-  prix: number;
-  statut: 'Brouillon' | 'Confirmée';
+  reservationId?: string;
+  id?: number;
+  code?: string;
+  tripId?: string;
+  passager?: string;
+  passengerName?: string;
+  passengerPhone?: string;
+  trajet?: string;
+  date?: Date | string;
+  prix?: number;
+  netAmount?: number;
+  seatNumber?: string;
+  statut?: 'Brouillon' | 'Confirmée' | 'CONFIRMED' | 'PENDING' | 'CREATED';
+  status?: string;
+  createdAt?: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class ReservationsService {
+  private readonly http = inject(HttpClient);
+
   // Private state with signals
-  private readonly _reservations = signal<Reservation[]>([
-    { id: 1, code: 'RSV-0001', passager: 'Amina L.', trajet: 'Casa → Rabat', date: new Date(), prix: 12, statut: 'Confirmée' },
-    { id: 2, code: 'RSV-0002', passager: 'Youssef M.', trajet: 'Rabat → Fès', date: new Date(), prix: 18, statut: 'Brouillon' },
-  ]);
+  private readonly _reservations = signal<Reservation[]>([]);
 
   // Public readonly signals
   readonly reservations = this._reservations.asReadonly();
   readonly reservationsCount = computed(() => this._reservations().length);
-  readonly confirmedCount = computed(() => this._reservations().filter(r => r.statut === 'Confirmée').length);
+  readonly confirmedCount = computed(() => {
+    return this._reservations().filter(r =>
+      r.statut === 'Confirmée' || r.status === 'CONFIRMED'
+    ).length;
+  });
   readonly todayCount = computed(() => {
     const today = new Date().toDateString();
-    return this._reservations().filter(r => new Date(r.date).toDateString() === today).length;
+    return this._reservations().filter(r => {
+      const reservDate = r.date ? new Date(r.date) : null;
+      return reservDate && reservDate.toDateString() === today;
+    }).length;
   });
+
+  constructor() {
+    this.loadReservations();
+  }
+
+  // Load data from API
+  loadReservations(): void {
+    this.http.get<{ reservations: Reservation[] }>(`${environment.apiUrl}/reservation`)
+      .subscribe({
+        next: (response) => {
+          this._reservations.set(response.reservations || []);
+        },
+        error: (error) => {
+          console.error('Error loading reservations:', error);
+          // Fallback to empty array on error
+          this._reservations.set([]);
+        }
+      });
+  }
 
   // CRUD Methods
   getAll(): Reservation[] {
     return this._reservations();
   }
 
-  getById(id: number): Reservation | undefined {
-    return this._reservations().find(r => r.id === id);
+  getById(id: number | string): Reservation | undefined {
+    return this._reservations().find(r =>
+      r.id === id || r.reservationId === id
+    );
   }
 
-  create(reservation: Omit<Reservation, 'id' | 'code'>): Reservation {
-    const id = this.generateId();
-    const code = this.generateCode(id);
+  create(reservation: Partial<Reservation>): Reservation {
     const newReservation: Reservation = {
-      id,
-      code,
+      id: this.generateId(),
+      code: this.generateCode(this.generateId()),
       ...reservation
     };
     this._reservations.update(reservations => [newReservation, ...reservations]);
     return newReservation;
   }
 
-  update(id: number, updates: Partial<Omit<Reservation, 'id' | 'code'>>): boolean {
-    const index = this._reservations().findIndex(r => r.id === id);
+  update(id: number | string, updates: Partial<Reservation>): boolean {
+    const index = this._reservations().findIndex(r =>
+      r.id === id || r.reservationId === id
+    );
     if (index === -1) return false;
 
     this._reservations.update(reservations => {
@@ -60,22 +97,27 @@ export class ReservationsService {
     return true;
   }
 
-  delete(id: number): boolean {
+  delete(id: number | string): boolean {
     const initialLength = this._reservations().length;
-    this._reservations.update(reservations => reservations.filter(r => r.id !== id));
+    this._reservations.update(reservations =>
+      reservations.filter(r => r.id !== id && r.reservationId !== id)
+    );
     return this._reservations().length < initialLength;
   }
 
   // Business logic methods
-  confirm(id: number): boolean {
+  confirm(id: number | string): boolean {
     const reservation = this.getById(id);
-    if (!reservation || reservation.statut === 'Confirmée') return false;
+    if (!reservation) return false;
+    if (reservation.statut === 'Confirmée' || reservation.status === 'CONFIRMED') {
+      return false;
+    }
 
-    return this.update(id, { statut: 'Confirmée' });
+    return this.update(id, { statut: 'Confirmée', status: 'CONFIRMED' });
   }
 
   private generateId(): number {
-    const ids = this._reservations().map(r => r.id);
+    const ids = this._reservations().map(r => r.id || 0).filter(id => id > 0);
     return ids.length ? Math.max(...ids) + 1 : 1;
   }
 

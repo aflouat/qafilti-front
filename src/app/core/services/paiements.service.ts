@@ -1,7 +1,9 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environements/environment';
 
 export interface Paiement {
-  id: number;
+  id?: number;
   ref: string;
   type: 'Acompte' | 'Solde';
   montant: number;
@@ -11,11 +13,10 @@ export interface Paiement {
 
 @Injectable({ providedIn: 'root' })
 export class PaiementsService {
+  private readonly http = inject(HttpClient);
+
   // Private state with signals
-  private readonly _paiements = signal<Paiement[]>([
-    { id: 1, ref: '12345', type: 'Acompte', montant: 500, mode: 'Carte bancaire', note: 'Premier paiement' },
-    { id: 2, ref: '67890', type: 'Solde', montant: 1500, mode: 'Virement', note: 'Paiement final' }
-  ]);
+  private readonly _paiements = signal<Paiement[]>([]);
 
   // Public readonly signals
   readonly paiements = this._paiements.asReadonly();
@@ -27,6 +28,24 @@ export class PaiementsService {
   readonly soldeAmount = computed(() =>
     this._paiements().filter(p => p.type === 'Solde').reduce((sum, p) => sum + p.montant, 0)
   );
+
+  constructor() {
+    this.loadPaiements();
+  }
+
+  // Load data from API
+  loadPaiements(): void {
+    this.http.get<Paiement[]>(`${environment.apiUrl}/paiements`)
+      .subscribe({
+        next: (paiements) => {
+          this._paiements.set(paiements || []);
+        },
+        error: (error) => {
+          console.error('Error loading paiements:', error);
+          this._paiements.set([]);
+        }
+      });
+  }
 
   // CRUD Methods
   getAll(): Paiement[] {
@@ -70,7 +89,7 @@ export class PaiementsService {
   }
 
   private generateId(): number {
-    const ids = this._paiements().map(p => p.id);
+    const ids = this._paiements().map(p => p.id).filter((id): id is number => id !== undefined);
     return ids.length ? Math.max(...ids) + 1 : 1;
   }
 }

@@ -1,22 +1,49 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environements/environment';
 
 export interface Trajet {
-  id: number;
-  code: string;
-  origine: string;
-  destination: string;
+  id?: number;
+  code?: string;
+  tripId?: string;
+  origine?: string;
+  destination?: string;
+  departureCityName?: string;
+  arrivalCityName?: string;
+  date?: string;
+  vehicleId?: string;
+  departureTime?: string;
+  arrivalTime?: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class TrajetsService {
+  private readonly http = inject(HttpClient);
+
   // Private state with signals
-  private readonly _trajets = signal<Trajet[]>([
-    { id: 1, code: 'TRJ-01', origine: 'Casa', destination: 'Rabat' },
-  ]);
+  private readonly _trajets = signal<Trajet[]>([]);
 
   // Public readonly signals
   readonly trajets = this._trajets.asReadonly();
   readonly trajetsCount = computed(() => this._trajets().length);
+
+  constructor() {
+    this.loadTrajets();
+  }
+
+  // Load data from API
+  loadTrajets(): void {
+    this.http.get<{ trips: Trajet[] }>(`${environment.apiUrl}/trips`)
+      .subscribe({
+        next: (response) => {
+          this._trajets.set(response.trips || []);
+        },
+        error: (error) => {
+          console.error('Error loading trajets:', error);
+          this._trajets.set([]);
+        }
+      });
+  }
 
   // CRUD Methods
   getAll(): Trajet[] {
@@ -53,7 +80,7 @@ export class TrajetsService {
   }
 
   private generateId(): number {
-    const ids = this._trajets().map(t => t.id);
+    const ids = this._trajets().map(t => t.id).filter((id): id is number => id !== undefined);
     return ids.length ? Math.max(...ids) + 1 : 1;
   }
 }

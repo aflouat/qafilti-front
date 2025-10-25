@@ -28,7 +28,7 @@ export class ReservationsComponent {
   statuts = [{ label:'Brouillon', value:'Brouillon' },{ label:'Confirmée', value:'Confirmée' }];
 
   dialog = false;
-  currentId: number | null = null;
+  currentId: number | string | null | undefined = null;
   form: Partial<Reservation> = {};
   globalFilter = '';
 
@@ -39,7 +39,7 @@ export class ReservationsComponent {
   }
 
   edit(r: Reservation) {
-    this.currentId = r.id;
+    this.currentId = r.id || r.reservationId;
     this.form = { ...r };
     this.dialog = true;
   }
@@ -64,11 +64,17 @@ export class ReservationsComponent {
   }
 
   remove(r: Reservation) {
-    this.reservationsService.delete(r.id);
+    const id = r.id || r.reservationId;
+    if (id !== undefined) {
+      this.reservationsService.delete(id);
+    }
   }
 
   confirm(r: Reservation) {
-    this.reservationsService.confirm(r.id);
+    const id = r.id || r.reservationId;
+    if (id !== undefined) {
+      this.reservationsService.confirm(id);
+    }
   }
 
   print(r: Reservation) {
