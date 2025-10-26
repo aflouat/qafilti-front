@@ -11,11 +11,12 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { ReservationsService, Reservation } from '../../core/services/reservations.service';
+import { TicketPrintComponent } from './ticket-print.component';
 
 @Component({
   standalone: true,
   selector: 'app-reservations',
-  imports: [TableModule, DialogModule, InputTextModule, Select, DatePicker, ButtonModule, TagModule, FormsModule, InputNumberModule, TooltipModule, DatePipe, CurrencyPipe, CommonModule],
+  imports: [TableModule, DialogModule, InputTextModule, Select, DatePicker, ButtonModule, TagModule, FormsModule, InputNumberModule, TooltipModule, DatePipe, CurrencyPipe, CommonModule, TicketPrintComponent],
   templateUrl: './reservations.component.html',
   styleUrls: ['./reservations.component.css']
 })
@@ -31,6 +32,7 @@ export class ReservationsComponent {
   currentId: number | string | null | undefined = null;
   form: Partial<Reservation> = {};
   globalFilter = '';
+  ticketToPrint?: Reservation;
 
   openNew() {
     this.currentId = null;
@@ -78,6 +80,10 @@ export class ReservationsComponent {
   }
 
   print(r: Reservation) {
-    window.print();
+    this.ticketToPrint = r;
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => this.ticketToPrint = undefined, 100);
+    }, 100);
   }
 }
