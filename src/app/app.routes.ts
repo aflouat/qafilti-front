@@ -15,8 +15,8 @@ import { roleGuard } from './core/guards/role.guard';
  * Configuration des routes avec protection par authentification et rôles
  *
  * Rôles disponibles :
- * - comptoir : Accès aux réservations et passagers
- * - caissier : Accès aux colis et paiements
+ * - comptoir : Crée les réservations (brouillon) et gère les passagers
+ * - caissier : Confirme les réservations après paiement, gère colis et paiements
  * - admin : Accès complet (administration et rapports)
  */
 export const routes: Routes = [
@@ -31,11 +31,11 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
-  // Réservations - Accessible au comptoir et admin
+  // Réservations - Accessible au comptoir (création), caissier (confirmation) et admin
   {
     path: 'reservations',
     component: ReservationsComponent,
-    canActivate: [authGuard, roleGuard(['comptoir', 'admin'])]
+    canActivate: [authGuard, roleGuard(['comptoir', 'caissier', 'admin'])]
   },
 
   // Passagers - Accessible au comptoir et admin

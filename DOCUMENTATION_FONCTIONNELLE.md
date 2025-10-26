@@ -105,11 +105,11 @@ L'application utilise un système de rôles pour contrôler l'accès aux fonctio
 
 #### 🔵 Agent Comptoir
 
-**Responsabilités** : Gestion des voyageurs et réservations
+**Responsabilités** : Création des réservations et gestion des passagers
 
 **Accès** :
 - ✅ Tableau de bord
-- ✅ Réservations (création, modification, confirmation)
+- ✅ Réservations (création en mode "Brouillon" uniquement)
 - ✅ Passagers (gestion complète)
 - ❌ Colis
 - ❌ Paiements
@@ -118,28 +118,32 @@ L'application utilise un système de rôles pour contrôler l'accès aux fonctio
 
 **Cas d'usage typique** :
 - Accueillir les clients au comptoir
-- Créer de nouvelles réservations
-- Confirmer les réservations
+- Créer de nouvelles réservations (statut "Brouillon")
+- Modifier les réservations en brouillon
 - Enregistrer les informations passagers
+
+**⚠️ Important** : L'agent comptoir NE PEUT PAS confirmer les réservations - seul le caissier peut le faire après encaissement
 
 #### 🟢 Agent Caissier
 
-**Responsabilités** : Gestion financière et logistique
+**Responsabilités** : Gestion financière, confirmation des réservations et logistique
 
 **Accès** :
 - ✅ Tableau de bord
-- ❌ Réservations
+- ✅ Réservations (consultation et confirmation après paiement)
 - ❌ Passagers
 - ✅ Colis (enregistrement, suivi, livraison)
-- ✅ Paiements (consultation)
+- ✅ Paiements (enregistrement)
 - ❌ Rapports
 - ❌ Administration
 
 **Cas d'usage typique** :
+- Consulter les réservations en brouillon
+- Encaisser les paiements
+- **Confirmer les réservations** (Brouillon → Confirmée)
+- **Imprimer les tickets** de réservation
 - Enregistrer les colis à expédier
 - Marquer les colis comme livrés
-- Consulter les paiements
-- Gérer les encaissements
 
 #### 🔴 Administrateur
 
@@ -161,12 +165,16 @@ L'application utilise un système de rôles pour contrôler l'accès aux fonctio
 | Fonctionnalité | Comptoir | Caissier | Admin |
 |----------------|----------|----------|-------|
 | Tableau de bord | ✅ | ✅ | ✅ |
-| Réservations | ✅ | ❌ | ✅ |
+| Réservations | ✅ (Création) | ✅ (Confirmation) | ✅ (Complet) |
 | Passagers | ✅ | ❌ | ✅ |
 | Colis | ❌ | ✅ | ✅ |
 | Paiements | ❌ | ✅ | ✅ |
 | Rapports | ❌ | ❌ | ✅ |
 | Administration | ❌ | ❌ | ✅ |
+
+**Workflow réservation** :
+1. **Comptoir** crée la réservation → Statut "Brouillon"
+2. **Caissier** encaisse le paiement → Confirme la réservation → Statut "Confirmée" → Imprime le ticket
 
 ---
 
@@ -244,11 +252,13 @@ Chaque carte KPI peut vous rediriger vers la section détaillée correspondante.
 
 ## Gestion des Réservations
 
-**🔑 Accès** : Agent Comptoir, Administrateur
+**🔑 Accès** : Agent Comptoir (création), Agent Caissier (confirmation), Administrateur
 
 ### Vue d'Ensemble
 
-La page **Réservations** permet de gérer l'ensemble des réservations de voyage.
+La page **Réservations** permet de gérer l'ensemble des réservations de voyage selon un workflow en 2 étapes :
+1. **Agent Comptoir** : Crée les réservations en statut "Brouillon"
+2. **Agent Caissier** : Confirme les réservations après encaissement et imprime les tickets
 
 ### Fonctionnalités
 
@@ -263,12 +273,14 @@ La page **Réservations** permet de gérer l'ensemble des réservations de voyag
 - **Statut** : Brouillon ou Confirmée
 
 **Actions sur chaque ligne** :
-- ✏️ **Modifier** : Éditer les détails
-- ✅ **Confirmer** : Passer de Brouillon à Confirmée
-- 🖨️ **Imprimer** : Imprimer la réservation
-- ❌ **Supprimer** : Supprimer la réservation
+- ✏️ **Modifier** : Éditer les détails (Comptoir + Caissier + Admin)
+- ✅ **Confirmer** : Passer de Brouillon à Confirmée (⚠️ **UNIQUEMENT Caissier + Admin**)
+- 🖨️ **Imprimer** : Imprimer le ticket de réservation (Caissier + Admin)
+- ❌ **Supprimer** : Supprimer la réservation (Comptoir + Admin)
 
-#### ➕ Créer une Réservation
+#### ➕ Créer une Réservation (Agent Comptoir)
+
+**Rôle** : Agent Comptoir, Administrateur
 
 1. Cliquer sur le bouton **Nouvelle**
 2. Remplir le formulaire :
@@ -276,28 +288,37 @@ La page **Réservations** permet de gérer l'ensemble des réservations de voyag
    - **Trajet** : Route (ex: Casa → Rabat)
    - **Date** : Date du voyage
    - **Prix** : Montant en euros
-   - **Statut** : Brouillon (par défaut)
+   - **Statut** : Brouillon (**TOUJOURS en brouillon pour l'agent comptoir**)
 3. Cliquer sur **Enregistrer**
 
 **💡 Note** : Un code unique est généré automatiquement (RSV-XXXX)
 
+**⚠️ Important** : L'agent comptoir NE PEUT PAS confirmer la réservation - elle reste en "Brouillon"
+
 #### ✏️ Modifier une Réservation
+
+**Rôle** : Agent Comptoir (brouillons), Agent Caissier, Administrateur
 
 1. Cliquer sur l'icône **Modifier** (crayon)
 2. Modifier les informations souhaitées
 3. Cliquer sur **Enregistrer**
 
-#### ✅ Confirmer une Réservation
+#### ✅ Confirmer une Réservation (Agent Caissier)
 
-Les réservations sont créées en statut **Brouillon** par défaut.
+**Rôle** : Agent Caissier, Administrateur UNIQUEMENT
 
-**Pour confirmer** :
-1. Cliquer sur l'icône **Confirmer** (coche verte)
-2. Le statut passe automatiquement à **Confirmée**
+Les réservations sont créées en statut **Brouillon** par l'agent comptoir.
 
-**Différence** :
-- **Brouillon** : Réservation provisoire, peut être modifiée librement
-- **Confirmée** : Réservation validée, engagement client
+**Workflow de confirmation (Agent Caissier)** :
+1. Le client se présente à la caisse avec sa réservation en brouillon
+2. Le caissier encaisse le paiement (voir section Paiements)
+3. Le caissier clique sur l'icône **Confirmer** (coche verte)
+4. Le statut passe automatiquement à **Confirmée**
+5. Le caissier clique sur **Imprimer** pour donner le ticket au client
+
+**Statuts** :
+- **Brouillon** : Réservation créée par le comptoir, en attente de paiement
+- **Confirmée** : Réservation payée et validée par le caissier
 
 #### 🖨️ Imprimer une Réservation
 
@@ -613,22 +634,24 @@ L'interface est organisée en 3 onglets :
 2. Consulter le tableau de bord
 3. Vérifier les réservations du jour
 
-**9h00-12h00 - Gestion des Réservations**
-1. Accueillir les clients
-2. Créer de nouvelles réservations
+**9h00-12h00 - Création de Réservations**
+1. Accueillir les clients au comptoir
+2. **Créer de nouvelles réservations** (statut "Brouillon")
 3. Enregistrer les informations passagers
-4. Confirmer les réservations payées
+4. Informer le client d'aller à la caisse pour payer
 
 **14h00-17h00 - Suivi**
-1. Modifier les réservations si nécessaire
-2. Imprimer les confirmations
-3. Mettre à jour la base passagers
+1. Modifier les réservations en brouillon si nécessaire
+2. Mettre à jour la base passagers
+3. Consulter les réservations confirmées par la caisse
 
 **Tâches Principales** :
-- ✅ Création de réservations
-- ✅ Confirmation des réservations
+- ✅ Création de réservations (statut "Brouillon" uniquement)
 - ✅ Gestion des passagers
-- ✅ Service client
+- ✅ Service client / Accueil
+- ❌ **NE CONFIRME PAS** les réservations (rôle du caissier)
+
+**⚠️ Workflow** : Comptoir → Crée réservation "Brouillon" → Client va à la caisse → Caissier confirme
 
 ---
 
@@ -637,24 +660,31 @@ L'interface est organisée en 3 onglets :
 **8h00 - Ouverture**
 1. Se connecter avec `caissier@qafilti.com`
 2. Consulter le tableau de bord
-3. Vérifier les colis en transit
+3. Vérifier les réservations en brouillon et les colis en transit
 
-**9h00-12h00 - Enregistrement Colis**
-1. Réceptionner les colis clients
-2. Enregistrer dans le système
-3. Calculer et encaisser les frais
-4. Remettre un reçu
+**9h00-12h00 - Encaissements et Confirmations**
+1. Consulter les **réservations en brouillon** créées par le comptoir
+2. Encaisser les paiements clients
+3. **Confirmer les réservations** (Brouillon → Confirmée)
+4. **Imprimer et remettre le ticket** de réservation au client
+5. Enregistrer les colis à expédier
+6. Calculer et encaisser les frais de colis
 
-**14h00-17h00 - Livraisons**
+**14h00-17h00 - Livraisons et Gestion**
 1. Marquer les colis livrés
-2. Consulter les paiements
+2. Consulter l'historique des paiements
 3. Gérer les encaissements
+4. Confirmer d'autres réservations si besoin
 
 **Tâches Principales** :
+- ✅ **Confirmation des réservations** après paiement
+- ✅ **Impression des tickets** de réservation
+- ✅ Gestion des paiements
 - ✅ Enregistrement des colis
 - ✅ Suivi des livraisons
-- ✅ Gestion des paiements
 - ✅ Caisse
+
+**⚠️ Workflow** : Reçoit client avec réservation brouillon → Encaisse → Confirme → Imprime ticket
 
 ---
 

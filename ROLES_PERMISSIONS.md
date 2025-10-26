@@ -6,8 +6,8 @@ Ce document décrit le système d'authentification et d'autorisation basé sur l
 
 L'application utilise un système de contrôle d'accès basé sur les rôles (RBAC - Role-Based Access Control) avec trois rôles principaux :
 
-- **Comptoir** : Agent de comptoir (gestion des réservations et passagers)
-- **Caissier** : Agent caissier (gestion des colis et paiements)
+- **Comptoir** : Agent de comptoir (création de réservations en brouillon et gestion des passagers)
+- **Caissier** : Agent caissier (confirmation de réservations après paiement, gestion des colis et paiements)
 - **Admin** : Administrateur (accès complet)
 
 ## Utilisateurs Mock Disponibles
@@ -27,14 +27,17 @@ Ces utilisateurs sont affichés directement sur la page de connexion pour facili
 | Page/Fonctionnalité | Comptoir | Caissier | Admin |
 |---------------------|----------|----------|-------|
 | **Dashboard** | ✅ | ✅ | ✅ |
-| **Réservations** | ✅ | ❌ | ✅ |
+| **Réservations** | ✅ (Création) | ✅ (Confirmation) | ✅ (Complet) |
 | **Passagers** | ✅ | ❌ | ✅ |
 | **Colis** | ❌ | ✅ | ✅ |
 | **Paiements** | ❌ | ✅ | ✅ |
 | **Rapports** | ❌ | ❌ | ✅ |
 | **Administration** | ❌ | ❌ | ✅ |
 
-**Note** : L'administrateur a un accès complet à toutes les fonctionnalités.
+**Notes** :
+- **Comptoir** : Crée les réservations avec statut "Brouillon" uniquement
+- **Caissier** : Consulte les réservations, enregistre les paiements, confirme les réservations (Brouillon → Confirmée), imprime les tickets
+- **Admin** : Accès complet à toutes les fonctionnalités
 
 ## Architecture Technique
 
@@ -143,7 +146,7 @@ Toutes les routes sont protégées sauf `/login` et `/inscription`.
 {
   path: 'reservations',
   component: ReservationsComponent,
-  canActivate: [authGuard, roleGuard(['comptoir', 'admin'])]
+  canActivate: [authGuard, roleGuard(['comptoir', 'caissier', 'admin'])]
 }
 ```
 
@@ -234,7 +237,7 @@ export class MyComponent {
 ### Scénario 2 : Rôle insuffisant
 
 1. Se connecter avec `caissier@qafilti.com` (mot de passe: `caissier123`)
-2. Tenter d'accéder à `/reservations`
+2. Tenter d'accéder à `/passagers`
 3. **Résultat attendu** : Redirection vers `/` avec message d'erreur dans la console
 
 ### Scénario 3 : Admin a accès à tout
