@@ -320,11 +320,50 @@ Les réservations sont créées en statut **Brouillon** par l'agent comptoir.
 - **Brouillon** : Réservation créée par le comptoir, en attente de paiement
 - **Confirmée** : Réservation payée et validée par le caissier
 
-#### 🖨️ Imprimer une Réservation
+#### 🖨️ Imprimer un Ticket de Réservation
 
-1. Cliquer sur l'icône **Imprimer**
-2. La fenêtre d'impression du navigateur s'ouvre
-3. Sélectionner votre imprimante ou enregistrer en PDF
+**Rôle** : Principalement Agent Caissier (après confirmation), Administrateur
+
+L'application génère automatiquement un **ticket bilingue** (Français/Arabe) professionnel pour chaque réservation.
+
+**Format du ticket** :
+- **Taille** : 80mm (format imprimante thermique standard)
+- **Layout** : Bilingue côte-à-côte
+  - Français à gauche (lecture normale)
+  - Arabe à droite (lecture RTL - de droite à gauche)
+- **Branding** : Logo QAFILTI en français et arabe
+
+**Informations affichées sur le ticket** :
+- Code de réservation
+- Statut (Brouillon/Confirmée → مسودة/مؤكدة)
+- Nom du passager (الاسم)
+- Téléphone (الهاتف)
+- Trajet : Origine → Destination (الرحلة)
+- Date et heure de départ (التاريخ)
+- Numéro de place (رقم المقعد)
+- Montant (المبلغ)
+
+**Comment imprimer** :
+1. Cliquer sur l'icône **Imprimer** (🖨️) sur la ligne de la réservation
+2. Le ticket bilingue s'affiche automatiquement
+3. La fenêtre d'impression du navigateur s'ouvre
+4. Sélectionner votre imprimante thermique ou enregistrer en PDF
+5. Cliquer sur **Imprimer**
+
+**Workflow typique (Caissier)** :
+1. Client présente sa réservation en brouillon
+2. Caissier encaisse le paiement
+3. Caissier confirme la réservation (clic sur ✅)
+4. Caissier **imprime le ticket bilingue** (clic sur 🖨️)
+5. Caissier remet le ticket imprimé au client
+
+**💡 Conseils d'impression** :
+- **Imprimante thermique** : Sélectionnez format 80mm dans les paramètres d'impression
+- **Imprimante classique** : Le ticket s'adaptera à la page A4
+- **PDF** : Utile pour archivage numérique
+- Le ticket est optimisé pour l'impression : seul le ticket s'imprimera, pas le reste de la page
+
+**Accessibilité** : Le format bilingue permet de servir les clients francophones et arabophones avec le même ticket professionnel
 
 #### 🔍 Rechercher une Réservation
 
@@ -837,14 +876,17 @@ Pour suggérer une amélioration :
 
 | Terme | Définition |
 |-------|------------|
-| **Brouillon** | Réservation non confirmée, provisoire |
-| **Confirmée** | Réservation validée et payée |
+| **Brouillon** | Réservation non confirmée, provisoire (مسودة) |
+| **Confirmée** | Réservation validée et payée (مؤكدة) |
+| **Ticket bilingue** | Document d'impression en français et arabe pour réservations |
 | **En transit** | Colis en cours d'acheminement |
 | **Livré** | Colis remis au destinataire |
 | **KPI** | Indicateur clé de performance |
 | **Acompte** | Paiement partiel initial |
 | **Solde** | Paiement final du reste dû |
 | **RBAC** | Contrôle d'accès basé sur les rôles |
+| **RTL** | Right-to-Left (lecture de droite à gauche pour l'arabe) |
+| **Format thermique 80mm** | Format standard pour imprimantes à ticket (caisses, transport) |
 
 ---
 
@@ -869,14 +911,23 @@ Pour suggérer une amélioration :
 
 ---
 
-**Documentation mise à jour le** : 25 Octobre 2024
-**Version de l'application** : 0.0.3
+**Documentation mise à jour le** : 26 Octobre 2025
+**Version de l'application** : 0.0.4
 
 ---
 
 ## Historique des Versions
 
-### Version 0.0.3 (Actuelle)
+### Version 0.0.4 (Actuelle)
+- ✅ Migration complète vers API Mockoon (29 endpoints)
+- ✅ Chargement automatique des données depuis l'API
+- ✅ **Ticket de réservation bilingue (Français/Arabe)**
+- ✅ Format thermique 80mm avec support RTL pour l'arabe
+- ✅ Workflow réservations corrigé (Comptoir → Caissier)
+- ✅ Caissier confirme après paiement et imprime ticket
+- ✅ Documentation complète mise à jour
+
+### Version 0.0.3
 - ✅ Système de rôles et permissions
 - ✅ Comptes de test disponibles
 - ✅ Amélioration UI page de connexion
