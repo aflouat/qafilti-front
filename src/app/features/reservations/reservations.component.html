@@ -60,3 +60,6 @@
     <button pButton label="Enregistrer" (click)="save()"></button>
   </ng-template>
 </p-dialog>
+
+<!-- Ticket d'impression (caché à l'écran, visible uniquement lors de l'impression) -->
+<app-ticket-print [reservation]="ticketToPrint"></app-ticket-print>

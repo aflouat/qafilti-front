@@ -1,0 +1,10 @@
+/* Hide ticket component on screen, only visible when printing */
+app-ticket-print {
+  display: none;
+}
+
+@media print {
+  app-ticket-print {
+    display: block;
+  }
+}
