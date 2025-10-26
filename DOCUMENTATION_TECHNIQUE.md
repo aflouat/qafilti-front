@@ -499,6 +499,138 @@ export class FeatureComponent {
 | AdminComponent | `/admin` | Administration système |
 | LoginComponent | `/login` | Authentification |
 | RegisterComponent | `/inscription` | Inscription |
+| TicketPrintComponent | (pas de route) | Impression ticket bilingue |
+
+### Composant Spécialisé : TicketPrintComponent
+
+**Fichier** : `src/app/features/reservations/ticket-print.component.ts`
+
+**Type** : Composant standalone utilitaire
+
+**Responsabilité** : Afficher et imprimer un ticket de réservation bilingue (Français/Arabe)
+
+**Utilisation** : Intégré dans ReservationsComponent pour l'impression
+
+**Caractéristiques** :
+
+- **Format** : 80mm (papier imprimante thermique)
+- **Layout bilingue** :
+  - Français à gauche (LTR)
+  - Arabe à droite (RTL avec `direction: rtl`)
+- **Branding** : Logo QAFILTI en français et arabe
+- **Champs affichés** :
+  - Code réservation
+  - Statut (Brouillon/Confirmée)
+  - Nom et téléphone du passager
+  - Trajet (origine → destination)
+  - Date et heure de départ
+  - Numéro de place
+  - Montant (EUR)
+
+**Interface d'entrée** :
+```typescript
+@Input() reservation?: Reservation;
+```
+
+**Méthodes** :
+```typescript
+// Conversion du statut en français
+getStatus(): string {
+  if (!this.reservation?.statut) return '-';
+  const statusMap: { [key: string]: string } = {
+    'Brouillon': 'Brouillon',
+    'Confirmée': 'Confirmée',
+    'CONFIRMED': 'Confirmée',
+    'PENDING': 'En attente',
+    'CREATED': 'Créée'
+  };
+  return statusMap[this.reservation.statut] || this.reservation.statut;
+}
+
+// Conversion du statut en arabe
+getStatusAr(): string {
+  if (!this.reservation?.statut) return '-';
+  const statusMap: { [key: string]: string } = {
+    'Brouillon': 'مسودة',
+    'Confirmée': 'مؤكدة',
+    'CONFIRMED': 'مؤكدة',
+    'PENDING': 'قيد الانتظار',
+    'CREATED': 'تم الإنشاء'
+  };
+  return statusMap[this.reservation.statut] || this.reservation.statut;
+}
+```
+
+**Styles d'impression** :
+```css
+@media print {
+  /* Masquer tout le contenu de la page */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Afficher uniquement le ticket */
+  .ticket-container,
+  .ticket-container * {
+    visibility: visible;
+  }
+
+  /* Configuration page */
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+}
+```
+
+**Intégration dans ReservationsComponent** :
+```typescript
+// reservations.component.ts
+export class ReservationsComponent {
+  ticketToPrint?: Reservation;  // Réservation à imprimer
+
+  print(r: Reservation) {
+    // Charger la réservation dans le ticket
+    this.ticketToPrint = r;
+
+    // Attendre le rendu puis imprimer
+    setTimeout(() => {
+      window.print();
+      // Nettoyer après impression
+      setTimeout(() => this.ticketToPrint = undefined, 100);
+    }, 100);
+  }
+}
+```
+
+```html
+<!-- reservations.component.html -->
+<!-- Ticket caché à l'écran, visible uniquement lors de l'impression -->
+<app-ticket-print [reservation]="ticketToPrint"></app-ticket-print>
+```
+
+```css
+/* reservations.component.css */
+app-ticket-print {
+  display: none;  /* Caché à l'écran */
+}
+
+@media print {
+  app-ticket-print {
+    display: block;  /* Visible lors de l'impression */
+  }
+}
+```
+
+**Workflow d'impression** :
+1. Utilisateur clique sur bouton "Imprimer" (icône `pi-print`)
+2. ReservationsComponent charge la réservation dans `ticketToPrint`
+3. TicketPrintComponent s'affiche (invisible à l'écran)
+4. `window.print()` ouvre la boîte de dialogue d'impression
+5. Seul le ticket est visible dans l'aperçu/impression
+6. Après impression, `ticketToPrint` est réinitialisé à `undefined`
+
+**Rôle utilisateur** : Principalement utilisé par le **Caissier** après confirmation de réservation et paiement
 
 ---
 
@@ -1063,7 +1195,15 @@ Pour toute question technique, consulter :
 
 ## Changelog Technique
 
-### v0.0.3 (Actuel)
+### v0.0.4 (Actuel)
+- ✅ Migration complète vers Mockoon API (29 endpoints)
+- ✅ Tous les services utilisent HttpClient pour charger les données
+- ✅ Correction workflow réservations (Comptoir → Caissier)
+- ✅ **Ticket d'impression bilingue (FR/AR)** pour réservations
+- ✅ Format thermique 80mm avec layout RTL pour arabe
+- ✅ Documentation technique et fonctionnelle mise à jour
+
+### v0.0.3
 - ✅ Système RBAC complet (3 rôles)
 - ✅ Guards (auth + role)
 - ✅ Persistance session localStorage
@@ -1083,6 +1223,6 @@ Pour toute question technique, consulter :
 
 ---
 
-**Documentation mise à jour le** : 25 Octobre 2024
-**Version de l'application** : 0.0.3
+**Documentation mise à jour le** : 26 Octobre 2025
+**Version de l'application** : 0.0.4
 **Angular** : 20.2.0
