@@ -34,25 +34,39 @@
   <div class="flex flex-column gap-3">
     <div>
       <label>Passager</label>
-      <input pInputText [(ngModel)]="form.passager" />
+      <p-select
+        [options]="passagerOptions()"
+        optionLabel="label"
+        optionValue="value"
+        [(ngModel)]="form.passager"
+        placeholder="Sélectionner un passager"
+        [style]="{width:'100%'}">
+      </p-select>
     </div>
     <div>
-      <label>Trajet</label>
-      <input pInputText [(ngModel)]="form.trajet" placeholder="Casa → Rabat" />
+      <label>Trip / Voyage</label>
+      <p-select
+        [options]="tripOptions()"
+        optionLabel="label"
+        optionValue="value"
+        [(ngModel)]="form.trajet"
+        placeholder="Sélectionner un trip"
+        [style]="{width:'100%'}">
+      </p-select>
     </div>
     <div class="grid">
       <div class="col-6">
         <label>Date</label>
-        <p-datepicker [(ngModel)]="form.date" dateFormat="dd/mm/yy"></p-datepicker>
+        <p-datepicker [(ngModel)]="form.date" dateFormat="dd/mm/yy" [style]="{width:'100%'}"></p-datepicker>
       </div>
       <div class="col-6">
         <label>Prix</label>
-        <p-inputNumber [(ngModel)]="form.prix" mode="currency" currency="EUR"></p-inputNumber>
+        <p-inputNumber [(ngModel)]="form.prix" mode="currency" currency="EUR" [style]="{width:'100%'}"></p-inputNumber>
       </div>
     </div>
     <div>
       <label>Statut</label>
-      <p-select [options]="statuts" optionLabel="label" optionValue="value" [(ngModel)]="form.statut"></p-select>
+      <p-select [options]="statuts" optionLabel="label" optionValue="value" [(ngModel)]="form.statut" [style]="{width:'100%'}"></p-select>
     </div>
   </div>
   <ng-template pTemplate="footer">

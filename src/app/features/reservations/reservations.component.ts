@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { DatePipe, CurrencyPipe, CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
@@ -11,6 +11,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
 import { FormsModule } from '@angular/forms';
 import { ReservationsService, Reservation } from '../../core/services/reservations.service';
+import { TripsService } from '../../core/services/trips.service';
+import { PassagersService } from '../../core/services/passagers.service';
 import { TicketPrintComponent } from './ticket-print.component';
 
 @Component({
@@ -22,11 +24,28 @@ import { TicketPrintComponent } from './ticket-print.component';
 })
 export class ReservationsComponent {
   private readonly reservationsService = inject(ReservationsService);
+  private readonly tripsService = inject(TripsService);
+  private readonly passagersService = inject(PassagersService);
 
   // Use service signals directly
   readonly reservations = this.reservationsService.reservations;
 
   statuts = [{ label:'Brouillon', value:'Brouillon' },{ label:'Confirmée', value:'Confirmée' }];
+
+  // Dropdown options for trips and passengers
+  readonly tripOptions = computed(() =>
+    this.tripsService.trips().map(trip => ({
+      label: `${trip.departureCityName || trip.departureCityId} → ${trip.arrivalCityName || trip.arrivalCityId} (${trip.date})`,
+      value: trip.tripId
+    }))
+  );
+
+  readonly passagerOptions = computed(() =>
+    this.passagersService.passagers().map(p => ({
+      label: p.nom,
+      value: p.id?.toString()
+    }))
+  );
 
   dialog = false;
   currentId: number | string | null | undefined = null;

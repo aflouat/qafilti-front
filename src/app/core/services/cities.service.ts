@@ -1,0 +1,83 @@
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environements/environment';
+
+export interface City {
+  id?: string;
+  nameFr?: string;
+  nameAr?: string;
+}
+
+@Injectable({ providedIn: 'root' })
+export class CitiesService {
+  private readonly http = inject(HttpClient);
+
+  // Private state with signals
+  private readonly _cities = signal<City[]>([]);
+
+  // Public readonly signals
+  readonly cities = this._cities.asReadonly();
+  readonly citiesCount = computed(() => this._cities().length);
+
+  constructor() {
+    this.loadCities();
+  }
+
+  // Load data from API
+  loadCities(): void {
+    this.http.get<{ cities: City[] }>(`${environment.apiUrl}/cities`)
+      .subscribe({
+        next: (response) => {
+          this._cities.set(response.cities || []);
+        },
+        error: (error) => {
+          console.error('Error loading cities:', error);
+          this._cities.set([]);
+        }
+      });
+  }
+
+  // CRUD Methods
+  getAll(): City[] {
+    return this._cities();
+  }
+
+  getById(id: string): City | undefined {
+    return this._cities().find(c => c.id === id);
+  }
+
+  create(city: City): City {
+    const newCity: City = {
+      id: this.generateId(),
+      ...city
+    };
+    this._cities.update(cities => [newCity, ...cities]);
+    return newCity;
+  }
+
+  update(id: string, updates: Partial<City>): boolean {
+    const index = this._cities().findIndex(c => c.id === id);
+    if (index === -1) return false;
+
+    this._cities.update(cities => {
+      const updated = [...cities];
+      updated[index] = { ...updated[index], ...updates };
+      return updated;
+    });
+    return true;
+  }
+
+  delete(id: string): boolean {
+    const initialLength = this._cities().length;
+    this._cities.update(cities => cities.filter(c => c.id !== id));
+    return this._cities().length < initialLength;
+  }
+
+  private generateId(): string {
+    const ids = this._cities()
+      .map(c => parseInt(c.id || '0'))
+      .filter(n => !isNaN(n));
+    const maxId = ids.length ? Math.max(...ids) : 0;
+    return String(maxId + 1);
+  }
+}
