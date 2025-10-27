@@ -17,7 +17,7 @@
       "responses": [
         {
           "uuid": "response-cities-get-200",
-          "body": "{{> (dataRaw 'cities')}}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -170,7 +170,7 @@
       "responses": [
         {
           "uuid": "response-bus-get-200",
-          "body": "{{> (dataRaw 'buses')}}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -292,7 +292,7 @@
       "responses": [
         {
           "uuid": "response-trips-get-200",
-          "body": "{{> (dataRaw 'trips')}}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -414,7 +414,7 @@
       "responses": [
         {
           "uuid": "response-reservation-get-200",
-          "body": "{{> (dataRaw 'reservations')}}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -536,7 +536,7 @@
       "responses": [
         {
           "uuid": "response-passagers-get-200",
-          "body": "{{> (dataRaw 'passagers')}}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -658,7 +658,7 @@
       "responses": [
         {
           "uuid": "response-colis-get-200",
-          "body": "{{> (dataRaw 'colis')}}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -780,7 +780,7 @@
       "responses": [
         {
           "uuid": "response-vehicules-get-200",
-          "body": "{{> (dataRaw 'vehicules')}}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -902,7 +902,7 @@
       "responses": [
         {
           "uuid": "response-tarifs-get-200",
-          "body": "{{> (dataRaw 'tarifs')}}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -1024,7 +1024,7 @@
       "responses": [
         {
           "uuid": "response-trajets-get-200",
-          "body": "{{> (dataRaw 'trajets')}}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -1330,7 +1330,7 @@
     {
       "uuid": "bucket-cities",
       "name": "cities",
-      "value": "{\"cities\":[{\"id\":\"1\",\"nameFr\":\"Nouakchott\",\"nameAr\":\"نواكشوط\"},{\"id\":\"2\",\"nameFr\":\"Nouadhibou\",\"nameAr\":\"نواذيبو\"},{\"id\":\"3\",\"nameFr\":\"Rosso\",\"nameAr\":\"روصو\"},{\"id\":\"4\",\"nameFr\":\"Kaédi\",\"nameAr\":\"كيهيدي\"},{\"id\":\"5\",\"nameFr\":\"Zouérat\",\"nameAr\":\"ازويرات\"},{\"id\":\"6\",\"nameFr\":\"Atar\",\"nameAr\":\"أطار\"},{\"id\":\"7\",\"nameFr\":\"Sélibaby\",\"nameAr\":\"سيلبابي\"},{\"id\":\"8\",\"nameFr\":\"Kiffa\",\"nameAr\":\"كيفة\"},{\"id\":\"9\",\"nameFr\":\"Néma\",\"nameAr\":\"النعمة\"},{\"id\":\"10\",\"nameFr\":\"Tidjikja\",\"nameAr\":\"تجكجة\"},{\"id\":\"11\",\"nameFr\":\"Aleg\",\"nameAr\":\"آلاك\"},{\"id\":\"12\",\"nameFr\":\"Boutilimit\",\"nameAr\":\"بوتلميت\"},{\"id\":\"13\",\"nameFr\":\"Akjoujt\",\"nameAr\":\"أكجوجت\"}]}"
+      "value": "[{\"id\":\"1\",\"nameFr\":\"Nouakchott\",\"nameAr\":\"نواكشوط\"},{\"id\":\"2\",\"nameFr\":\"Nouadhibou\",\"nameAr\":\"نواذيبو\"},{\"id\":\"3\",\"nameFr\":\"Rosso\",\"nameAr\":\"روصو\"},{\"id\":\"4\",\"nameFr\":\"Kaédi\",\"nameAr\":\"كيهيدي\"},{\"id\":\"5\",\"nameFr\":\"Zouérat\",\"nameAr\":\"ازويرات\"},{\"id\":\"6\",\"nameFr\":\"Atar\",\"nameAr\":\"أطار\"},{\"id\":\"7\",\"nameFr\":\"Sélibaby\",\"nameAr\":\"سيلبابي\"},{\"id\":\"8\",\"nameFr\":\"Kiffa\",\"nameAr\":\"كيفة\"},{\"id\":\"9\",\"nameFr\":\"Néma\",\"nameAr\":\"النعمة\"},{\"id\":\"10\",\"nameFr\":\"Tidjikja\",\"nameAr\":\"تجكجة\"},{\"id\":\"11\",\"nameFr\":\"Aleg\",\"nameAr\":\"آلاك\"},{\"id\":\"12\",\"nameFr\":\"Boutilimit\",\"nameAr\":\"بوتلميت\"},{\"id\":\"13\",\"nameFr\":\"Akjoujt\",\"nameAr\":\"أكجوجت\"}]"
     },
     {
       "uuid": "bucket-buses",
@@ -1340,12 +1340,12 @@
     {
       "uuid": "bucket-trips",
       "name": "trips",
-      "value": "{\"trips\":[{\"tripId\":\"TR001\",\"date\":\"2025-08-31\",\"departureCityId\":\"1\",\"departureCityName\":\"Nouakchott\",\"departureCityNameAr\":\"نواكشوط\",\"arrivalCityId\":\"2\",\"arrivalCityName\":\"Nouadhibou\",\"arrivalCityNameAr\":\"نواذيبو\",\"vehicleId\":\"B006\",\"departureTime\":\"08:00\",\"arrivalTime\":\"14:30\"},{\"tripId\":\"TR002\",\"date\":\"2025-09-01\",\"departureCityId\":\"6\",\"departureCityName\":\"Atar\",\"departureCityNameAr\":\"أطار\",\"arrivalCityId\":\"5\",\"arrivalCityName\":\"Zouérat\",\"arrivalCityNameAr\":\"ازويرات\",\"vehicleId\":\"B008\",\"departureTime\":\"10:00\",\"arrivalTime\":\"11:30\"},{\"tripId\":\"TR003\",\"date\":\"2025-09-02\",\"departureCityId\":\"4\",\"departureCityName\":\"Kaédi\",\"departureCityNameAr\":\"كيهيدي\",\"arrivalCityId\":\"7\",\"arrivalCityName\":\"Sélibaby\",\"arrivalCityNameAr\":\"سيلبابي\",\"vehicleId\":\"B007\",\"departureTime\":\"15:00\",\"arrivalTime\":\"17:00\"}]}"
+      "value": "[{\"tripId\":\"TR001\",\"date\":\"2025-08-31\",\"departureCityId\":\"1\",\"departureCityName\":\"Nouakchott\",\"departureCityNameAr\":\"نواكشوط\",\"arrivalCityId\":\"2\",\"arrivalCityName\":\"Nouadhibou\",\"arrivalCityNameAr\":\"نواذيبو\",\"vehicleId\":\"B006\",\"departureTime\":\"08:00\",\"arrivalTime\":\"14:30\"},{\"tripId\":\"TR002\",\"date\":\"2025-09-01\",\"departureCityId\":\"6\",\"departureCityName\":\"Atar\",\"departureCityNameAr\":\"أطار\",\"arrivalCityId\":\"5\",\"arrivalCityName\":\"Zouérat\",\"arrivalCityNameAr\":\"ازويرات\",\"vehicleId\":\"B008\",\"departureTime\":\"10:00\",\"arrivalTime\":\"11:30\"},{\"tripId\":\"TR003\",\"date\":\"2025-09-02\",\"departureCityId\":\"4\",\"departureCityName\":\"Kaédi\",\"departureCityNameAr\":\"كيهيدي\",\"arrivalCityId\":\"7\",\"arrivalCityName\":\"Sélibaby\",\"arrivalCityNameAr\":\"سيلبابي\",\"vehicleId\":\"B007\",\"departureTime\":\"15:00\",\"arrivalTime\":\"17:00\"}]"
     },
     {
       "uuid": "bucket-reservations",
       "name": "reservations",
-      "value": "{\"reservations\":[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"passengerPhone\":\"222-44-55-66-77\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"passengerPhone\":\"222-88-77-66-55\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"passengerPhone\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]}"
+      "value": "[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"passengerPhone\":\"222-44-55-66-77\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"passengerPhone\":\"222-88-77-66-55\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"passengerPhone\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]"
     },
     {
       "uuid": "bucket-passagers",

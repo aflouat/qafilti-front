@@ -49,11 +49,11 @@ export class ReservationsService {
 
   // Load data from API
   loadReservations(): void {
-    this.http.get<{ reservations: Reservation[] }>(`${environment.apiUrl}/reservation`)
+    this.http.get<Reservation[]>(`${environment.apiUrl}/reservation`)
       .subscribe({
-        next: (response) => {
+        next: (reservations) => {
           // Map Mockoon data to application format
-          const mappedReservations = (response.reservations || []).map(r => ({
+          const mappedReservations = (reservations || []).map(r => ({
             ...r,
             // Map Mockoon fields to app fields
             code: r.code || r.reservationId || '',

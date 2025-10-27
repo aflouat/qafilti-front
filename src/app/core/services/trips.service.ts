@@ -37,10 +37,10 @@ export class TripsService {
 
   // Load data from API
   loadTrips(): void {
-    this.http.get<{ trips: Trip[] }>(`${environment.apiUrl}/trips`)
+    this.http.get<Trip[]>(`${environment.apiUrl}/trips`)
       .subscribe({
-        next: (response) => {
-          this._trips.set(response.trips || []);
+        next: (trips) => {
+          this._trips.set(trips || []);
         },
         error: (error) => {
           console.error('Error loading trips:', error);
