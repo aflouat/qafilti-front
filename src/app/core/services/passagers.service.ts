@@ -21,6 +21,13 @@ export class PassagersService {
   readonly passagersCount = computed(() => this._passagers().length);
 
   constructor() {
+    console.log('[PassagersService] CONSTRUCTOR called');
+    // Add test data immediately
+    this._passagers.set([
+      { id: 999, nom: 'Test Passager', telephone: '0600000000', document: 'TEST123' }
+    ]);
+    console.log('[PassagersService] Test data set, count:', this._passagers().length);
+
     this.loadPassagers();
   }
 
