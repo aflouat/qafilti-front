@@ -52,7 +52,21 @@ export class ReservationsService {
     this.http.get<{ reservations: Reservation[] }>(`${environment.apiUrl}/reservation`)
       .subscribe({
         next: (response) => {
-          this._reservations.set(response.reservations || []);
+          // Map Mockoon data to application format
+          const mappedReservations = (response.reservations || []).map(r => ({
+            ...r,
+            // Map Mockoon fields to app fields
+            code: r.code || r.reservationId || '',
+            passager: r.passager || r.passengerName || '',
+            trajet: r.trajet || r.tripId || 'Trajet à définir',
+            prix: r.prix ?? r.netAmount ?? 0,
+            statut: this.mapStatus(r.status || r.statut),
+            // Keep original fields for compatibility
+            reservationId: r.reservationId,
+            passengerName: r.passengerName,
+            netAmount: r.netAmount
+          }));
+          this._reservations.set(mappedReservations);
         },
         error: (error) => {
           console.error('Error loading reservations:', error);
@@ -60,6 +74,19 @@ export class ReservationsService {
           this._reservations.set([]);
         }
       });
+  }
+
+  // Map English status to French
+  private mapStatus(status?: string): 'Brouillon' | 'Confirmée' {
+    if (!status) return 'Brouillon';
+    const statusMap: Record<string, 'Brouillon' | 'Confirmée'> = {
+      'CONFIRMED': 'Confirmée',
+      'PENDING': 'Brouillon',
+      'CREATED': 'Brouillon',
+      'Confirmée': 'Confirmée',
+      'Brouillon': 'Brouillon'
+    };
+    return statusMap[status] || 'Brouillon';
   }
 
   // CRUD Methods
