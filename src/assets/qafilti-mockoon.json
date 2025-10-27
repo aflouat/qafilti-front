@@ -17,16 +17,16 @@
       "responses": [
         {
           "uuid": "response-cities-get-200",
-          "body": "{\n  \"cities\": [\n    {\"id\": \"1\", \"nameFr\": \"Nouakchott\", \"nameAr\": \"نواكشوط\"},\n    {\"id\": \"2\", \"nameFr\": \"Nouadhibou\", \"nameAr\": \"نواذيبو\"},\n    {\"id\": \"3\", \"nameFr\": \"Rosso\", \"nameAr\": \"روصو\"},\n    {\"id\": \"4\", \"nameFr\": \"Kaédi\", \"nameAr\": \"كيهيدي\"},\n    {\"id\": \"5\", \"nameFr\": \"Zouérat\", \"nameAr\": \"ازويرات\"},\n    {\"id\": \"6\", \"nameFr\": \"Atar\", \"nameAr\": \"أطار\"},\n    {\"id\": \"7\", \"nameFr\": \"Sélibaby\", \"nameAr\": \"سيلبابي\"},\n    {\"id\": \"8\", \"nameFr\": \"Kiffa\", \"nameAr\": \"كيفة\"},\n    {\"id\": \"9\", \"nameFr\": \"Néma\", \"nameAr\": \"النعمة\"},\n    {\"id\": \"10\", \"nameFr\": \"Tidjikja\", \"nameAr\": \"تجكجة\"},\n    {\"id\": \"11\", \"nameFr\": \"Aleg\", \"nameAr\": \"آلاك\"},\n    {\"id\": \"12\", \"nameFr\": \"Boutilimit\", \"nameAr\": \"بوتلميت\"},\n    {\"id\": \"13\", \"nameFr\": \"Akjoujt\", \"nameAr\": \"أكجوجت\"}\n  ]\n}",
+          "body": "{{> (dataRaw 'cities')}}",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-cities",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -37,7 +37,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-cities-post",
@@ -48,16 +48,16 @@
       "responses": [
         {
           "uuid": "response-cities-post-201",
-          "body": "{\n  \"id\": \"{{faker 'random.number'}}\",\n  \"nameFr\": \"{{body 'nameFr'}}\",\n  \"nameAr\": \"{{body 'nameAr'}}\"\n}",
+          "body": "",
           "latency": 0,
           "statusCode": 201,
           "label": "Created",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-cities",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -68,7 +68,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-cities-id-get",
@@ -79,16 +79,16 @@
       "responses": [
         {
           "uuid": "response-cities-id-get-200",
-          "body": "{\n  \"id\": \"{{urlParam 'id'}}\",\n  \"nameFr\": \"Nouakchott\",\n  \"nameAr\": \"نواكشوط\"\n}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-cities",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -99,7 +99,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-cities-id-put",
@@ -110,16 +110,16 @@
       "responses": [
         {
           "uuid": "response-cities-id-put-200",
-          "body": "{\n  \"id\": \"{{urlParam 'id'}}\",\n  \"nameFr\": \"{{body 'nameFr'}}\",\n  \"nameAr\": \"{{body 'nameAr'}}\"\n}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Updated",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-cities",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -130,7 +130,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-cities-id-delete",
@@ -146,9 +146,9 @@
           "statusCode": 204,
           "label": "Deleted",
           "headers": [],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-cities",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -159,38 +159,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
-    },
-    {
-      "uuid": "route-cities-search",
-      "type": "http",
-      "documentation": "Search for cities by name",
-      "method": "get",
-      "endpoint": "cities/search",
-      "responses": [
-        {
-          "uuid": "response-cities-search-200",
-          "body": "[\n  {\"id\": \"1\", \"nameFr\": \"Nouakchott\", \"nameAr\": \"نواكشوط\"}\n]",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "Success",
-          "headers": [
-            {"key": "Content-Type", "value": "application/json"}
-          ],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-bus-get",
@@ -201,16 +170,16 @@
       "responses": [
         {
           "uuid": "response-bus-get-200",
-          "body": "[\n  {\"id\": \"B006\", \"license_plate\": \"M33721\", \"status\": \"active\", \"capacity\": 15},\n  {\"id\": \"B007\", \"license_plate\": \"M60123\", \"status\": \"maintenance\", \"capacity\": 12},\n  {\"id\": \"B008\", \"license_plate\": \"M99876\", \"status\": \"active\", \"capacity\": 18}\n]",
+          "body": "{{> (dataRaw 'buses')}}",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-buses",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -221,7 +190,98 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-bus-post",
+      "type": "http",
+      "documentation": "Create a new bus",
+      "method": "post",
+      "endpoint": "bus",
+      "responses": [
+        {
+          "uuid": "response-bus-post-201",
+          "body": "",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "Created",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-buses",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-bus-id-put",
+      "type": "http",
+      "documentation": "Update a bus",
+      "method": "put",
+      "endpoint": "bus/:id",
+      "responses": [
+        {
+          "uuid": "response-bus-id-put-200",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Updated",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-buses",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-bus-id-delete",
+      "type": "http",
+      "documentation": "Delete a bus",
+      "method": "delete",
+      "endpoint": "bus/:id",
+      "responses": [
+        {
+          "uuid": "response-bus-id-delete-204",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "Deleted",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-buses",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-trips-get",
@@ -232,27 +292,118 @@
       "responses": [
         {
           "uuid": "response-trips-get-200",
-          "body": "{\n  \"trips\": [\n    {\n      \"tripId\": \"TR001\",\n      \"date\": \"2025-08-31\",\n      \"departureCityId\": \"1\",\n      \"departureCityName\": \"Nouakchott\",\n      \"departureCityNameAr\": \"نواكشوط\",\n      \"arrivalCityId\": \"2\",\n      \"arrivalCityName\": \"Nouadhibou\",\n      \"arrivalCityNameAr\": \"نواذيبو\",\n      \"vehicleId\": \"B006\",\n      \"departureTime\": \"08:00\",\n      \"arrivalTime\": \"14:30\"\n    },\n    {\n      \"tripId\": \"TR002\",\n      \"date\": \"2025-09-01\",\n      \"departureCityId\": \"6\",\n      \"departureCityName\": \"Atar\",\n      \"departureCityNameAr\": \"أطار\",\n      \"arrivalCityId\": \"5\",\n      \"arrivalCityName\": \"Zouérat\",\n      \"arrivalCityNameAr\": \"ازويرات\",\n      \"vehicleId\": \"B008\",\n      \"departureTime\": \"10:00\",\n      \"arrivalTime\": \"11:30\"\n    },\n    {\n      \"tripId\": \"TR003\",\n      \"date\": \"2025-09-02\",\n      \"departureCityId\": \"4\",\n      \"departureCityName\": \"Kaédi\",\n      \"departureCityNameAr\": \"كيهيدي\",\n      \"arrivalCityId\": \"7\",\n      \"arrivalCityName\": \"Sélibaby\",\n      \"arrivalCityNameAr\": \"سيلبابي\",\n      \"vehicleId\": \"B007\",\n      \"departureTime\": \"15:00\",\n      \"arrivalTime\": \"17:00\"\n    }\n  ]\n}",
+          "body": "{{> (dataRaw 'trips')}}",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-trips",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true,
-          "crudKey": "id",
+          "crudKey": "tripId",
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-trips-post",
+      "type": "http",
+      "documentation": "Create a new trip",
+      "method": "post",
+      "endpoint": "trips",
+      "responses": [
+        {
+          "uuid": "response-trips-post-201",
+          "body": "",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "Created",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-trips",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "tripId",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-trips-id-put",
+      "type": "http",
+      "documentation": "Update a trip",
+      "method": "put",
+      "endpoint": "trips/:tripId",
+      "responses": [
+        {
+          "uuid": "response-trips-id-put-200",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Updated",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-trips",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "tripId",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-trips-id-delete",
+      "type": "http",
+      "documentation": "Delete a trip",
+      "method": "delete",
+      "endpoint": "trips/:tripId",
+      "responses": [
+        {
+          "uuid": "response-trips-id-delete-204",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "Deleted",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-trips",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "tripId",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-reservation-get",
@@ -263,27 +414,118 @@
       "responses": [
         {
           "uuid": "response-reservation-get-200",
-          "body": "{\n  \"reservations\": [\n    {\n      \"reservationId\": \"RES001\",\n      \"tripId\": \"TR001\",\n      \"netAmount\": 1500,\n      \"seatNumber\": \"12A\",\n      \"passengerName\": \"Aliou Diallo\",\n      \"passengerPhone\": \"222-44-55-66-77\",\n      \"status\": \"CONFIRMED\",\n      \"createdAt\": \"2025-08-29T10:00:00Z\"\n    },\n    {\n      \"reservationId\": \"RES002\",\n      \"tripId\": \"TR002\",\n      \"netAmount\": 1000,\n      \"seatNumber\": \"5C\",\n      \"passengerName\": \"Fatou Fall\",\n      \"passengerPhone\": \"222-88-77-66-55\",\n      \"status\": \"PENDING\",\n      \"createdAt\": \"2025-08-30T12:30:00Z\"\n    },\n    {\n      \"reservationId\": \"RES003\",\n      \"tripId\": \"TR001\",\n      \"netAmount\": 1500,\n      \"seatNumber\": \"15B\",\n      \"passengerName\": \"Ahmed Ould Mohamed\",\n      \"passengerPhone\": \"222-11-22-33-44\",\n      \"status\": \"CREATED\",\n      \"createdAt\": \"2025-08-31T14:00:00Z\"\n    }\n  ]\n}",
+          "body": "{{> (dataRaw 'reservations')}}",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-reservations",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true,
-          "crudKey": "id",
+          "crudKey": "reservationId",
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-reservation-post",
+      "type": "http",
+      "documentation": "Create a new reservation",
+      "method": "post",
+      "endpoint": "reservation",
+      "responses": [
+        {
+          "uuid": "response-reservation-post-201",
+          "body": "",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "Created",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-reservations",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "reservationId",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-reservation-id-put",
+      "type": "http",
+      "documentation": "Update a reservation",
+      "method": "put",
+      "endpoint": "reservation/:reservationId",
+      "responses": [
+        {
+          "uuid": "response-reservation-id-put-200",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Updated",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-reservations",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "reservationId",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-reservation-id-delete",
+      "type": "http",
+      "documentation": "Delete a reservation",
+      "method": "delete",
+      "endpoint": "reservation/:reservationId",
+      "responses": [
+        {
+          "uuid": "response-reservation-id-delete-204",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "Deleted",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-reservations",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "reservationId",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-passagers-get",
@@ -294,16 +536,16 @@
       "responses": [
         {
           "uuid": "response-passagers-get-200",
-          "body": "[\n  {\"id\": 1, \"nom\": \"Jean Dupont\", \"telephone\": \"0601020304\", \"document\": \"CIN123456\"},\n  {\"id\": 2, \"nom\": \"Marie Curie\", \"telephone\": \"0605060708\", \"document\": \"CIN654321\"},\n  {\"id\": 3, \"nom\": \"Ali Ben Ali\", \"telephone\": \"0611121314\", \"document\": \"CIN112233\"}\n]",
+          "body": "{{> (dataRaw 'passagers')}}",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-passagers",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -314,7 +556,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-passagers-post",
@@ -325,16 +567,16 @@
       "responses": [
         {
           "uuid": "response-passagers-post-201",
-          "body": "{\n  \"id\": {{faker 'random.number'}},\n  \"nom\": \"{{body 'nom'}}\",\n  \"telephone\": \"{{body 'telephone'}}\",\n  \"document\": \"{{body 'document'}}\"\n}",
+          "body": "",
           "latency": 0,
           "statusCode": 201,
           "label": "Created",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-passagers",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -345,7 +587,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-passagers-id-put",
@@ -356,16 +598,16 @@
       "responses": [
         {
           "uuid": "response-passagers-id-put-200",
-          "body": "{\n  \"id\": {{urlParam 'id'}},\n  \"nom\": \"{{body 'nom'}}\",\n  \"telephone\": \"{{body 'telephone'}}\",\n  \"document\": \"{{body 'document'}}\"\n}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Updated",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-passagers",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -376,7 +618,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-passagers-id-delete",
@@ -392,9 +634,9 @@
           "statusCode": 204,
           "label": "Deleted",
           "headers": [],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-passagers",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -405,7 +647,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-colis-get",
@@ -416,16 +658,16 @@
       "responses": [
         {
           "uuid": "response-colis-get-200",
-          "body": "[\n  {\"id\": 1, \"code\": \"CLS-0001\", \"expediteur\": \"Nadia\", \"destinataire\": \"Karim\", \"poids\": 3.2, \"tarif\": 8, \"statut\": \"En transit\"},\n  {\"id\": 2, \"code\": \"CLS-0002\", \"expediteur\": \"Fatima\", \"destinataire\": \"Hassan\", \"poids\": 5.0, \"tarif\": 12, \"statut\": \"Livré\"}\n]",
+          "body": "{{> (dataRaw 'colis')}}",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-colis",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -436,7 +678,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-colis-post",
@@ -447,16 +689,16 @@
       "responses": [
         {
           "uuid": "response-colis-post-201",
-          "body": "{\n  \"id\": {{faker 'random.number'}},\n  \"code\": \"CLS-{{faker 'random.number'}}\",\n  \"expediteur\": \"{{body 'expediteur'}}\",\n  \"destinataire\": \"{{body 'destinataire'}}\",\n  \"poids\": {{body 'poids'}},\n  \"tarif\": {{body 'tarif'}},\n  \"statut\": \"{{body 'statut'}}\"\n}",
+          "body": "",
           "latency": 0,
           "statusCode": 201,
           "label": "Created",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-colis",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -467,7 +709,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-colis-id-put",
@@ -478,16 +720,16 @@
       "responses": [
         {
           "uuid": "response-colis-id-put-200",
-          "body": "{\n  \"id\": {{urlParam 'id'}},\n  \"code\": \"{{body 'code'}}\",\n  \"expediteur\": \"{{body 'expediteur'}}\",\n  \"destinataire\": \"{{body 'destinataire'}}\",\n  \"poids\": {{body 'poids'}},\n  \"tarif\": {{body 'tarif'}},\n  \"statut\": \"{{body 'statut'}}\"\n}",
+          "body": "",
           "latency": 0,
           "statusCode": 200,
           "label": "Updated",
           "headers": [
             {"key": "Content-Type", "value": "application/json"}
           ],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-colis",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -498,7 +740,7 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-colis-id-delete",
@@ -514,9 +756,9 @@
           "statusCode": 204,
           "label": "Deleted",
           "headers": [],
-          "bodyType": "INLINE",
+          "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "",
+          "databucketID": "bucket-colis",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -527,7 +769,373 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-vehicules-get",
+      "type": "http",
+      "documentation": "Get all vehicles",
+      "method": "get",
+      "endpoint": "vehicules",
+      "responses": [
+        {
+          "uuid": "response-vehicules-get-200",
+          "body": "{{> (dataRaw 'vehicules')}}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Success",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-vehicules",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-vehicules-post",
+      "type": "http",
+      "documentation": "Create a new vehicle",
+      "method": "post",
+      "endpoint": "vehicules",
+      "responses": [
+        {
+          "uuid": "response-vehicules-post-201",
+          "body": "",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "Created",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-vehicules",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-vehicules-id-put",
+      "type": "http",
+      "documentation": "Update a vehicle",
+      "method": "put",
+      "endpoint": "vehicules/:id",
+      "responses": [
+        {
+          "uuid": "response-vehicules-id-put-200",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Updated",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-vehicules",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-vehicules-id-delete",
+      "type": "http",
+      "documentation": "Delete a vehicle",
+      "method": "delete",
+      "endpoint": "vehicules/:id",
+      "responses": [
+        {
+          "uuid": "response-vehicules-id-delete-204",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "Deleted",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-vehicules",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-tarifs-get",
+      "type": "http",
+      "documentation": "Get all tariffs",
+      "method": "get",
+      "endpoint": "tarifs",
+      "responses": [
+        {
+          "uuid": "response-tarifs-get-200",
+          "body": "{{> (dataRaw 'tarifs')}}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Success",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-tarifs",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-tarifs-post",
+      "type": "http",
+      "documentation": "Create a new tariff",
+      "method": "post",
+      "endpoint": "tarifs",
+      "responses": [
+        {
+          "uuid": "response-tarifs-post-201",
+          "body": "",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "Created",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-tarifs",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-tarifs-id-put",
+      "type": "http",
+      "documentation": "Update a tariff",
+      "method": "put",
+      "endpoint": "tarifs/:id",
+      "responses": [
+        {
+          "uuid": "response-tarifs-id-put-200",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Updated",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-tarifs",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-tarifs-id-delete",
+      "type": "http",
+      "documentation": "Delete a tariff",
+      "method": "delete",
+      "endpoint": "tarifs/:id",
+      "responses": [
+        {
+          "uuid": "response-tarifs-id-delete-204",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "Deleted",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-tarifs",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-trajets-get",
+      "type": "http",
+      "documentation": "Get all trajets",
+      "method": "get",
+      "endpoint": "trajets",
+      "responses": [
+        {
+          "uuid": "response-trajets-get-200",
+          "body": "{{> (dataRaw 'trajets')}}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Success",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-trajets",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-trajets-post",
+      "type": "http",
+      "documentation": "Create a new trajet",
+      "method": "post",
+      "endpoint": "trajets",
+      "responses": [
+        {
+          "uuid": "response-trajets-post-201",
+          "body": "",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "Created",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-trajets",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-trajets-id-put",
+      "type": "http",
+      "documentation": "Update a trajet",
+      "method": "put",
+      "endpoint": "trajets/:id",
+      "responses": [
+        {
+          "uuid": "response-trajets-id-put-200",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Updated",
+          "headers": [
+            {"key": "Content-Type", "value": "application/json"}
+          ],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-trajets",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
+    },
+    {
+      "uuid": "route-trajets-id-delete",
+      "type": "http",
+      "documentation": "Delete a trajet",
+      "method": "delete",
+      "endpoint": "trajets/:id",
+      "responses": [
+        {
+          "uuid": "response-trajets-id-delete-204",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "Deleted",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bucket-trajets",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "CRUD"
     },
     {
       "uuid": "route-paiements-get",
@@ -652,250 +1260,6 @@
         }
       ],
       "responseMode": null
-    },
-    {
-      "uuid": "route-vehicules-get",
-      "type": "http",
-      "documentation": "Get all vehicles",
-      "method": "get",
-      "endpoint": "vehicules",
-      "responses": [
-        {
-          "uuid": "response-vehicules-get-200",
-          "body": "[\n  {\"id\": 1, \"matricule\": \"ABC-123\", \"modele\": \"Mercedes Sprinter\", \"capacite\": 18},\n  {\"id\": 2, \"matricule\": \"DEF-456\", \"modele\": \"Renault Master\", \"capacite\": 15}\n]",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "Success",
-          "headers": [
-            {"key": "Content-Type", "value": "application/json"}
-          ],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null
-    },
-    {
-      "uuid": "route-vehicules-post",
-      "type": "http",
-      "documentation": "Create a new vehicle",
-      "method": "post",
-      "endpoint": "vehicules",
-      "responses": [
-        {
-          "uuid": "response-vehicules-post-201",
-          "body": "{\n  \"id\": {{faker 'random.number'}},\n  \"matricule\": \"{{body 'matricule'}}\",\n  \"modele\": \"{{body 'modele'}}\",\n  \"capacite\": {{body 'capacite'}}\n}",
-          "latency": 0,
-          "statusCode": 201,
-          "label": "Created",
-          "headers": [
-            {"key": "Content-Type", "value": "application/json"}
-          ],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null
-    },
-    {
-      "uuid": "route-vehicules-id-put",
-      "type": "http",
-      "documentation": "Update a vehicle",
-      "method": "put",
-      "endpoint": "vehicules/:id",
-      "responses": [
-        {
-          "uuid": "response-vehicules-id-put-200",
-          "body": "{\n  \"id\": {{urlParam 'id'}},\n  \"matricule\": \"{{body 'matricule'}}\",\n  \"modele\": \"{{body 'modele'}}\",\n  \"capacite\": {{body 'capacite'}}\n}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "Updated",
-          "headers": [
-            {"key": "Content-Type", "value": "application/json"}
-          ],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null
-    },
-    {
-      "uuid": "route-vehicules-id-delete",
-      "type": "http",
-      "documentation": "Delete a vehicle",
-      "method": "delete",
-      "endpoint": "vehicules/:id",
-      "responses": [
-        {
-          "uuid": "response-vehicules-id-delete-204",
-          "body": "",
-          "latency": 0,
-          "statusCode": 204,
-          "label": "Deleted",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null
-    },
-    {
-      "uuid": "route-tarifs-get",
-      "type": "http",
-      "documentation": "Get all tariffs",
-      "method": "get",
-      "endpoint": "tarifs",
-      "responses": [
-        {
-          "uuid": "response-tarifs-get-200",
-          "body": "[\n  {\"id\": 1, \"trajet\": \"Casa → Rabat\", \"prix\": 12},\n  {\"id\": 2, \"trajet\": \"Rabat → Fès\", \"prix\": 18},\n  {\"id\": 3, \"trajet\": \"Casa → Marrakech\", \"prix\": 20}\n]",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "Success",
-          "headers": [
-            {"key": "Content-Type", "value": "application/json"}
-          ],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null
-    },
-    {
-      "uuid": "route-tarifs-post",
-      "type": "http",
-      "documentation": "Create a new tariff",
-      "method": "post",
-      "endpoint": "tarifs",
-      "responses": [
-        {
-          "uuid": "response-tarifs-post-201",
-          "body": "{\n  \"id\": {{faker 'random.number'}},\n  \"trajet\": \"{{body 'trajet'}}\",\n  \"prix\": {{body 'prix'}}\n}",
-          "latency": 0,
-          "statusCode": 201,
-          "label": "Created",
-          "headers": [
-            {"key": "Content-Type", "value": "application/json"}
-          ],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null
-    },
-    {
-      "uuid": "route-tarifs-id-put",
-      "type": "http",
-      "documentation": "Update a tariff",
-      "method": "put",
-      "endpoint": "tarifs/:id",
-      "responses": [
-        {
-          "uuid": "response-tarifs-id-put-200",
-          "body": "{\n  \"id\": {{urlParam 'id'}},\n  \"trajet\": \"{{body 'trajet'}}\",\n  \"prix\": {{body 'prix'}}\n}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "Updated",
-          "headers": [
-            {"key": "Content-Type", "value": "application/json"}
-          ],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null
-    },
-    {
-      "uuid": "route-tarifs-id-delete",
-      "type": "http",
-      "documentation": "Delete a tariff",
-      "method": "delete",
-      "endpoint": "tarifs/:id",
-      "responses": [
-        {
-          "uuid": "response-tarifs-id-delete-204",
-          "body": "",
-          "latency": 0,
-          "statusCode": 204,
-          "label": "Deleted",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true,
-          "crudKey": "id",
-          "callbacks": []
-        }
-      ],
-      "responseMode": null
     }
   ],
   "rootChildren": [
@@ -904,10 +1268,18 @@
     {"type": "route", "uuid": "route-cities-id-get"},
     {"type": "route", "uuid": "route-cities-id-put"},
     {"type": "route", "uuid": "route-cities-id-delete"},
-    {"type": "route", "uuid": "route-cities-search"},
     {"type": "route", "uuid": "route-bus-get"},
+    {"type": "route", "uuid": "route-bus-post"},
+    {"type": "route", "uuid": "route-bus-id-put"},
+    {"type": "route", "uuid": "route-bus-id-delete"},
     {"type": "route", "uuid": "route-trips-get"},
+    {"type": "route", "uuid": "route-trips-post"},
+    {"type": "route", "uuid": "route-trips-id-put"},
+    {"type": "route", "uuid": "route-trips-id-delete"},
     {"type": "route", "uuid": "route-reservation-get"},
+    {"type": "route", "uuid": "route-reservation-post"},
+    {"type": "route", "uuid": "route-reservation-id-put"},
+    {"type": "route", "uuid": "route-reservation-id-delete"},
     {"type": "route", "uuid": "route-passagers-get"},
     {"type": "route", "uuid": "route-passagers-post"},
     {"type": "route", "uuid": "route-passagers-id-put"},
@@ -916,10 +1288,6 @@
     {"type": "route", "uuid": "route-colis-post"},
     {"type": "route", "uuid": "route-colis-id-put"},
     {"type": "route", "uuid": "route-colis-id-delete"},
-    {"type": "route", "uuid": "route-paiements-get"},
-    {"type": "route", "uuid": "route-paiements-post"},
-    {"type": "route", "uuid": "route-rapports-kpis"},
-    {"type": "route", "uuid": "route-rapports-revenus"},
     {"type": "route", "uuid": "route-vehicules-get"},
     {"type": "route", "uuid": "route-vehicules-post"},
     {"type": "route", "uuid": "route-vehicules-id-put"},
@@ -927,7 +1295,15 @@
     {"type": "route", "uuid": "route-tarifs-get"},
     {"type": "route", "uuid": "route-tarifs-post"},
     {"type": "route", "uuid": "route-tarifs-id-put"},
-    {"type": "route", "uuid": "route-tarifs-id-delete"}
+    {"type": "route", "uuid": "route-tarifs-id-delete"},
+    {"type": "route", "uuid": "route-trajets-get"},
+    {"type": "route", "uuid": "route-trajets-post"},
+    {"type": "route", "uuid": "route-trajets-id-put"},
+    {"type": "route", "uuid": "route-trajets-id-delete"},
+    {"type": "route", "uuid": "route-paiements-get"},
+    {"type": "route", "uuid": "route-paiements-post"},
+    {"type": "route", "uuid": "route-rapports-kpis"},
+    {"type": "route", "uuid": "route-rapports-revenus"}
   ],
   "proxyMode": false,
   "proxyHost": "",
@@ -950,6 +1326,52 @@
   ],
   "proxyReqHeaders": [{"key": "", "value": ""}],
   "proxyResHeaders": [{"key": "", "value": ""}],
-  "data": [],
+  "data": [
+    {
+      "uuid": "bucket-cities",
+      "name": "cities",
+      "value": "{\"cities\":[{\"id\":\"1\",\"nameFr\":\"Nouakchott\",\"nameAr\":\"نواكشوط\"},{\"id\":\"2\",\"nameFr\":\"Nouadhibou\",\"nameAr\":\"نواذيبو\"},{\"id\":\"3\",\"nameFr\":\"Rosso\",\"nameAr\":\"روصو\"},{\"id\":\"4\",\"nameFr\":\"Kaédi\",\"nameAr\":\"كيهيدي\"},{\"id\":\"5\",\"nameFr\":\"Zouérat\",\"nameAr\":\"ازويرات\"},{\"id\":\"6\",\"nameFr\":\"Atar\",\"nameAr\":\"أطار\"},{\"id\":\"7\",\"nameFr\":\"Sélibaby\",\"nameAr\":\"سيلبابي\"},{\"id\":\"8\",\"nameFr\":\"Kiffa\",\"nameAr\":\"كيفة\"},{\"id\":\"9\",\"nameFr\":\"Néma\",\"nameAr\":\"النعمة\"},{\"id\":\"10\",\"nameFr\":\"Tidjikja\",\"nameAr\":\"تجكجة\"},{\"id\":\"11\",\"nameFr\":\"Aleg\",\"nameAr\":\"آلاك\"},{\"id\":\"12\",\"nameFr\":\"Boutilimit\",\"nameAr\":\"بوتلميت\"},{\"id\":\"13\",\"nameFr\":\"Akjoujt\",\"nameAr\":\"أكجوجت\"}]}"
+    },
+    {
+      "uuid": "bucket-buses",
+      "name": "buses",
+      "value": "[{\"id\":\"B006\",\"license_plate\":\"M33721\",\"status\":\"active\",\"capacity\":15},{\"id\":\"B007\",\"license_plate\":\"M60123\",\"status\":\"maintenance\",\"capacity\":12},{\"id\":\"B008\",\"license_plate\":\"M99876\",\"status\":\"active\",\"capacity\":18}]"
+    },
+    {
+      "uuid": "bucket-trips",
+      "name": "trips",
+      "value": "{\"trips\":[{\"tripId\":\"TR001\",\"date\":\"2025-08-31\",\"departureCityId\":\"1\",\"departureCityName\":\"Nouakchott\",\"departureCityNameAr\":\"نواكشوط\",\"arrivalCityId\":\"2\",\"arrivalCityName\":\"Nouadhibou\",\"arrivalCityNameAr\":\"نواذيبو\",\"vehicleId\":\"B006\",\"departureTime\":\"08:00\",\"arrivalTime\":\"14:30\"},{\"tripId\":\"TR002\",\"date\":\"2025-09-01\",\"departureCityId\":\"6\",\"departureCityName\":\"Atar\",\"departureCityNameAr\":\"أطار\",\"arrivalCityId\":\"5\",\"arrivalCityName\":\"Zouérat\",\"arrivalCityNameAr\":\"ازويرات\",\"vehicleId\":\"B008\",\"departureTime\":\"10:00\",\"arrivalTime\":\"11:30\"},{\"tripId\":\"TR003\",\"date\":\"2025-09-02\",\"departureCityId\":\"4\",\"departureCityName\":\"Kaédi\",\"departureCityNameAr\":\"كيهيدي\",\"arrivalCityId\":\"7\",\"arrivalCityName\":\"Sélibaby\",\"arrivalCityNameAr\":\"سيلبابي\",\"vehicleId\":\"B007\",\"departureTime\":\"15:00\",\"arrivalTime\":\"17:00\"}]}"
+    },
+    {
+      "uuid": "bucket-reservations",
+      "name": "reservations",
+      "value": "{\"reservations\":[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"passengerPhone\":\"222-44-55-66-77\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"passengerPhone\":\"222-88-77-66-55\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"passengerPhone\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]}"
+    },
+    {
+      "uuid": "bucket-passagers",
+      "name": "passagers",
+      "value": "[{\"id\":1,\"nom\":\"Jean Dupont\",\"telephone\":\"0601020304\",\"document\":\"CIN123456\"},{\"id\":2,\"nom\":\"Marie Curie\",\"telephone\":\"0605060708\",\"document\":\"CIN654321\"},{\"id\":3,\"nom\":\"Ali Ben Ali\",\"telephone\":\"0611121314\",\"document\":\"CIN112233\"}]"
+    },
+    {
+      "uuid": "bucket-colis",
+      "name": "colis",
+      "value": "[{\"id\":1,\"code\":\"CLS-0001\",\"expediteur\":\"Nadia\",\"destinataire\":\"Karim\",\"poids\":3.2,\"tarif\":8,\"statut\":\"En transit\"},{\"id\":2,\"code\":\"CLS-0002\",\"expediteur\":\"Fatima\",\"destinataire\":\"Hassan\",\"poids\":5.0,\"tarif\":12,\"statut\":\"Livré\"}]"
+    },
+    {
+      "uuid": "bucket-vehicules",
+      "name": "vehicules",
+      "value": "[{\"id\":1,\"matricule\":\"ABC-123\",\"modele\":\"Mercedes Sprinter\",\"capacite\":18},{\"id\":2,\"matricule\":\"DEF-456\",\"modele\":\"Renault Master\",\"capacite\":15}]"
+    },
+    {
+      "uuid": "bucket-tarifs",
+      "name": "tarifs",
+      "value": "[{\"id\":1,\"trajet\":\"Casa → Rabat\",\"prix\":12},{\"id\":2,\"trajet\":\"Rabat → Fès\",\"prix\":18},{\"id\":3,\"trajet\":\"Casa → Marrakech\",\"prix\":20}]"
+    },
+    {
+      "uuid": "bucket-trajets",
+      "name": "trajets",
+      "value": "[{\"id\":1,\"code\":\"TRJ001\",\"origine\":\"Nouakchott\",\"destination\":\"Nouadhibou\"},{\"id\":2,\"code\":\"TRJ002\",\"origine\":\"Atar\",\"destination\":\"Zouérat\"},{\"id\":3,\"code\":\"TRJ003\",\"origine\":\"Kaédi\",\"destination\":\"Sélibaby\"}]"
+    }
+  ],
   "callbacks": []
 }
