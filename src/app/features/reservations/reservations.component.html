@@ -34,11 +34,25 @@
   <div class="flex flex-column gap-3">
     <div>
       <label>Passager</label>
-      <input pInputText [(ngModel)]="form.passager" />
+      <p-select
+        [options]="passagerOptions()"
+        optionLabel="label"
+        optionValue="value"
+        [(ngModel)]="form.passager"
+        placeholder="Sélectionner un passager"
+        [style]="{width:'100%'}">
+      </p-select>
     </div>
     <div>
-      <label>Trajet</label>
-      <input pInputText [(ngModel)]="form.trajet" placeholder="Casa → Rabat" />
+      <label>Trip / Voyage</label>
+      <p-select
+        [options]="tripOptions()"
+        optionLabel="label"
+        optionValue="value"
+        [(ngModel)]="form.trajet"
+        placeholder="Sélectionner un trip"
+        [style]="{width:'100%'}">
+      </p-select>
     </div>
     <div class="grid">
       <div class="col-6">
