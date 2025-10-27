@@ -25,13 +25,17 @@ export class CitiesService {
 
   // Load data from API
   loadCities(): void {
+    console.log('[CitiesService] Loading cities from:', `${environment.apiUrl}/cities`);
     this.http.get<City[]>(`${environment.apiUrl}/cities`)
       .subscribe({
         next: (cities) => {
+          console.log('[CitiesService] Received data:', cities);
+          console.log('[CitiesService] Setting', (cities || []).length, 'cities');
           this._cities.set(cities || []);
         },
         error: (error) => {
-          console.error('Error loading cities:', error);
+          console.error('[CitiesService] ERROR loading cities:', error);
+          console.error('[CitiesService] Error status:', error.status);
           this._cities.set([]);
         }
       });

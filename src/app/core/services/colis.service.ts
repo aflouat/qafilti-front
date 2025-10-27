@@ -31,13 +31,17 @@ export class ColisService {
 
   // Load data from API
   loadColis(): void {
+    console.log('[ColisService] Loading colis from:', `${environment.apiUrl}/colis`);
     this.http.get<Colis[]>(`${environment.apiUrl}/colis`)
       .subscribe({
         next: (colis) => {
+          console.log('[ColisService] Received data:', colis);
+          console.log('[ColisService] Setting', (colis || []).length, 'colis');
           this._colis.set(colis || []);
         },
         error: (error) => {
-          console.error('Error loading colis:', error);
+          console.error('[ColisService] ERROR loading colis:', error);
+          console.error('[ColisService] Error status:', error.status);
           this._colis.set([]);
         }
       });
