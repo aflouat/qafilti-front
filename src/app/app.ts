@@ -74,7 +74,16 @@ export class App {
         ]
       },
       { label: 'Rapports', icon: 'pi pi-chart-line', routerLink: ['rapports'] },
-      { label: 'Administration', icon: 'pi pi-cog', routerLink: ['admin'] }
+      {
+        label: 'Administration', icon: 'pi pi-cog', items: [
+          { label: 'Bus', icon: 'pi pi-car', routerLink: ['admin'], queryParams: { tab: 'bus' } },
+          { label: 'Villes', icon: 'pi pi-map-marker', routerLink: ['admin'], queryParams: { tab: 'villes' } },
+          { label: 'Trips', icon: 'pi pi-calendar', routerLink: ['admin'], queryParams: { tab: 'trips' } },
+          { label: 'Trajets', icon: 'pi pi-directions', routerLink: ['admin'], queryParams: { tab: 'trajets' } },
+          { label: 'Véhicules', icon: 'pi pi-truck', routerLink: ['admin'], queryParams: { tab: 'vehicules' } },
+          { label: 'Tarifs', icon: 'pi pi-dollar', routerLink: ['admin'], queryParams: { tab: 'tarifs' } }
+        ]
+      }
     ];
 
     const isAuth = this.auth.isAuthenticated();

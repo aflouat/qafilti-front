@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Tabs, Tab, TabPanels, TabPanel, TabList } from 'primeng/tabs';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -21,13 +22,38 @@ import { TripsService, Trip } from '../../core/services/trips.service';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
+  private readonly route = inject(ActivatedRoute);
   private readonly trajetsService = inject(TrajetsService);
   private readonly vehiculesService = inject(VehiculesService);
   private readonly tarifsService = inject(TarifsService);
   private readonly busService = inject(BusService);
   private readonly citiesService = inject(CitiesService);
   private readonly tripsService = inject(TripsService);
+
+  // Active tab management
+  readonly activeTab = signal<number>(0);
+
+  ngOnInit() {
+    // Subscribe to query params to update active tab
+    this.route.queryParams.subscribe(params => {
+      const tab = params['tab'];
+      const tabIndex = this.getTabIndex(tab);
+      this.activeTab.set(tabIndex);
+    });
+  }
+
+  private getTabIndex(tabName: string | undefined): number {
+    const tabMap: { [key: string]: number } = {
+      'bus': 0,
+      'villes': 1,
+      'trips': 2,
+      'trajets': 3,
+      'vehicules': 4,
+      'tarifs': 5
+    };
+    return tabName ? (tabMap[tabName] ?? 0) : 0;
+  }
 
   // Use service signals directly
   readonly trajets = this.trajetsService.trajets;
