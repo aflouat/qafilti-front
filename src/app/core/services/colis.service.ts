@@ -26,6 +26,13 @@ export class ColisService {
   readonly deliveredCount = computed(() => this._colis().filter(c => c.statut === 'Livré').length);
 
   constructor() {
+    console.log('[ColisService] CONSTRUCTOR called');
+    // Add test data immediately
+    this._colis.set([
+      { id: 999, code: 'TEST-001', expediteur: 'Test Exp', destinataire: 'Test Dest', poids: 5, tarif: 50, statut: 'En transit' }
+    ]);
+    console.log('[ColisService] Test data set, count:', this._colis().length);
+
     this.loadColis();
   }
 

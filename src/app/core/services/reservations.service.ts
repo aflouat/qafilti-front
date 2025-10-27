@@ -44,6 +44,22 @@ export class ReservationsService {
   });
 
   constructor() {
+    console.log('[ReservationsService] CONSTRUCTOR called');
+    // Add test data immediately to verify display works
+    this._reservations.set([
+      {
+        id: 999,
+        code: 'TEST-001',
+        passager: 'Test Passager',
+        trajet: 'Test Trajet',
+        date: new Date(),
+        prix: 100,
+        statut: 'Brouillon'
+      }
+    ]);
+    console.log('[ReservationsService] Test data set, count:', this._reservations().length);
+
+    // Then try to load from API
     this.loadReservations();
   }
 

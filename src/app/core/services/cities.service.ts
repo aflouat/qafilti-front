@@ -20,6 +20,13 @@ export class CitiesService {
   readonly citiesCount = computed(() => this._cities().length);
 
   constructor() {
+    console.log('[CitiesService] CONSTRUCTOR called');
+    // Add test data immediately
+    this._cities.set([
+      { id: '999', nameFr: 'Test Ville', nameAr: 'مدينة الاختبار' }
+    ]);
+    console.log('[CitiesService] Test data set, count:', this._cities().length);
+
     this.loadCities();
   }
 
