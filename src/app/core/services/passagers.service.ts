@@ -26,13 +26,17 @@ export class PassagersService {
 
   // Load data from API
   loadPassagers(): void {
+    console.log('[PassagersService] Loading passagers from:', `${environment.apiUrl}/passagers`);
     this.http.get<Passager[]>(`${environment.apiUrl}/passagers`)
       .subscribe({
         next: (passagers) => {
+          console.log('[PassagersService] Received data:', passagers);
+          console.log('[PassagersService] Setting', (passagers || []).length, 'passagers');
           this._passagers.set(passagers || []);
         },
         error: (error) => {
-          console.error('Error loading passagers:', error);
+          console.error('[PassagersService] ERROR loading passagers:', error);
+          console.error('[PassagersService] Error status:', error.status);
           this._passagers.set([]);
         }
       });

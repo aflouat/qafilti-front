@@ -29,13 +29,17 @@ export class BusService {
 
   // Load data from API
   loadBuses(): void {
+    console.log('[BusService] Loading buses from:', `${environment.apiUrl}/bus`);
     this.http.get<Bus[]>(`${environment.apiUrl}/bus`)
       .subscribe({
         next: (buses) => {
+          console.log('[BusService] Received data:', buses);
+          console.log('[BusService] Setting', (buses || []).length, 'buses');
           this._buses.set(buses || []);
         },
         error: (error) => {
-          console.error('Error loading buses:', error);
+          console.error('[BusService] ERROR loading buses:', error);
+          console.error('[BusService] Error status:', error.status);
           this._buses.set([]);
         }
       });

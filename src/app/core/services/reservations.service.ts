@@ -49,9 +49,12 @@ export class ReservationsService {
 
   // Load data from API
   loadReservations(): void {
+    console.log('[ReservationsService] Loading reservations from:', `${environment.apiUrl}/reservation`);
     this.http.get<Reservation[]>(`${environment.apiUrl}/reservation`)
       .subscribe({
         next: (reservations) => {
+          console.log('[ReservationsService] Received data:', reservations);
+          console.log('[ReservationsService] Data type:', typeof reservations, 'Is array:', Array.isArray(reservations));
           // Map Mockoon data to application format
           const mappedReservations = (reservations || []).map(r => ({
             ...r,
@@ -66,10 +69,14 @@ export class ReservationsService {
             passengerName: r.passengerName,
             netAmount: r.netAmount
           }));
+          console.log('[ReservationsService] Mapped reservations:', mappedReservations);
+          console.log('[ReservationsService] Setting', mappedReservations.length, 'reservations');
           this._reservations.set(mappedReservations);
         },
         error: (error) => {
-          console.error('Error loading reservations:', error);
+          console.error('[ReservationsService] ERROR loading reservations:', error);
+          console.error('[ReservationsService] Error status:', error.status);
+          console.error('[ReservationsService] Error message:', error.message);
           // Fallback to empty array on error
           this._reservations.set([]);
         }

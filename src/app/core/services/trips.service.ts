@@ -37,13 +37,17 @@ export class TripsService {
 
   // Load data from API
   loadTrips(): void {
+    console.log('[TripsService] Loading trips from:', `${environment.apiUrl}/trips`);
     this.http.get<Trip[]>(`${environment.apiUrl}/trips`)
       .subscribe({
         next: (trips) => {
+          console.log('[TripsService] Received data:', trips);
+          console.log('[TripsService] Setting', (trips || []).length, 'trips');
           this._trips.set(trips || []);
         },
         error: (error) => {
-          console.error('Error loading trips:', error);
+          console.error('[TripsService] ERROR loading trips:', error);
+          console.error('[TripsService] Error status:', error.status);
           this._trips.set([]);
         }
       });
