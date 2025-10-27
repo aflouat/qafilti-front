@@ -1,11 +1,91 @@
 <p-tabs [value]="0">
   <p-tablist>
-    <p-tab [value]="0" label="Trajets"></p-tab>
-    <p-tab [value]="1" label="Véhicules"></p-tab>
-    <p-tab [value]="2" label="Tarifs"></p-tab>
+    <p-tab [value]="0" label="Bus"></p-tab>
+    <p-tab [value]="1" label="Villes"></p-tab>
+    <p-tab [value]="2" label="Trips"></p-tab>
+    <p-tab [value]="3" label="Trajets"></p-tab>
+    <p-tab [value]="4" label="Véhicules"></p-tab>
+    <p-tab [value]="5" label="Tarifs"></p-tab>
   </p-tablist>
   <p-tabpanels>
+    <!-- Bus Tab -->
     <p-tabpanel [value]="0">
+      <div class="flex justify-content-between align-items-center mb-2">
+        <h3 class="m-0">Bus</h3>
+        <button pButton label="Ajouter" (click)="openBus()"></button>
+      </div>
+      <p-table [value]="buses()">
+        <ng-template pTemplate="header">
+          <tr><th>ID</th><th>Immatriculation</th><th>Statut</th><th>Capacité</th><th>Actions</th></tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-b>
+          <tr>
+            <td>{{ b.id }}</td>
+            <td>{{ b.license_plate }}</td>
+            <td>{{ b.status }}</td>
+            <td>{{ b.capacity }}</td>
+            <td>
+              <button pButton icon="pi pi-pencil" (click)="editBus(b)"></button>
+              <button pButton icon="pi pi-times" severity="danger" (click)="removeBus(b)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-tabpanel>
+
+    <!-- Cities Tab -->
+    <p-tabpanel [value]="1">
+      <div class="flex justify-content-between align-items-center mb-2">
+        <h3 class="m-0">Villes</h3>
+        <button pButton label="Ajouter" (click)="openCity()"></button>
+      </div>
+      <p-table [value]="cities()">
+        <ng-template pTemplate="header">
+          <tr><th>ID</th><th>Nom (FR)</th><th>Nom (AR)</th><th>Actions</th></tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-c>
+          <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.nameFr }}</td>
+            <td>{{ c.nameAr }}</td>
+            <td>
+              <button pButton icon="pi pi-pencil" (click)="editCity(c)"></button>
+              <button pButton icon="pi pi-times" severity="danger" (click)="removeCity(c)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-tabpanel>
+
+    <!-- Trips Tab -->
+    <p-tabpanel [value]="2">
+      <div class="flex justify-content-between align-items-center mb-2">
+        <h3 class="m-0">Trips (Voyages)</h3>
+        <button pButton label="Ajouter" (click)="openTrip()"></button>
+      </div>
+      <p-table [value]="trips()">
+        <ng-template pTemplate="header">
+          <tr><th>ID</th><th>Date</th><th>Départ</th><th>Arrivée</th><th>Bus</th><th>Heures</th><th>Actions</th></tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-t>
+          <tr>
+            <td>{{ t.tripId }}</td>
+            <td>{{ t.date }}</td>
+            <td>{{ t.departureCityName || t.departureCityId }}</td>
+            <td>{{ t.arrivalCityName || t.arrivalCityId }}</td>
+            <td>{{ t.vehicleId }}</td>
+            <td>{{ t.departureTime }} - {{ t.arrivalTime }}</td>
+            <td>
+              <button pButton icon="pi pi-pencil" (click)="editTrip(t)"></button>
+              <button pButton icon="pi pi-times" severity="danger" (click)="removeTrip(t)"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-tabpanel>
+
+    <!-- Trajets Tab -->
+    <p-tabpanel [value]="3">
       <div class="flex justify-content-between align-items-center mb-2">
         <h3 class="m-0">Trajets</h3>
         <button pButton label="Ajouter" (click)="openTrajet()"></button>
@@ -27,7 +107,7 @@
         </ng-template>
       </p-table>
     </p-tabpanel>
-    <p-tabpanel [value]="1">
+    <p-tabpanel [value]="4">
       <div class="flex justify-content-between align-items-center mb-2">
         <h3 class="m-0">Véhicules</h3>
         <button pButton label="Ajouter" (click)="openVehicule()"></button>
@@ -49,7 +129,7 @@
         </ng-template>
       </p-table>
     </p-tabpanel>
-    <p-tabpanel [value]="2">
+    <p-tabpanel [value]="5">
       <div class="flex justify-content-between align-items-center mb-2">
         <h3 class="m-0">Tarifs</h3>
         <button pButton label="Ajouter" (click)="openTarif()"></button>
@@ -106,5 +186,64 @@
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="tarifDialog=false" text></button>
     <button pButton label="Enregistrer" (click)="saveTarif()"></button>
+  </ng-template>
+</p-dialog>
+
+<!-- Bus Dialog -->
+<p-dialog [(visible)]="busDialog" header="Bus" [modal]="true" [style]="{width:'420px'}">
+  <div class="flex flex-column gap-2">
+    <input pInputText placeholder="Plaque d'immatriculation" [(ngModel)]="busForm.license_plate" />
+    <p-select [options]="busStatusOptions" optionLabel="label" optionValue="value" [(ngModel)]="busForm.status" placeholder="Statut"></p-select>
+    <input pInputText placeholder="Capacité" [(ngModel)]="busForm.capacity" type="number" />
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton label="Annuler" (click)="busDialog=false" text></button>
+    <button pButton label="Enregistrer" (click)="saveBus()"></button>
+  </ng-template>
+</p-dialog>
+
+<!-- City Dialog -->
+<p-dialog [(visible)]="cityDialog" header="Ville" [modal]="true" [style]="{width:'420px'}">
+  <div class="flex flex-column gap-2">
+    <input pInputText placeholder="Nom en français" [(ngModel)]="cityForm.nameFr" />
+    <input pInputText placeholder="Nom en arabe" [(ngModel)]="cityForm.nameAr" dir="rtl" />
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton label="Annuler" (click)="cityDialog=false" text></button>
+    <button pButton label="Enregistrer" (click)="saveCity()"></button>
+  </ng-template>
+</p-dialog>
+
+<!-- Trip Dialog -->
+<p-dialog [(visible)]="tripDialog" header="Trip (Voyage)" [modal]="true" [style]="{width:'500px'}">
+  <div class="flex flex-column gap-2">
+    <label>Date</label>
+    <input pInputText type="date" [(ngModel)]="tripForm.date" />
+
+    <label>Ville de départ</label>
+    <input pInputText placeholder="ID ville départ" [(ngModel)]="tripForm.departureCityId" />
+    <input pInputText placeholder="Nom (FR)" [(ngModel)]="tripForm.departureCityName" />
+
+    <label>Ville d'arrivée</label>
+    <input pInputText placeholder="ID ville arrivée" [(ngModel)]="tripForm.arrivalCityId" />
+    <input pInputText placeholder="Nom (FR)" [(ngModel)]="tripForm.arrivalCityName" />
+
+    <label>Bus</label>
+    <input pInputText placeholder="ID Bus (ex: B006)" [(ngModel)]="tripForm.vehicleId" />
+
+    <div class="grid">
+      <div class="col-6">
+        <label>Heure départ</label>
+        <input pInputText type="time" [(ngModel)]="tripForm.departureTime" />
+      </div>
+      <div class="col-6">
+        <label>Heure arrivée</label>
+        <input pInputText type="time" [(ngModel)]="tripForm.arrivalTime" />
+      </div>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button pButton label="Annuler" (click)="tripDialog=false" text></button>
+    <button pButton label="Enregistrer" (click)="saveTrip()"></button>
   </ng-template>
 </p-dialog>
