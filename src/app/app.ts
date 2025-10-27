@@ -8,9 +8,50 @@ import { AuthService } from './auth/auth.service';
   selector: 'app-root',
   standalone: true,
   imports: [RouterModule, MenubarModule, ButtonModule],
+  styles: [`
+    .app-menubar {
+      border-bottom: 2px solid var(--border-color);
+      background: white;
+    }
+
+    .app-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin-right: 2rem;
+      padding: 0.5rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .app-logo i {
+      font-size: 2rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .app-name {
+      font-family: 'Inter', sans-serif;
+      letter-spacing: -0.02em;
+    }
+  `],
   template: `
     <div class="app-container">
-      <p-menubar [model]="items()" class="mb-3"></p-menubar>
+      <p-menubar [model]="items()" class="app-menubar">
+        <ng-template pTemplate="start">
+          <div class="app-logo">
+            <i class="pi pi-ticket"></i>
+            <span class="app-name">Qafilti</span>
+          </div>
+        </ng-template>
+      </p-menubar>
       <div class="content p-3">
         <router-outlet></router-outlet>
       </div>

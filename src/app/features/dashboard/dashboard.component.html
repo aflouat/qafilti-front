@@ -1,20 +1,68 @@
-<div class="grid" style="row-gap:1rem">
-  <div class="col-12 md:col-4">
-    <p-card header="Réservations du jour">
-      <div class="text-2xl font-bold">{{ kpis().resaToday }}</div>
-      <button pButton label="Voir" routerLink="/reservations"></button>
-    </p-card>
+<div class="dashboard-container">
+  <div class="dashboard-header animate-fade-in">
+    <h1 class="dashboard-title gradient-text">Tableau de bord</h1>
+    <p class="dashboard-subtitle">Vue d'ensemble de votre activité</p>
   </div>
-  <div class="col-12 md:col-4">
-    <p-card header="Colis en transit">
-      <div class="text-2xl font-bold">{{ kpis().parcelsTransit }}</div>
-      <button pButton label="Voir" routerLink="/colis"></button>
-    </p-card>
+
+  <div class="kpi-grid">
+    <!-- Réservations KPI -->
+    <div class="kpi-card kpi-card-primary animate-slide-up" style="animation-delay: 0.1s">
+      <div class="kpi-icon-wrapper">
+        <i class="pi pi-ticket kpi-icon"></i>
+      </div>
+      <div class="kpi-content">
+        <h3 class="kpi-title">Réservations du jour</h3>
+        <div class="kpi-value">{{ kpis().resaToday }}</div>
+        <p class="kpi-description">Réservations actives aujourd'hui</p>
+        <button pButton label="Voir les détails" icon="pi pi-arrow-right"
+                iconPos="right" class="kpi-action" routerLink="/reservations"></button>
+      </div>
+      <div class="kpi-decoration"></div>
+    </div>
+
+    <!-- Colis KPI -->
+    <div class="kpi-card kpi-card-success animate-slide-up" style="animation-delay: 0.2s">
+      <div class="kpi-icon-wrapper">
+        <i class="pi pi-inbox kpi-icon"></i>
+      </div>
+      <div class="kpi-content">
+        <h3 class="kpi-title">Colis en transit</h3>
+        <div class="kpi-value">{{ kpis().parcelsTransit }}</div>
+        <p class="kpi-description">Colis en cours de livraison</p>
+        <button pButton label="Gérer les colis" icon="pi pi-arrow-right"
+                iconPos="right" class="kpi-action" routerLink="/colis" severity="success"></button>
+      </div>
+      <div class="kpi-decoration"></div>
+    </div>
+
+    <!-- Revenus KPI -->
+    <div class="kpi-card kpi-card-warning animate-slide-up" style="animation-delay: 0.3s">
+      <div class="kpi-icon-wrapper">
+        <i class="pi pi-chart-line kpi-icon"></i>
+      </div>
+      <div class="kpi-content">
+        <h3 class="kpi-title">Revenus du mois</h3>
+        <div class="kpi-value">{{ kpis().revenueMonth | currency:'EUR' }}</div>
+        <p class="kpi-description">Chiffre d'affaires mensuel</p>
+        <button pButton label="Voir les rapports" icon="pi pi-arrow-right"
+                iconPos="right" class="kpi-action" routerLink="/rapports" severity="warn"></button>
+      </div>
+      <div class="kpi-decoration"></div>
+    </div>
   </div>
-  <div class="col-12 md:col-4">
-    <p-card header="Revenus (mois)">
-      <div class="text-2xl font-bold">{{ kpis().revenueMonth | currency:'EUR' }}</div>
-      <button pButton label="Rapports" routerLink="/rapports"></button>
-    </p-card>
+
+  <!-- Quick Actions Section -->
+  <div class="quick-actions animate-slide-up" style="animation-delay: 0.4s">
+    <h2 class="section-title">Actions rapides</h2>
+    <div class="action-buttons">
+      <button pButton label="Nouvelle réservation" icon="pi pi-plus"
+              class="action-btn" routerLink="/reservations"></button>
+      <button pButton label="Enregistrer un colis" icon="pi pi-box"
+              class="action-btn" routerLink="/colis" severity="success"></button>
+      <button pButton label="Gérer les passagers" icon="pi pi-users"
+              class="action-btn" routerLink="/passagers" severity="help"></button>
+      <button pButton label="Voir les paiements" icon="pi pi-wallet"
+              class="action-btn" routerLink="/paiements" severity="warn"></button>
+    </div>
   </div>
 </div>
