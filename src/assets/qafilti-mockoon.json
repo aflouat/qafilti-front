@@ -48,7 +48,7 @@
       "responses": [
         {
           "uuid": "response-cities-post-201",
-          "body": "{\n  \"id\": \"{{faker 'random.number'}}",\n  \"nameFr\": \"{{body 'nameFr'}}\",\n  \"nameAr\": \"{{body 'nameAr'}}\"\n}",
+          "body": "{\n  \"id\": \"{{faker 'random.number'}}\",\n  \"nameFr\": \"{{body 'nameFr'}}\",\n  \"nameAr\": \"{{body 'nameAr'}}\"\n}",
           "latency": 0,
           "statusCode": 201,
           "label": "Created",
