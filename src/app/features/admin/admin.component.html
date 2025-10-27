@@ -156,9 +156,9 @@
 <!-- Dialogs -->
 <p-dialog [(visible)]="trajetDialog" header="Trajet" [modal]="true" [style]="{width:'420px'}">
   <div class="flex flex-column gap-2">
-    <input pInputText placeholder="Code" [(ngModel)]="trajetForm.code" />
-    <input pInputText placeholder="Origine" [(ngModel)]="trajetForm.origine" />
-    <input pInputText placeholder="Destination" [(ngModel)]="trajetForm.destination" />
+    <input pInputText placeholder="Code" [(ngModel)]="trajetForm.code" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Origine" [(ngModel)]="trajetForm.origine" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Destination" [(ngModel)]="trajetForm.destination" [style]="{width:'100%'}" />
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="trajetDialog=false" text></button>
@@ -168,9 +168,9 @@
 
 <p-dialog [(visible)]="vehiculeDialog" header="Véhicule" [modal]="true" [style]="{width:'420px'}">
   <div class="flex flex-column gap-2">
-    <input pInputText placeholder="Matricule" [(ngModel)]="vehiculeForm.matricule" />
-    <input pInputText placeholder="Modèle" [(ngModel)]="vehiculeForm.modele" />
-    <input pInputText placeholder="Capacité" [(ngModel)]="vehiculeForm.capacite" />
+    <input pInputText placeholder="Matricule" [(ngModel)]="vehiculeForm.matricule" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Modèle" [(ngModel)]="vehiculeForm.modele" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Capacité" [(ngModel)]="vehiculeForm.capacite" [style]="{width:'100%'}" />
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="vehiculeDialog=false" text></button>
@@ -180,8 +180,8 @@
 
 <p-dialog [(visible)]="tarifDialog" header="Tarif" [modal]="true" [style]="{width:'420px'}">
   <div class="flex flex-column gap-2">
-    <input pInputText placeholder="Trajet" [(ngModel)]="tarifForm.trajet" />
-    <input pInputText placeholder="Prix (€)" [(ngModel)]="tarifForm.prix" />
+    <input pInputText placeholder="Trajet" [(ngModel)]="tarifForm.trajet" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Prix (€)" [(ngModel)]="tarifForm.prix" [style]="{width:'100%'}" />
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="tarifDialog=false" text></button>
@@ -192,9 +192,9 @@
 <!-- Bus Dialog -->
 <p-dialog [(visible)]="busDialog" header="Bus" [modal]="true" [style]="{width:'420px'}">
   <div class="flex flex-column gap-2">
-    <input pInputText placeholder="Plaque d'immatriculation" [(ngModel)]="busForm.license_plate" />
-    <p-select [options]="busStatusOptions" optionLabel="label" optionValue="value" [(ngModel)]="busForm.status" placeholder="Statut"></p-select>
-    <input pInputText placeholder="Capacité" [(ngModel)]="busForm.capacity" type="number" />
+    <input pInputText placeholder="Plaque d'immatriculation" [(ngModel)]="busForm.license_plate" [style]="{width:'100%'}" />
+    <p-select [options]="busStatusOptions" optionLabel="label" optionValue="value" [(ngModel)]="busForm.status" placeholder="Statut" [style]="{width:'100%'}"></p-select>
+    <input pInputText placeholder="Capacité" [(ngModel)]="busForm.capacity" type="number" [style]="{width:'100%'}" />
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="busDialog=false" text></button>
@@ -205,8 +205,8 @@
 <!-- City Dialog -->
 <p-dialog [(visible)]="cityDialog" header="Ville" [modal]="true" [style]="{width:'420px'}">
   <div class="flex flex-column gap-2">
-    <input pInputText placeholder="Nom en français" [(ngModel)]="cityForm.nameFr" />
-    <input pInputText placeholder="Nom en arabe" [(ngModel)]="cityForm.nameAr" dir="rtl" />
+    <input pInputText placeholder="Nom en français" [(ngModel)]="cityForm.nameFr" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Nom en arabe" [(ngModel)]="cityForm.nameAr" dir="rtl" [style]="{width:'100%'}" />
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="cityDialog=false" text></button>
@@ -218,27 +218,27 @@
 <p-dialog [(visible)]="tripDialog" header="Trip (Voyage)" [modal]="true" [style]="{width:'500px'}">
   <div class="flex flex-column gap-2">
     <label>Date</label>
-    <input pInputText type="date" [(ngModel)]="tripForm.date" />
+    <input pInputText type="date" [(ngModel)]="tripForm.date" [style]="{width:'100%'}" />
 
     <label>Ville de départ</label>
-    <input pInputText placeholder="ID ville départ" [(ngModel)]="tripForm.departureCityId" />
-    <input pInputText placeholder="Nom (FR)" [(ngModel)]="tripForm.departureCityName" />
+    <input pInputText placeholder="ID ville départ" [(ngModel)]="tripForm.departureCityId" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Nom (FR)" [(ngModel)]="tripForm.departureCityName" [style]="{width:'100%'}" />
 
     <label>Ville d'arrivée</label>
-    <input pInputText placeholder="ID ville arrivée" [(ngModel)]="tripForm.arrivalCityId" />
-    <input pInputText placeholder="Nom (FR)" [(ngModel)]="tripForm.arrivalCityName" />
+    <input pInputText placeholder="ID ville arrivée" [(ngModel)]="tripForm.arrivalCityId" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Nom (FR)" [(ngModel)]="tripForm.arrivalCityName" [style]="{width:'100%'}" />
 
     <label>Bus</label>
-    <input pInputText placeholder="ID Bus (ex: B006)" [(ngModel)]="tripForm.vehicleId" />
+    <input pInputText placeholder="ID Bus (ex: B006)" [(ngModel)]="tripForm.vehicleId" [style]="{width:'100%'}" />
 
     <div class="grid">
       <div class="col-6">
         <label>Heure départ</label>
-        <input pInputText type="time" [(ngModel)]="tripForm.departureTime" />
+        <input pInputText type="time" [(ngModel)]="tripForm.departureTime" [style]="{width:'100%'}" />
       </div>
       <div class="col-6">
         <label>Heure arrivée</label>
-        <input pInputText type="time" [(ngModel)]="tripForm.arrivalTime" />
+        <input pInputText type="time" [(ngModel)]="tripForm.arrivalTime" [style]="{width:'100%'}" />
       </div>
     </div>
   </div>

@@ -29,11 +29,11 @@
 
 <p-dialog [(visible)]="dialog" header="Colis" [modal]="true" [style]="{width:'420px'}">
   <div class="flex flex-column gap-2">
-    <input pInputText placeholder="Expéditeur" [(ngModel)]="form.expediteur" />
-    <input pInputText placeholder="Destinataire" [(ngModel)]="form.destinataire" />
-    <p-inputNumber placeholder="Poids (kg)" [(ngModel)]="form.poids"></p-inputNumber>
-    <p-inputNumber placeholder="Tarif (€)" [(ngModel)]="form.tarif"></p-inputNumber>
-    <p-select [options]="statuts" optionLabel="label" optionValue="value" [(ngModel)]="form.statut"></p-select>
+    <input pInputText placeholder="Expéditeur" [(ngModel)]="form.expediteur" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Destinataire" [(ngModel)]="form.destinataire" [style]="{width:'100%'}" />
+    <p-inputNumber placeholder="Poids (kg)" [(ngModel)]="form.poids" [style]="{width:'100%'}"></p-inputNumber>
+    <p-inputNumber placeholder="Tarif (€)" [(ngModel)]="form.tarif" [style]="{width:'100%'}"></p-inputNumber>
+    <p-select [options]="statuts" optionLabel="label" optionValue="value" [(ngModel)]="form.statut" [style]="{width:'100%'}"></p-select>
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="dialog=false" text></button>

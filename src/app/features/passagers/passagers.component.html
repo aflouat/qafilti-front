@@ -25,9 +25,9 @@
 
 <p-dialog [(visible)]="dialog" [modal]="true" header="Passager" [style]="{width:'420px'}">
   <div class="flex flex-column gap-3">
-    <input pInputText placeholder="Nom complet" [(ngModel)]="form.nom" />
-    <input pInputText placeholder="Téléphone" [(ngModel)]="form.telephone" />
-    <input pInputText placeholder="Document (CIN/Passport)" [(ngModel)]="form.document" />
+    <input pInputText placeholder="Nom complet" [(ngModel)]="form.nom" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Téléphone" [(ngModel)]="form.telephone" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Document (CIN/Passport)" [(ngModel)]="form.document" [style]="{width:'100%'}" />
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="dialog=false" text></button>
