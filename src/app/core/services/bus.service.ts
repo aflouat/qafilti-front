@@ -24,13 +24,6 @@ export class BusService {
   );
 
   constructor() {
-    console.log('[BusService] CONSTRUCTOR called');
-    // Add test data immediately
-    this._buses.set([
-      { id: 'TEST001', license_plate: 'TEST-123', status: 'active', capacity: 20 }
-    ]);
-    console.log('[BusService] Test data set, count:', this._buses().length);
-
     this.loadBuses();
   }
 

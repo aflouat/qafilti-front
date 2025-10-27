@@ -32,13 +32,6 @@ export class TripsService {
   });
 
   constructor() {
-    console.log('[TripsService] CONSTRUCTOR called');
-    // Add test data immediately
-    this._trips.set([
-      { tripId: 'TEST001', date: '2025-01-01', departureCityName: 'Test A', arrivalCityName: 'Test B', vehicleId: 'V001' }
-    ]);
-    console.log('[TripsService] Test data set, count:', this._trips().length);
-
     this.loadTrips();
   }
 

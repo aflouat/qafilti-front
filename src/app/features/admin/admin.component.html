@@ -155,10 +155,35 @@
 
 <!-- Dialogs -->
 <p-dialog [(visible)]="trajetDialog" header="Trajet" [modal]="true" [style]="{width:'420px'}">
-  <div class="flex flex-column gap-2">
-    <input pInputText placeholder="Code" [(ngModel)]="trajetForm.code" [style]="{width:'100%'}" />
-    <input pInputText placeholder="Origine" [(ngModel)]="trajetForm.origine" [style]="{width:'100%'}" />
-    <input pInputText placeholder="Destination" [(ngModel)]="trajetForm.destination" [style]="{width:'100%'}" />
+  <div class="flex flex-column gap-3">
+    <div>
+      <label class="block mb-1">Code</label>
+      <input pInputText placeholder="Ex: TRJ001" [(ngModel)]="trajetForm.code" [style]="{width:'100%'}" />
+    </div>
+    <div>
+      <label class="block mb-1">Ville d'origine</label>
+      <p-select
+        [options]="cityOptions()"
+        [(ngModel)]="trajetForm.origine"
+        placeholder="Sélectionner une ville"
+        [style]="{width:'100%'}"
+        optionLabel="label"
+        optionValue="label"
+        [filter]="true">
+      </p-select>
+    </div>
+    <div>
+      <label class="block mb-1">Ville de destination</label>
+      <p-select
+        [options]="cityOptions()"
+        [(ngModel)]="trajetForm.destination"
+        placeholder="Sélectionner une ville"
+        [style]="{width:'100%'}"
+        optionLabel="label"
+        optionValue="label"
+        [filter]="true">
+      </p-select>
+    </div>
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="trajetDialog=false" text></button>
@@ -216,28 +241,58 @@
 
 <!-- Trip Dialog -->
 <p-dialog [(visible)]="tripDialog" header="Trip (Voyage)" [modal]="true" [style]="{width:'500px'}">
-  <div class="flex flex-column gap-2">
-    <label>Date</label>
-    <input pInputText type="date" [(ngModel)]="tripForm.date" [style]="{width:'100%'}" />
+  <div class="flex flex-column gap-3">
+    <div>
+      <label class="block mb-1">Date</label>
+      <input pInputText type="date" [(ngModel)]="tripForm.date" [style]="{width:'100%'}" />
+    </div>
 
-    <label>Ville de départ</label>
-    <input pInputText placeholder="ID ville départ" [(ngModel)]="tripForm.departureCityId" [style]="{width:'100%'}" />
-    <input pInputText placeholder="Nom (FR)" [(ngModel)]="tripForm.departureCityName" [style]="{width:'100%'}" />
+    <div>
+      <label class="block mb-1">Ville de départ</label>
+      <p-select
+        [options]="cityOptions()"
+        [(ngModel)]="tripForm.departureCityId"
+        placeholder="Sélectionner une ville"
+        [style]="{width:'100%'}"
+        optionLabel="label"
+        optionValue="value"
+        [filter]="true">
+      </p-select>
+    </div>
 
-    <label>Ville d'arrivée</label>
-    <input pInputText placeholder="ID ville arrivée" [(ngModel)]="tripForm.arrivalCityId" [style]="{width:'100%'}" />
-    <input pInputText placeholder="Nom (FR)" [(ngModel)]="tripForm.arrivalCityName" [style]="{width:'100%'}" />
+    <div>
+      <label class="block mb-1">Ville d'arrivée</label>
+      <p-select
+        [options]="cityOptions()"
+        [(ngModel)]="tripForm.arrivalCityId"
+        placeholder="Sélectionner une ville"
+        [style]="{width:'100%'}"
+        optionLabel="label"
+        optionValue="value"
+        [filter]="true">
+      </p-select>
+    </div>
 
-    <label>Bus</label>
-    <input pInputText placeholder="ID Bus (ex: B006)" [(ngModel)]="tripForm.vehicleId" [style]="{width:'100%'}" />
+    <div>
+      <label class="block mb-1">Bus</label>
+      <p-select
+        [options]="busOptions()"
+        [(ngModel)]="tripForm.vehicleId"
+        placeholder="Sélectionner un bus"
+        [style]="{width:'100%'}"
+        optionLabel="label"
+        optionValue="value"
+        [filter]="true">
+      </p-select>
+    </div>
 
     <div class="grid">
       <div class="col-6">
-        <label>Heure départ</label>
+        <label class="block mb-1">Heure départ</label>
         <input pInputText type="time" [(ngModel)]="tripForm.departureTime" [style]="{width:'100%'}" />
       </div>
       <div class="col-6">
-        <label>Heure arrivée</label>
+        <label class="block mb-1">Heure arrivée</label>
         <input pInputText type="time" [(ngModel)]="tripForm.arrivalTime" [style]="{width:'100%'}" />
       </div>
     </div>
