@@ -3,7 +3,7 @@
 /* Modern Design System */
 :root {
   /* App Layout */
-  --app-max-width: 75vw;
+  --app-max-width: 100%;
 
   /* Brand Colors - Transport Theme */
   --primary-color: #2563eb;
