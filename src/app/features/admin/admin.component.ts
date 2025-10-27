@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Tabs, Tab, TabPanels, TabPanel, TabList } from 'primeng/tabs';
 import { ButtonModule } from 'primeng/button';
@@ -62,6 +62,19 @@ export class AdminComponent implements OnInit {
   readonly buses = this.busService.buses;
   readonly cities = this.citiesService.cities;
   readonly trips = this.tripsService.trips;
+
+  // Dropdown options for forms
+  readonly cityOptions = computed(() =>
+    this.cities().map(c => ({ label: c.nameFr || c.nameAr || c.id, value: c.id }))
+  );
+
+  readonly busOptions = computed(() =>
+    this.buses().map(b => ({ label: `${b.id} - ${b.license_plate}`, value: b.id }))
+  );
+
+  readonly trajetOptions = computed(() =>
+    this.trajets().map(t => ({ label: `${t.code} - ${t.origine} → ${t.destination}`, value: t.code }))
+  );
 
   // Trajets
   trajetDialog = false;
@@ -270,6 +283,22 @@ export class AdminComponent implements OnInit {
   }
 
   saveTrip() {
+    // Enrich trip form with city names from selected city IDs
+    if (this.tripForm.departureCityId) {
+      const departureCity = this.cities().find(c => c.id === this.tripForm.departureCityId);
+      if (departureCity) {
+        this.tripForm.departureCityName = departureCity.nameFr;
+        this.tripForm.departureCityNameAr = departureCity.nameAr;
+      }
+    }
+    if (this.tripForm.arrivalCityId) {
+      const arrivalCity = this.cities().find(c => c.id === this.tripForm.arrivalCityId);
+      if (arrivalCity) {
+        this.tripForm.arrivalCityName = arrivalCity.nameFr;
+        this.tripForm.arrivalCityNameAr = arrivalCity.nameAr;
+      }
+    }
+
     if (this.currentTripId) {
       this.tripsService.update(this.currentTripId, this.tripForm);
     } else {
