@@ -9,7 +9,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { FormsModule } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { TrajetsService, Trajet } from '../../core/services/trajets.service';
-import { VehiculesService, Vehicule } from '../../core/services/vehicules.service';
 import { TarifsService, Tarif } from '../../core/services/tarifs.service';
 import { BusService, Bus } from '../../core/services/bus.service';
 import { CitiesService, City } from '../../core/services/cities.service';
@@ -25,7 +24,6 @@ import { TripsService, Trip } from '../../core/services/trips.service';
 export class AdminComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly trajetsService = inject(TrajetsService);
-  private readonly vehiculesService = inject(VehiculesService);
   private readonly tarifsService = inject(TarifsService);
   private readonly busService = inject(BusService);
   private readonly citiesService = inject(CitiesService);
@@ -49,15 +47,13 @@ export class AdminComponent implements OnInit {
       'villes': 1,
       'trips': 2,
       'trajets': 3,
-      'vehicules': 4,
-      'tarifs': 5
+      'tarifs': 4
     };
     return tabName ? (tabMap[tabName] ?? 0) : 0;
   }
 
   // Use service signals directly
   readonly trajets = this.trajetsService.trajets;
-  readonly vehicules = this.vehiculesService.vehicules;
   readonly tarifs = this.tarifsService.tarifs;
   readonly buses = this.busService.buses;
   readonly cities = this.citiesService.cities;
@@ -112,42 +108,6 @@ export class AdminComponent implements OnInit {
     if (t.id !== undefined) {
       this.trajetsService.delete(t.id);
     }
-  }
-
-  // Véhicules
-  vehiculeDialog = false;
-  currentVehiculeId: number | null = null;
-  vehiculeForm: Partial<Vehicule> = {};
-
-  openVehicule() {
-    this.currentVehiculeId = null;
-    this.vehiculeForm = {};
-    this.vehiculeDialog = true;
-  }
-
-  editVehicule(v: Vehicule) {
-    this.currentVehiculeId = v.id;
-    this.vehiculeForm = { ...v };
-    this.vehiculeDialog = true;
-  }
-
-  saveVehicule() {
-    if (this.currentVehiculeId) {
-      this.vehiculesService.update(this.currentVehiculeId, this.vehiculeForm);
-    } else {
-      if (this.vehiculeForm.matricule && this.vehiculeForm.modele && this.vehiculeForm.capacite !== undefined) {
-        this.vehiculesService.create({
-          matricule: this.vehiculeForm.matricule,
-          modele: this.vehiculeForm.modele,
-          capacite: this.vehiculeForm.capacite
-        });
-      }
-    }
-    this.vehiculeDialog = false;
-  }
-
-  removeVehicule(v: Vehicule) {
-    this.vehiculesService.delete(v.id);
   }
 
   // Tarifs

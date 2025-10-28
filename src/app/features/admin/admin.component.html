@@ -4,8 +4,7 @@
     <p-tab [value]="1" label="Villes"></p-tab>
     <p-tab [value]="2" label="Trips"></p-tab>
     <p-tab [value]="3" label="Trajets"></p-tab>
-    <p-tab [value]="4" label="Véhicules"></p-tab>
-    <p-tab [value]="5" label="Tarifs"></p-tab>
+    <p-tab [value]="4" label="Tarifs"></p-tab>
   </p-tablist>
   <p-tabpanels>
     <!-- Bus Tab -->
@@ -109,28 +108,6 @@
     </p-tabpanel>
     <p-tabpanel [value]="4">
       <div class="flex justify-content-between align-items-center mb-2">
-        <h3 class="m-0">Véhicules</h3>
-        <button pButton label="Ajouter" (click)="openVehicule()"></button>
-      </div>
-      <p-table [value]="vehicules()" [paginator]="true" [rows]="10">
-        <ng-template pTemplate="header">
-          <tr><th>Matricule</th><th>Modèle</th><th>Capacité</th><th>Actions</th></tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-v>
-          <tr>
-            <td>{{ v.matricule }}</td>
-            <td>{{ v.modele }}</td>
-            <td>{{ v.capacite }}</td>
-            <td>
-              <button pButton icon="pi pi-pencil" (click)="editVehicule(v)"></button>
-              <button pButton icon="pi pi-times" severity="danger" (click)="removeVehicule(v)"></button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </p-tabpanel>
-    <p-tabpanel [value]="5">
-      <div class="flex justify-content-between align-items-center mb-2">
         <h3 class="m-0">Tarifs</h3>
         <button pButton label="Ajouter" (click)="openTarif()"></button>
       </div>
@@ -188,18 +165,6 @@
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="trajetDialog=false" text></button>
     <button pButton label="Enregistrer" (click)="saveTrajet()"></button>
-  </ng-template>
-</p-dialog>
-
-<p-dialog [(visible)]="vehiculeDialog" header="Véhicule" [modal]="true" [style]="{width:'420px'}">
-  <div class="flex flex-column gap-2">
-    <input pInputText placeholder="Matricule" [(ngModel)]="vehiculeForm.matricule" [style]="{width:'100%'}" />
-    <input pInputText placeholder="Modèle" [(ngModel)]="vehiculeForm.modele" [style]="{width:'100%'}" />
-    <input pInputText placeholder="Capacité" [(ngModel)]="vehiculeForm.capacite" [style]="{width:'100%'}" />
-  </div>
-  <ng-template pTemplate="footer">
-    <button pButton label="Annuler" (click)="vehiculeDialog=false" text></button>
-    <button pButton label="Enregistrer" (click)="saveVehicule()"></button>
   </ng-template>
 </p-dialog>
 
