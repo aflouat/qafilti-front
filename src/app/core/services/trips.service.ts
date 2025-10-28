@@ -14,6 +14,7 @@ export interface Trip {
   vehicleId?: string;
   departureTime?: string;
   arrivalTime?: string;
+  trajetCode?: string;
 }
 
 @Injectable({ providedIn: 'root' })

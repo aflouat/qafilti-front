@@ -64,12 +64,13 @@
       </div>
       <p-table [value]="trips()" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
-          <tr><th>ID</th><th>Date</th><th>Départ</th><th>Arrivée</th><th>Bus</th><th>Heures</th><th>Actions</th></tr>
+          <tr><th>ID</th><th>Date</th><th>Trajet</th><th>Départ</th><th>Arrivée</th><th>Bus</th><th>Heures</th><th>Actions</th></tr>
         </ng-template>
         <ng-template pTemplate="body" let-t>
           <tr>
             <td>{{ t.tripId }}</td>
             <td>{{ t.date }}</td>
+            <td>{{ t.trajetCode }}</td>
             <td>{{ t.departureCityName || t.departureCityId }}</td>
             <td>{{ t.arrivalCityName || t.arrivalCityId }}</td>
             <td>{{ t.vehicleId }}</td>
@@ -210,6 +211,19 @@
     <div>
       <label class="block mb-1">Date</label>
       <input pInputText type="date" [(ngModel)]="tripForm.date" [style]="{width:'100%'}" />
+    </div>
+
+    <div>
+      <label class="block mb-1">Trajet</label>
+      <p-select
+        [options]="trajetOptions()"
+        [(ngModel)]="tripForm.trajetCode"
+        placeholder="Sélectionner un trajet"
+        [style]="{width:'100%'}"
+        optionLabel="label"
+        optionValue="value"
+        [filter]="true">
+      </p-select>
     </div>
 
     <div>
