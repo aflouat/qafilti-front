@@ -17,7 +17,7 @@
       "responses": [
         {
           "uuid": "response-cities-get-200",
-          "body": "{{> (dataRaw 'cities')}}",
+          "body": "[{\"id\":\"1\",\"nameFr\":\"Nouakchott\",\"nameAr\":\"نواكشوط\"},{\"id\":\"2\",\"nameFr\":\"Nouadhibou\",\"nameAr\":\"نواذيبو\"},{\"id\":\"3\",\"nameFr\":\"Rosso\",\"nameAr\":\"روصو\"},{\"id\":\"4\",\"nameFr\":\"Kaédi\",\"nameAr\":\"كيهيدي\"},{\"id\":\"5\",\"nameFr\":\"Zouérat\",\"nameAr\":\"ازويرات\"},{\"id\":\"6\",\"nameFr\":\"Atar\",\"nameAr\":\"أطار\"},{\"id\":\"7\",\"nameFr\":\"Sélibaby\",\"nameAr\":\"سيلبابي\"},{\"id\":\"8\",\"nameFr\":\"Kiffa\",\"nameAr\":\"كيفة\"},{\"id\":\"9\",\"nameFr\":\"Néma\",\"nameAr\":\"النعمة\"},{\"id\":\"10\",\"nameFr\":\"Tidjikja\",\"nameAr\":\"تجكجة\"},{\"id\":\"11\",\"nameFr\":\"Aleg\",\"nameAr\":\"آلاك\"},{\"id\":\"12\",\"nameFr\":\"Boutilimit\",\"nameAr\":\"بوتلميت\"},{\"id\":\"13\",\"nameFr\":\"Akjoujt\",\"nameAr\":\"أكجوجت\"}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -85,7 +85,7 @@
       "responses": [
         {
           "uuid": "response-bus-get-200",
-          "body": "{{> (dataRaw 'buses')}}",
+          "body": "[{\"id\":\"B006\",\"license_plate\":\"M33721\",\"status\":\"active\",\"capacity\":15},{\"id\":\"B007\",\"license_plate\":\"M60123\",\"status\":\"maintenance\",\"capacity\":12},{\"id\":\"B008\",\"license_plate\":\"M99876\",\"status\":\"active\",\"capacity\":18}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -119,7 +119,7 @@
       "responses": [
         {
           "uuid": "response-trips-get-200",
-          "body": "{{> (dataRaw 'trips')}}",
+          "body": "[{\"tripId\":\"TR001\",\"date\":\"2025-08-31\",\"departureCityId\":\"1\",\"departureCityName\":\"Nouakchott\",\"departureCityNameAr\":\"نواكشوط\",\"arrivalCityId\":\"2\",\"arrivalCityName\":\"Nouadhibou\",\"arrivalCityNameAr\":\"نواذيبو\",\"vehicleId\":\"B006\",\"departureTime\":\"08:00\",\"arrivalTime\":\"14:30\"},{\"tripId\":\"TR002\",\"date\":\"2025-09-01\",\"departureCityId\":\"6\",\"departureCityName\":\"Atar\",\"departureCityNameAr\":\"أطار\",\"arrivalCityId\":\"5\",\"arrivalCityName\":\"Zouérat\",\"arrivalCityNameAr\":\"ازويرات\",\"vehicleId\":\"B008\",\"departureTime\":\"10:00\",\"arrivalTime\":\"11:30\"},{\"tripId\":\"TR003\",\"date\":\"2025-09-02\",\"departureCityId\":\"4\",\"departureCityName\":\"Kaédi\",\"departureCityNameAr\":\"كيهيدي\",\"arrivalCityId\":\"7\",\"arrivalCityName\":\"Sélibaby\",\"arrivalCityNameAr\":\"سيلبابي\",\"vehicleId\":\"B007\",\"departureTime\":\"15:00\",\"arrivalTime\":\"17:00\"}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -153,7 +153,7 @@
       "responses": [
         {
           "uuid": "response-reservation-get-200",
-          "body": "{{> (dataRaw 'reservations')}}",
+          "body": "[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"passengerPhone\":\"222-44-55-66-77\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"passengerPhone\":\"222-88-77-66-55\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"passengerPhone\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -187,7 +187,7 @@
       "responses": [
         {
           "uuid": "response-passagers-get-200",
-          "body": "{{> (dataRaw 'passagers')}}",
+          "body": "[{\"id\":1,\"nom\":\"Jean Dupont\",\"telephone\":\"0601020304\",\"document\":\"CIN123456\"},{\"id\":2,\"nom\":\"Marie Curie\",\"telephone\":\"0605060708\",\"document\":\"CIN654321\"},{\"id\":3,\"nom\":\"Ali Ben Ali\",\"telephone\":\"0611121314\",\"document\":\"CIN112233\"}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -221,7 +221,7 @@
       "responses": [
         {
           "uuid": "response-colis-get-200",
-          "body": "{{> (dataRaw 'colis')}}",
+          "body": "[{\"id\":1,\"code\":\"CLS-0001\",\"expediteur\":\"Nadia\",\"destinataire\":\"Karim\",\"poids\":3.2,\"tarif\":8,\"statut\":\"En transit\"},{\"id\":2,\"code\":\"CLS-0002\",\"expediteur\":\"Fatima\",\"destinataire\":\"Hassan\",\"poids\":5.0,\"tarif\":12,\"statut\":\"Livré\"}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -255,7 +255,7 @@
       "responses": [
         {
           "uuid": "response-vehicules-get-200",
-          "body": "{{> (dataRaw 'vehicules')}}",
+          "body": "[{\"id\":1,\"matricule\":\"ABC-123\",\"modele\":\"Mercedes Sprinter\",\"capacite\":18},{\"id\":2,\"matricule\":\"DEF-456\",\"modele\":\"Renault Master\",\"capacite\":15}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -289,7 +289,7 @@
       "responses": [
         {
           "uuid": "response-tarifs-get-200",
-          "body": "{{> (dataRaw 'tarifs')}}",
+          "body": "[{\"id\":1,\"trajet\":\"Casa → Rabat\",\"prix\":12},{\"id\":2,\"trajet\":\"Rabat → Fès\",\"prix\":18},{\"id\":3,\"trajet\":\"Casa → Marrakech\",\"prix\":20}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -323,7 +323,7 @@
       "responses": [
         {
           "uuid": "response-trajets-get-200",
-          "body": "{{> (dataRaw 'trajets')}}",
+          "body": "[{\"id\":1,\"code\":\"TRJ001\",\"origine\":\"Nouakchott\",\"destination\":\"Nouadhibou\"},{\"id\":2,\"code\":\"TRJ002\",\"origine\":\"Atar\",\"destination\":\"Zouérat\"},{\"id\":3,\"code\":\"TRJ003\",\"origine\":\"Kaédi\",\"destination\":\"Sélibaby\"}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
