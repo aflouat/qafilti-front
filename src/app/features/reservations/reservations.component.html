@@ -19,11 +19,22 @@
       <td>{{ r.trajet }}</td>
       <td>{{ r.date | date:'shortDate' }}</td>
       <td>{{ r.prix | currency:'EUR' }}</td>
-      <td><p-tag [value]="r.statut" [severity]="r.statut==='Confirmée' ? 'success' : 'warning'"/></td>
+      <td><p-tag [value]="r.statut" [severity]="r.statut==='Validée' ? 'success' : 'warning'"/></td>
       <td class="flex gap-2">
         <button pButton icon="pi pi-pencil" (click)="edit(r)"></button>
-        <button pButton *ngIf="r.statut==='Brouillon'" icon="pi pi-check" severity="success" (click)="confirm(r)" tooltip="Confirmer"></button>
-        <button pButton icon="pi pi-print" (click)="print(r)" tooltip="Imprimer"></button>
+        <button pButton
+          *ngIf="r.statut==='En attente' && canValidate()"
+          icon="pi pi-check"
+          severity="success"
+          (click)="confirm(r)"
+          tooltip="Valider (Caissier uniquement)">
+        </button>
+        <button pButton
+          *ngIf="canPrint()"
+          icon="pi pi-print"
+          (click)="print(r)"
+          tooltip="Imprimer (Caissier uniquement)">
+        </button>
         <button pButton icon="pi pi-times" (click)="remove(r)" severity="danger"></button>
       </td>
     </tr>

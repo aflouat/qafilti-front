@@ -14,6 +14,7 @@ import { ReservationsService, Reservation } from '../../core/services/reservatio
 import { TripsService } from '../../core/services/trips.service';
 import { PassagersService } from '../../core/services/passagers.service';
 import { TicketPrintComponent } from './ticket-print.component';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   standalone: true,
@@ -26,11 +27,24 @@ export class ReservationsComponent {
   private readonly reservationsService = inject(ReservationsService);
   private readonly tripsService = inject(TripsService);
   private readonly passagersService = inject(PassagersService);
+  private readonly authService = inject(AuthService);
 
   // Use service signals directly
   readonly reservations = this.reservationsService.reservations;
+  readonly userRole = this.authService.userRole;
 
-  statuts = [{ label:'Brouillon', value:'Brouillon' },{ label:'Confirmée', value:'Confirmée' }];
+  statuts = [{ label:'En attente', value:'En attente' },{ label:'Validée', value:'Validée' }];
+
+  // Permissions pour les actions sensibles
+  readonly canValidate = computed(() => {
+    const role = this.userRole();
+    return role === 'caissier' || role === 'admin';
+  });
+
+  readonly canPrint = computed(() => {
+    const role = this.userRole();
+    return role === 'caissier' || role === 'admin';
+  });
 
   // Dropdown options for trips and passengers
   readonly tripOptions = computed(() =>
@@ -55,7 +69,7 @@ export class ReservationsComponent {
 
   openNew() {
     this.currentId = null;
-    this.form = { date: new Date(), statut: 'Brouillon', prix: 0, passager: '', trajet: '' };
+    this.form = { date: new Date(), statut: 'En attente', prix: 0, passager: '', trajet: '' };
     this.dialog = true;
   }
 
