@@ -14,7 +14,7 @@
         <h3 class="m-0">Bus</h3>
         <button pButton label="Ajouter" (click)="openBus()"></button>
       </div>
-      <p-table [value]="buses()">
+      <p-table [value]="buses()" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
           <tr><th>ID</th><th>Immatriculation</th><th>Statut</th><th>Capacité</th><th>Actions</th></tr>
         </ng-template>
@@ -39,7 +39,7 @@
         <h3 class="m-0">Villes</h3>
         <button pButton label="Ajouter" (click)="openCity()"></button>
       </div>
-      <p-table [value]="cities()">
+      <p-table [value]="cities()" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
           <tr><th>ID</th><th>Nom (FR)</th><th>Nom (AR)</th><th>Actions</th></tr>
         </ng-template>
@@ -63,7 +63,7 @@
         <h3 class="m-0">Trips (Voyages)</h3>
         <button pButton label="Ajouter" (click)="openTrip()"></button>
       </div>
-      <p-table [value]="trips()">
+      <p-table [value]="trips()" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
           <tr><th>ID</th><th>Date</th><th>Départ</th><th>Arrivée</th><th>Bus</th><th>Heures</th><th>Actions</th></tr>
         </ng-template>
@@ -90,7 +90,7 @@
         <h3 class="m-0">Trajets</h3>
         <button pButton label="Ajouter" (click)="openTrajet()"></button>
       </div>
-      <p-table [value]="trajets()">
+      <p-table [value]="trajets()" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
           <tr><th>Code</th><th>Origine</th><th>Destination</th><th>Actions</th></tr>
         </ng-template>
@@ -112,7 +112,7 @@
         <h3 class="m-0">Véhicules</h3>
         <button pButton label="Ajouter" (click)="openVehicule()"></button>
       </div>
-      <p-table [value]="vehicules()">
+      <p-table [value]="vehicules()" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
           <tr><th>Matricule</th><th>Modèle</th><th>Capacité</th><th>Actions</th></tr>
         </ng-template>
@@ -134,7 +134,7 @@
         <h3 class="m-0">Tarifs</h3>
         <button pButton label="Ajouter" (click)="openTarif()"></button>
       </div>
-      <p-table [value]="tarifs()">
+      <p-table [value]="tarifs()" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
           <tr><th>Trajet</th><th>Prix (€)</th><th>Actions</th></tr>
         </ng-template>
