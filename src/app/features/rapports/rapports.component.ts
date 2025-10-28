@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CardModule } from 'primeng/card';
-import { CurrencyPipe, DecimalPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { RapportsService } from '../../core/services/rapports.service';
 
 @Component({
   standalone: true,
   selector: 'app-rapports',
-  imports: [CardModule, TableModule, DecimalPipe, CurrencyPipe],
+  imports: [CardModule, TableModule, DecimalPipe],
   templateUrl: './rapports.component.html',
   styleUrls: ['./rapports.component.css']
 })

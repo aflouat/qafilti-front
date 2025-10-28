@@ -1,5 +1,5 @@
 import { Component, inject, computed } from '@angular/core';
-import { DatePipe, CurrencyPipe, CommonModule } from '@angular/common';
+import { DatePipe, DecimalPipe, CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -19,7 +19,7 @@ import { AuthService } from '../../auth/auth.service';
 @Component({
   standalone: true,
   selector: 'app-reservations',
-  imports: [TableModule, DialogModule, InputTextModule, Select, DatePicker, ButtonModule, TagModule, FormsModule, InputNumberModule, TooltipModule, DatePipe, CurrencyPipe, CommonModule, TicketPrintComponent],
+  imports: [TableModule, DialogModule, InputTextModule, Select, DatePicker, ButtonModule, TagModule, FormsModule, InputNumberModule, TooltipModule, DatePipe, DecimalPipe, CommonModule, TicketPrintComponent],
   templateUrl: './reservations.component.html',
   styleUrls: ['./reservations.component.css']
 })
