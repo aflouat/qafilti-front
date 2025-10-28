@@ -153,7 +153,7 @@
       "responses": [
         {
           "uuid": "response-reservation-get-200",
-          "body": "[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"passengerPhone\":\"222-44-55-66-77\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"passengerPhone\":\"222-88-77-66-55\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"passengerPhone\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]",
+          "body": "[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"telephone1\":\"222-44-55-66-77\",\"telephone2\":\"222-99-88-77-66\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"telephone1\":\"222-88-77-66-55\",\"telephone2\":\"222-33-44-55-66\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"telephone1\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -357,7 +357,7 @@
       "responses": [
         {
           "uuid": "response-paiements-get-200",
-          "body": "[\n  {\"ref\": \"12345\", \"type\": \"Acompte\", \"montant\": 500, \"mode\": \"Carte bancaire\", \"note\": \"Premier paiement\"},\n  {\"ref\": \"67890\", \"type\": \"Solde\", \"montant\": 1500, \"mode\": \"Virement\", \"note\": \"Paiement final\"}\n]",
+          "body": "[{\"id\":1,\"ref\":\"PAY001\",\"reservationId\":\"RES001\",\"type\":\"Complet\",\"montant\":1500,\"mode\":\"Espèces\",\"date\":\"2025-08-29T10:30:00Z\",\"note\":\"Paiement réservation Nouakchott-Nouadhibou\"},{\"id\":2,\"ref\":\"PAY002\",\"reservationId\":\"RES002\",\"type\":\"Acompte\",\"montant\":500,\"mode\":\"Carte bancaire\",\"date\":\"2025-08-30T13:00:00Z\",\"note\":\"Acompte réservation Atar-Zouérat\"},{\"id\":3,\"ref\":\"PAY003\",\"reservationId\":\"RES002\",\"type\":\"Solde\",\"montant\":500,\"mode\":\"Espèces\",\"date\":\"2025-08-31T09:00:00Z\",\"note\":\"Solde réservation Atar-Zouérat\"},{\"id\":4,\"ref\":\"PAY004\",\"reservationId\":\"RES003\",\"type\":\"Complet\",\"montant\":1500,\"mode\":\"Virement\",\"date\":\"2025-08-31T14:30:00Z\",\"note\":\"Paiement réservation Nouakchott-Nouadhibou\"}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -679,17 +679,17 @@
     {
       "uuid": "bucket-reservations",
       "name": "reservations",
-      "value": "[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"passengerPhone\":\"222-44-55-66-77\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"passengerPhone\":\"222-88-77-66-55\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"passengerPhone\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]"
+      "value": "[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"telephone1\":\"222-44-55-66-77\",\"telephone2\":\"222-99-88-77-66\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"telephone1\":\"222-88-77-66-55\",\"telephone2\":\"222-33-44-55-66\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"telephone1\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]"
     },
     {
       "uuid": "bucket-passagers",
       "name": "passagers",
-      "value": "[{\"id\":1,\"nom\":\"Jean Dupont\",\"telephone\":\"0601020304\",\"document\":\"CIN123456\"},{\"id\":2,\"nom\":\"Marie Curie\",\"telephone\":\"0605060708\",\"document\":\"CIN654321\"},{\"id\":3,\"nom\":\"Ali Ben Ali\",\"telephone\":\"0611121314\",\"document\":\"CIN112233\"}]"
+      "value": "[{\"id\":1,\"nom\":\"Aliou Diallo\",\"telephone\":\"222-44-55-66-77\"},{\"id\":2,\"nom\":\"Fatou Fall\",\"telephone\":\"222-88-77-66-55\"},{\"id\":3,\"nom\":\"Ahmed Ould Mohamed\",\"telephone\":\"222-11-22-33-44\"}]"
     },
     {
       "uuid": "bucket-colis",
       "name": "colis",
-      "value": "[{\"id\":1,\"code\":\"CLS-0001\",\"expediteur\":\"Nadia\",\"destinataire\":\"Karim\",\"poids\":3.2,\"tarif\":8,\"statut\":\"En transit\"},{\"id\":2,\"code\":\"CLS-0002\",\"expediteur\":\"Fatima\",\"destinataire\":\"Hassan\",\"poids\":5.0,\"tarif\":12,\"statut\":\"Livré\"}]"
+      "value": "[{\"id\":1,\"code\":\"CLS-0001\",\"expediteur\":\"Aminata Ba\",\"destinataire\":\"Mohamed Ould Cheikh\",\"poids\":3.2,\"tarif\":160,\"statut\":\"En transit\"},{\"id\":2,\"code\":\"CLS-0002\",\"expediteur\":\"Fatimata Mint Abdel\",\"destinataire\":\"Hassan Sow\",\"poids\":5.0,\"tarif\":250,\"statut\":\"Livré\"},{\"id\":3,\"code\":\"CLS-0003\",\"expediteur\":\"Mariam Kane\",\"destinataire\":\"Ibrahim Diallo\",\"poids\":2.5,\"tarif\":125,\"statut\":\"En attente\"}]"
     },
     {
       "uuid": "bucket-vehicules",
@@ -699,7 +699,7 @@
     {
       "uuid": "bucket-tarifs",
       "name": "tarifs",
-      "value": "[{\"id\":1,\"trajet\":\"Casa → Rabat\",\"prix\":12},{\"id\":2,\"trajet\":\"Rabat → Fès\",\"prix\":18},{\"id\":3,\"trajet\":\"Casa → Marrakech\",\"prix\":20}]"
+      "value": "[{\"id\":1,\"trajet\":\"Nouakchott → Nouadhibou\",\"prix\":1500},{\"id\":2,\"trajet\":\"Atar → Zouérat\",\"prix\":1000},{\"id\":3,\"trajet\":\"Kaédi → Sélibaby\",\"prix\":800}]"
     },
     {
       "uuid": "bucket-trajets",
