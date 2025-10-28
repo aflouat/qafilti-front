@@ -46,6 +46,16 @@ export class ReservationsComponent {
     return role === 'caissier' || role === 'admin';
   });
 
+  // Vérifier si l'utilisateur peut supprimer une réservation
+  canDelete(reservation: Reservation): boolean {
+    const role = this.userRole();
+    // Admin et caissier peuvent supprimer n'importe quelle réservation
+    if (role === 'admin' || role === 'caissier') return true;
+    // Comptoir peut uniquement supprimer les réservations "En attente"
+    if (role === 'comptoir') return reservation.statut === 'En attente';
+    return false;
+  }
+
   // Dropdown options for trips and passengers
   readonly tripOptions = computed(() =>
     this.tripsService.trips().map(trip => ({

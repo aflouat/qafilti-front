@@ -35,7 +35,13 @@
           (click)="print(r)"
           tooltip="Imprimer (Caissier uniquement)">
         </button>
-        <button pButton icon="pi pi-times" (click)="remove(r)" severity="danger"></button>
+        <button pButton
+          *ngIf="canDelete(r)"
+          icon="pi pi-times"
+          (click)="remove(r)"
+          severity="danger"
+          [tooltip]="r.statut === 'Validée' ? 'Seul le caissier peut supprimer une réservation validée' : 'Supprimer'">
+        </button>
       </td>
     </tr>
   </ng-template>
