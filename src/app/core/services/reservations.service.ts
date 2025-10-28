@@ -15,7 +15,7 @@ export interface Reservation {
   prix?: number;
   netAmount?: number;
   seatNumber?: string;
-  statut?: 'Brouillon' | 'Confirmée' | 'CONFIRMED' | 'PENDING' | 'CREATED';
+  statut?: 'En attente' | 'Validée' | 'CONFIRMED' | 'PENDING' | 'CREATED';
   status?: string;
   createdAt?: string;
 }
@@ -32,7 +32,7 @@ export class ReservationsService {
   readonly reservationsCount = computed(() => this._reservations().length);
   readonly confirmedCount = computed(() => {
     return this._reservations().filter(r =>
-      r.statut === 'Confirmée' || r.status === 'CONFIRMED'
+      r.statut === 'Validée' || r.status === 'CONFIRMED'
     ).length;
   });
   readonly todayCount = computed(() => {
@@ -86,16 +86,19 @@ export class ReservationsService {
   }
 
   // Map English status to French
-  private mapStatus(status?: string): 'Brouillon' | 'Confirmée' {
-    if (!status) return 'Brouillon';
-    const statusMap: Record<string, 'Brouillon' | 'Confirmée'> = {
-      'CONFIRMED': 'Confirmée',
-      'PENDING': 'Brouillon',
-      'CREATED': 'Brouillon',
-      'Confirmée': 'Confirmée',
-      'Brouillon': 'Brouillon'
+  private mapStatus(status?: string): 'En attente' | 'Validée' {
+    if (!status) return 'En attente';
+    const statusMap: Record<string, 'En attente' | 'Validée'> = {
+      'CONFIRMED': 'Validée',
+      'PENDING': 'En attente',
+      'CREATED': 'En attente',
+      'Validée': 'Validée',
+      'En attente': 'En attente',
+      // Legacy support
+      'Confirmée': 'Validée',
+      'Brouillon': 'En attente'
     };
-    return statusMap[status] || 'Brouillon';
+    return statusMap[status] || 'En attente';
   }
 
   // CRUD Methods
@@ -141,15 +144,20 @@ export class ReservationsService {
     return this._reservations().length < initialLength;
   }
 
-  // Business logic methods
-  confirm(id: number | string): boolean {
+  // Business logic methods - Valider une réservation (seul le caissier peut le faire)
+  validate(id: number | string): boolean {
     const reservation = this.getById(id);
     if (!reservation) return false;
-    if (reservation.statut === 'Confirmée' || reservation.status === 'CONFIRMED') {
+    if (reservation.statut === 'Validée' || reservation.status === 'CONFIRMED') {
       return false;
     }
 
-    return this.update(id, { statut: 'Confirmée', status: 'CONFIRMED' });
+    return this.update(id, { statut: 'Validée', status: 'CONFIRMED' });
+  }
+
+  // Legacy method for compatibility
+  confirm(id: number | string): boolean {
+    return this.validate(id);
   }
 
   private generateId(): number {
