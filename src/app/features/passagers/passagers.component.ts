@@ -42,11 +42,10 @@ export class PassagersComponent {
       this.passagersService.update(this.currentId, this.form);
     } else {
       // Create new
-      if (this.form.nom && this.form.telephone && this.form.document) {
+      if (this.form.nom && this.form.telephone) {
         this.passagersService.create({
           nom: this.form.nom,
-          telephone: this.form.telephone,
-          document: this.form.document
+          telephone: this.form.telephone
         });
       }
     }
