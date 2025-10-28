@@ -61,7 +61,10 @@ export class ReservationsComponent {
 
   edit(r: Reservation) {
     this.currentId = r.id || r.reservationId;
-    this.form = { ...r };
+    this.form = {
+      ...r,
+      date: r.date ? (typeof r.date === 'string' ? new Date(r.date) : r.date) : undefined
+    };
     this.dialog = true;
   }
 
