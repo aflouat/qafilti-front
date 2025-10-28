@@ -15,9 +15,15 @@ import { roleGuard } from './core/guards/role.guard';
  * Configuration des routes avec protection par authentification et rôles
  *
  * Rôles disponibles :
- * - comptoir : Crée les réservations (brouillon) et gère les passagers
- * - caissier : Confirme les réservations après paiement, gère colis et paiements
- * - admin : Accès complet (administration et rapports)
+ * - comptoir : Crée les réservations (En attente), gère passagers et colis
+ * - caissier : Valide et imprime les réservations, gère paiements, accède aux rapports
+ * - admin : Accès complet (administration, rapports et toutes opérations)
+ *
+ * Droits d'accès par page :
+ * - Dashboard : Tous
+ * - Réservations, Passagers, Colis : Tous (comptoir, caissier, admin)
+ * - Paiements, Rapports : Caissier et admin uniquement
+ * - Administration : Admin uniquement
  */
 export const routes: Routes = [
   // Routes publiques
@@ -31,39 +37,39 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
-  // Réservations - Accessible au comptoir (création), caissier (confirmation) et admin
+  // Réservations - Accessible à tous les rôles
   {
     path: 'reservations',
     component: ReservationsComponent,
     canActivate: [authGuard, roleGuard(['comptoir', 'caissier', 'admin'])]
   },
 
-  // Passagers - Accessible au comptoir et admin
+  // Passagers - Accessible à tous les rôles
   {
     path: 'passagers',
     component: PassagersComponent,
-    canActivate: [authGuard, roleGuard(['comptoir', 'admin'])]
+    canActivate: [authGuard, roleGuard(['comptoir', 'caissier', 'admin'])]
   },
 
-  // Colis - Accessible au caissier et admin
+  // Colis - Accessible à tous les rôles
   {
     path: 'colis',
     component: ColisComponent,
-    canActivate: [authGuard, roleGuard(['caissier', 'admin'])]
+    canActivate: [authGuard, roleGuard(['comptoir', 'caissier', 'admin'])]
   },
 
-  // Paiements - Accessible au caissier et admin
+  // Paiements - Accessible au caissier et admin uniquement
   {
     path: 'paiements',
     component: PaiementsComponent,
     canActivate: [authGuard, roleGuard(['caissier', 'admin'])]
   },
 
-  // Rapports - Accessible uniquement à l'admin
+  // Rapports - Accessible au caissier et admin uniquement
   {
     path: 'rapports',
     component: RapportsComponent,
-    canActivate: [authGuard, roleGuard(['admin'])]
+    canActivate: [authGuard, roleGuard(['caissier', 'admin'])]
   },
 
   // Administration - Accessible uniquement à l'admin
