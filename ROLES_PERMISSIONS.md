@@ -6,9 +6,14 @@ Ce document décrit le système d'authentification et d'autorisation basé sur l
 
 L'application utilise un système de contrôle d'accès basé sur les rôles (RBAC - Role-Based Access Control) avec trois rôles principaux :
 
-- **Comptoir** : Agent de comptoir (création de réservations en brouillon et gestion des passagers)
-- **Caissier** : Agent caissier (confirmation de réservations après paiement, gestion des colis et paiements)
+- **Comptoir** : Agent de comptoir (création de réservations "En attente", gestion des passagers et colis)
+- **Caissier** : Agent caissier (validation de réservations après paiement, gestion des colis, paiements et rapports)
 - **Admin** : Administrateur (accès complet)
+
+**Nouveau dans v0.0.5** :
+- Menu dynamique qui s'adapte au rôle
+- Permissions de suppression granulaires
+- Accès du caissier aux rapports
 
 ## Utilisateurs Mock Disponibles
 
@@ -27,17 +32,29 @@ Ces utilisateurs sont affichés directement sur la page de connexion pour facili
 | Page/Fonctionnalité | Comptoir | Caissier | Admin |
 |---------------------|----------|----------|-------|
 | **Dashboard** | ✅ | ✅ | ✅ |
-| **Réservations** | ✅ (Création) | ✅ (Confirmation) | ✅ (Complet) |
-| **Passagers** | ✅ | ❌ | ✅ |
-| **Colis** | ❌ | ✅ | ✅ |
+| **Réservations** | ✅ (Création) | ✅ (Validation) | ✅ (Complet) |
+| **Passagers** | ✅ | ✅ | ✅ |
+| **Colis** | ✅ | ✅ | ✅ |
 | **Paiements** | ❌ | ✅ | ✅ |
-| **Rapports** | ❌ | ❌ | ✅ |
+| **Rapports** | ❌ | ✅ | ✅ |
 | **Administration** | ❌ | ❌ | ✅ |
 
+**Permissions spéciales** :
+
+| Action | Comptoir | Caissier | Admin |
+|--------|----------|----------|-------|
+| **Créer réservation** | ✅ (Statut "En attente") | ✅ | ✅ |
+| **Valider réservation** | ❌ | ✅ | ✅ |
+| **Imprimer ticket** | ❌ | ✅ | ✅ |
+| **Supprimer réservation "En attente"** | ✅ | ✅ | ✅ |
+| **Supprimer réservation "Validée"** | ❌ | ✅ | ✅ |
+
 **Notes** :
-- **Comptoir** : Crée les réservations avec statut "Brouillon" uniquement
-- **Caissier** : Consulte les réservations, enregistre les paiements, confirme les réservations (Brouillon → Confirmée), imprime les tickets
+- **Comptoir** : Crée les réservations avec statut "En attente" uniquement, peut supprimer uniquement les réservations "En attente"
+- **Caissier** : Valide les réservations après paiement (En attente → Validée), imprime les tickets, accède aux rapports
 - **Admin** : Accès complet à toutes les fonctionnalités
+
+**Menu dynamique** : Les liens du menu principal s'affichent automatiquement selon le rôle de l'utilisateur connecté.
 
 ## Architecture Technique
 
@@ -147,8 +164,60 @@ Toutes les routes sont protégées sauf `/login` et `/inscription`.
   path: 'reservations',
   component: ReservationsComponent,
   canActivate: [authGuard, roleGuard(['comptoir', 'caissier', 'admin'])]
+},
+{
+  path: 'rapports',
+  component: RapportsComponent,
+  canActivate: [authGuard, roleGuard(['caissier', 'admin'])]  // ✅ NOUVEAU: Caissier a accès
 }
 ```
+
+### 4. Menu Dynamique par Rôle
+
+**Fichier** : `src/app/app.ts`
+
+**Nouveau dans v0.0.5** : Le menu s'adapte automatiquement au rôle.
+
+**Fonctionnement** :
+```typescript
+readonly items = computed(() => {
+  const role = this.auth.user()?.role || 'comptoir';
+  const menuItems: any[] = [
+    { label: 'Tableau de bord', icon: 'pi pi-home', routerLink: [''] }
+  ];
+
+  // Menu Opérations - accessible à tous
+  const operationsItems = [
+    { label: 'Réservations', icon: 'pi pi-ticket', routerLink: ['reservations'] },
+    { label: 'Passagers', icon: 'pi pi-users', routerLink: ['passagers'] },
+    { label: 'Colis', icon: 'pi pi-inbox', routerLink: ['colis'] }
+  ];
+
+  // Paiements - caissier et admin uniquement
+  if (role === 'caissier' || role === 'admin') {
+    operationsItems.push({ label: 'Paiements', icon: 'pi pi-wallet', routerLink: ['paiements'] });
+  }
+
+  menuItems.push({ label: 'Opérations', icon: 'pi pi-briefcase', items: operationsItems });
+
+  // Rapports - caissier et admin uniquement
+  if (role === 'caissier' || role === 'admin') {
+    menuItems.push({ label: 'Rapports', icon: 'pi pi-chart-line', routerLink: ['rapports'] });
+  }
+
+  // Administration - admin uniquement
+  if (role === 'admin') {
+    menuItems.push({ label: 'Administration', icon: 'pi pi-cog', items: [...] });
+  }
+
+  return [...menuItems, ...authItems];
+});
+```
+
+**Sécurité** :
+- Menu : Cache les liens non autorisés
+- Routes : Bloque l'accès direct via URL
+- Double protection pour maximum de sécurité
 
 ## Persistance de Session
 
@@ -345,4 +414,52 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
 | UI Connexion | ✅ Implémenté | `login.component.ts/html` |
 | Documentation | ✅ Complète | Ce fichier |
 
+## Permissions Granulaires dans les Composants
+
+**Nouveau dans v0.0.5** : Permissions au niveau des actions
+
+**Exemple - ReservationsComponent** :
+```typescript
+// Méthode pour vérifier si l'utilisateur peut supprimer une réservation
+canDelete(reservation: Reservation): boolean {
+  const role = this.userRole();
+  // Admin et caissier peuvent supprimer n'importe quelle réservation
+  if (role === 'admin' || role === 'caissier') return true;
+  // Comptoir peut uniquement supprimer les réservations "En attente"
+  if (role === 'comptoir') return reservation.statut === 'En attente';
+  return false;
+}
+
+// Computed signals pour les actions sensibles
+readonly canValidate = computed(() => {
+  const role = this.userRole();
+  return role === 'caissier' || role === 'admin';
+});
+
+readonly canPrint = computed(() => {
+  const role = this.userRole();
+  return role === 'caissier' || role === 'admin';
+});
+```
+
+**Utilisation dans le template** :
+```html
+<!-- Bouton valider - visible uniquement si canValidate() -->
+<button *ngIf="canValidate()" (click)="validate(r)">Valider</button>
+
+<!-- Bouton supprimer - visible si canDelete() retourne true -->
+<button *ngIf="canDelete(r)" (click)="remove(r)">Supprimer</button>
+```
+
+---
+
 **Le système de rôles et permissions est opérationnel et prêt pour les tests !** 🎉
+
+**Version actuelle** : 0.0.5
+**Date de mise à jour** : 28 Octobre 2025
+
+**Nouveautés v0.0.5** :
+- ✅ Menu dynamique par rôle
+- ✅ Permissions de suppression granulaires
+- ✅ Caissier accède aux rapports
+- ✅ Nouveaux statuts : "En attente" / "Validée"
