@@ -62,12 +62,14 @@ export class ReservationsService {
             code: r.code || r.reservationId || '',
             passager: r.passager || r.passengerName || '',
             trajet: r.trajet || r.tripId || 'Trajet à définir',
+            date: r.date || r.createdAt || new Date().toISOString(),
             prix: r.prix ?? r.netAmount ?? 0,
             statut: this.mapStatus(r.status || r.statut),
             // Keep original fields for compatibility
             reservationId: r.reservationId,
             passengerName: r.passengerName,
-            netAmount: r.netAmount
+            netAmount: r.netAmount,
+            createdAt: r.createdAt
           }));
           console.log('[ReservationsService] Mapped reservations:', mappedReservations);
           console.log('[ReservationsService] Setting', mappedReservations.length, 'reservations');
