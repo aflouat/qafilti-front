@@ -5,13 +5,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
-import { CurrencyPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { PaiementsService } from '../../core/services/paiements.service';
 
 @Component({
   standalone: true,
   selector: 'app-paiements',
-  imports: [TableModule, DialogModule, InputTextModule, InputNumberModule, ButtonModule, FormsModule, CurrencyPipe],
+  imports: [TableModule, DialogModule, InputTextModule, InputNumberModule, ButtonModule, FormsModule, DecimalPipe],
   templateUrl: './paiements.component.html',
   styleUrls: ['./paiements.component.css']
 })

@@ -2,7 +2,7 @@ import { Component, inject, computed } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
-import { CurrencyPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { ReservationsService } from '../../core/services/reservations.service';
 import { ColisService } from '../../core/services/colis.service';
 import { PaiementsService } from '../../core/services/paiements.service';
@@ -10,7 +10,7 @@ import { PaiementsService } from '../../core/services/paiements.service';
 @Component({
   standalone: true,
   selector: 'app-dashboard',
-  imports: [CardModule, ButtonModule, RouterModule, CurrencyPipe],
+  imports: [CardModule, ButtonModule, RouterModule, DecimalPipe],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
