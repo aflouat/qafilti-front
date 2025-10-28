@@ -27,20 +27,20 @@
           icon="pi pi-check"
           severity="success"
           (click)="confirm(r)"
-          tooltip="Valider (Caissier uniquement)">
+          pTooltip="Valider (Caissier uniquement)">
         </button>
         <button pButton
           *ngIf="canPrint()"
           icon="pi pi-print"
           (click)="print(r)"
-          tooltip="Imprimer (Caissier uniquement)">
+          pTooltip="Imprimer (Caissier uniquement)">
         </button>
         <button pButton
           *ngIf="canDelete(r)"
           icon="pi pi-times"
           (click)="remove(r)"
           severity="danger"
-          [tooltip]="r.statut === 'Validée' ? 'Seul le caissier peut supprimer une réservation validée' : 'Supprimer'">
+          [pTooltip]="r.statut === 'Validée' ? 'Seul le caissier peut supprimer une réservation validée' : 'Supprimer'">
         </button>
       </td>
     </tr>
