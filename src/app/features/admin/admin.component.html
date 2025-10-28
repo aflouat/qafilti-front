@@ -114,7 +114,7 @@
       </div>
       <p-table [value]="tarifs()" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
-          <tr><th>Trajet</th><th>Prix (€)</th><th>Actions</th></tr>
+          <tr><th>Trajet</th><th>Prix (MRU)</th><th>Actions</th></tr>
         </ng-template>
         <ng-template pTemplate="body" let-f>
           <tr>
@@ -172,7 +172,7 @@
 <p-dialog [(visible)]="tarifDialog" header="Tarif" [modal]="true" [style]="{width:'420px'}">
   <div class="flex flex-column gap-2">
     <input pInputText placeholder="Trajet" [(ngModel)]="tarifForm.trajet" [style]="{width:'100%'}" />
-    <input pInputText placeholder="Prix (€)" [(ngModel)]="tarifForm.prix" [style]="{width:'100%'}" />
+    <input pInputText placeholder="Prix (MRU)" [(ngModel)]="tarifForm.prix" [style]="{width:'100%'}" />
   </div>
   <ng-template pTemplate="footer">
     <button pButton label="Annuler" (click)="tarifDialog=false" text></button>

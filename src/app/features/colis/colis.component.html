@@ -16,7 +16,7 @@
       <td>{{ c.expediteur }}</td>
       <td>{{ c.destinataire }}</td>
       <td>{{ c.poids }}</td>
-      <td>{{ c.tarif }} €</td>
+      <td>{{ c.tarif }} MRU</td>
       <td><p-tag [value]="c.statut" [severity]="c.statut==='Livré' ? 'success' : 'warning'"/></td>
       <td class="flex gap-2">
         <button pButton icon="pi pi-pencil" (click)="edit(c)"></button>
@@ -32,7 +32,7 @@
     <input pInputText placeholder="Expéditeur" [(ngModel)]="form.expediteur" [style]="{width:'100%'}" />
     <input pInputText placeholder="Destinataire" [(ngModel)]="form.destinataire" [style]="{width:'100%'}" />
     <p-inputNumber placeholder="Poids (kg)" [(ngModel)]="form.poids" [style]="{width:'100%'}"></p-inputNumber>
-    <p-inputNumber placeholder="Tarif (€)" [(ngModel)]="form.tarif" [style]="{width:'100%'}"></p-inputNumber>
+    <p-inputNumber placeholder="Tarif (MRU)" [(ngModel)]="form.tarif" [style]="{width:'100%'}"></p-inputNumber>
     <p-select [options]="statuts" optionLabel="label" optionValue="value" [(ngModel)]="form.statut" [style]="{width:'100%'}"></p-select>
   </div>
   <ng-template pTemplate="footer">
