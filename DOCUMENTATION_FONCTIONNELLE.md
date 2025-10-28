@@ -109,41 +109,45 @@ L'application utilise un système de rôles pour contrôler l'accès aux fonctio
 
 **Accès** :
 - ✅ Tableau de bord
-- ✅ Réservations (création en mode "Brouillon" uniquement)
+- ✅ Réservations (création en mode "En attente" uniquement)
 - ✅ Passagers (gestion complète)
-- ❌ Colis
+- ✅ Colis (gestion complète)
 - ❌ Paiements
 - ❌ Rapports
 - ❌ Administration
 
 **Cas d'usage typique** :
 - Accueillir les clients au comptoir
-- Créer de nouvelles réservations (statut "Brouillon")
-- Modifier les réservations en brouillon
+- Créer de nouvelles réservations (statut "En attente")
+- Modifier les réservations en attente
 - Enregistrer les informations passagers
+- Gérer les colis
 
-**⚠️ Important** : L'agent comptoir NE PEUT PAS confirmer les réservations - seul le caissier peut le faire après encaissement
+**⚠️ Important** : L'agent comptoir NE PEUT PAS valider les réservations - seul le caissier peut le faire après encaissement
+
+**⚠️ Suppression** : Le comptoir peut supprimer uniquement les réservations "En attente" (pas les validées)
 
 #### 🟢 Agent Caissier
 
-**Responsabilités** : Gestion financière, confirmation des réservations et logistique
+**Responsabilités** : Gestion financière, validation des réservations et logistique
 
 **Accès** :
 - ✅ Tableau de bord
-- ✅ Réservations (consultation et confirmation après paiement)
-- ❌ Passagers
+- ✅ Réservations (consultation et validation après paiement)
+- ✅ Passagers (consultation et gestion)
 - ✅ Colis (enregistrement, suivi, livraison)
 - ✅ Paiements (enregistrement)
-- ❌ Rapports
+- ✅ Rapports (accès complet)
 - ❌ Administration
 
 **Cas d'usage typique** :
-- Consulter les réservations en brouillon
+- Consulter les réservations en attente
 - Encaisser les paiements
-- **Confirmer les réservations** (Brouillon → Confirmée)
+- **Valider les réservations** (En attente → Validée)
 - **Imprimer les tickets** de réservation
 - Enregistrer les colis à expédier
 - Marquer les colis comme livrés
+- Consulter les rapports financiers
 
 #### 🔴 Administrateur
 
@@ -165,16 +169,21 @@ L'application utilise un système de rôles pour contrôler l'accès aux fonctio
 | Fonctionnalité | Comptoir | Caissier | Admin |
 |----------------|----------|----------|-------|
 | Tableau de bord | ✅ | ✅ | ✅ |
-| Réservations | ✅ (Création) | ✅ (Confirmation) | ✅ (Complet) |
-| Passagers | ✅ | ❌ | ✅ |
-| Colis | ❌ | ✅ | ✅ |
+| Réservations | ✅ (Création) | ✅ (Validation) | ✅ (Complet) |
+| Passagers | ✅ | ✅ | ✅ |
+| Colis | ✅ | ✅ | ✅ |
 | Paiements | ❌ | ✅ | ✅ |
-| Rapports | ❌ | ❌ | ✅ |
+| Rapports | ❌ | ✅ | ✅ |
 | Administration | ❌ | ❌ | ✅ |
+| Validation réservations | ❌ | ✅ | ✅ |
+| Impression tickets | ❌ | ✅ | ✅ |
+| Suppression réservations | ✅ (En attente uniquement) | ✅ (Toutes) | ✅ (Toutes) |
 
 **Workflow réservation** :
-1. **Comptoir** crée la réservation → Statut "Brouillon"
-2. **Caissier** encaisse le paiement → Confirme la réservation → Statut "Confirmée" → Imprime le ticket
+1. **Comptoir** crée la réservation → Statut "En attente"
+2. **Caissier** encaisse le paiement → Valide la réservation → Statut "Validée" → Imprime le ticket
+
+**Menu dynamique** : Les liens du menu s'affichent automatiquement selon les droits de chaque rôle
 
 ---
 
@@ -269,14 +278,16 @@ La page **Réservations** permet de gérer l'ensemble des réservations de voyag
 - **Passager** : Nom du voyageur
 - **Trajet** : Origine → Destination
 - **Date** : Date du voyage
-- **Prix** : Montant en euros
-- **Statut** : Brouillon ou Confirmée
+- **Prix** : Montant en MRU (Ouguiya mauritanien)
+- **Statut** : En attente ou Validée
 
 **Actions sur chaque ligne** :
 - ✏️ **Modifier** : Éditer les détails (Comptoir + Caissier + Admin)
-- ✅ **Confirmer** : Passer de Brouillon à Confirmée (⚠️ **UNIQUEMENT Caissier + Admin**)
+- ✅ **Valider** : Passer de "En attente" à "Validée" (⚠️ **UNIQUEMENT Caissier + Admin**)
 - 🖨️ **Imprimer** : Imprimer le ticket de réservation (Caissier + Admin)
-- ❌ **Supprimer** : Supprimer la réservation (Comptoir + Admin)
+- ❌ **Supprimer** : Supprimer la réservation
+  - Comptoir : Uniquement réservations "En attente"
+  - Caissier/Admin : Toutes les réservations
 
 #### ➕ Créer une Réservation (Agent Comptoir)
 
@@ -284,16 +295,21 @@ La page **Réservations** permet de gérer l'ensemble des réservations de voyag
 
 1. Cliquer sur le bouton **Nouvelle**
 2. Remplir le formulaire :
-   - **Passager** : Nom complet
-   - **Trajet** : Route (ex: Casa → Rabat)
+   - **Passager** : Sélectionner dans la liste (ou créer un nouveau passager)
+   - **Trip / Voyage** : Sélectionner le trip
+   - **Téléphone 1** : Numéro de téléphone principal (requis)
+   - **Téléphone 2** : Numéro de téléphone secondaire (optionnel)
    - **Date** : Date du voyage
-   - **Prix** : Montant en euros
-   - **Statut** : Brouillon (**TOUJOURS en brouillon pour l'agent comptoir**)
+   - **Prix** : Montant en MRU (Ouguiya mauritanien)
+   - **Statut** : En attente (**TOUJOURS "En attente" pour l'agent comptoir**)
 3. Cliquer sur **Enregistrer**
 
-**💡 Note** : Un code unique est généré automatiquement (RSV-XXXX)
+**💡 Notes** :
+- Un code unique est généré automatiquement (RSV-XXXX)
+- Deux numéros de téléphone peuvent être enregistrés par réservation
+- Le nom du passager s'affiche dans la liste (pas l'ID)
 
-**⚠️ Important** : L'agent comptoir NE PEUT PAS confirmer la réservation - elle reste en "Brouillon"
+**⚠️ Important** : L'agent comptoir NE PEUT PAS valider la réservation - elle reste en "En attente"
 
 #### ✏️ Modifier une Réservation
 
@@ -303,22 +319,22 @@ La page **Réservations** permet de gérer l'ensemble des réservations de voyag
 2. Modifier les informations souhaitées
 3. Cliquer sur **Enregistrer**
 
-#### ✅ Confirmer une Réservation (Agent Caissier)
+#### ✅ Valider une Réservation (Agent Caissier)
 
 **Rôle** : Agent Caissier, Administrateur UNIQUEMENT
 
-Les réservations sont créées en statut **Brouillon** par l'agent comptoir.
+Les réservations sont créées en statut **En attente** par l'agent comptoir.
 
-**Workflow de confirmation (Agent Caissier)** :
-1. Le client se présente à la caisse avec sa réservation en brouillon
+**Workflow de validation (Agent Caissier)** :
+1. Le client se présente à la caisse avec sa réservation en attente
 2. Le caissier encaisse le paiement (voir section Paiements)
-3. Le caissier clique sur l'icône **Confirmer** (coche verte)
-4. Le statut passe automatiquement à **Confirmée**
+3. Le caissier clique sur l'icône **Valider** (coche verte)
+4. Le statut passe automatiquement à **Validée**
 5. Le caissier clique sur **Imprimer** pour donner le ticket au client
 
 **Statuts** :
-- **Brouillon** : Réservation créée par le comptoir, en attente de paiement
-- **Confirmée** : Réservation payée et validée par le caissier
+- **En attente** : Réservation créée par le comptoir, en attente de paiement
+- **Validée** : Réservation payée et validée par le caissier
 
 #### 🖨️ Imprimer un Ticket de Réservation
 
@@ -390,7 +406,7 @@ La page **Passagers** permet de gérer la base de données des clients.
 **Colonnes affichées** :
 - **Nom** : Nom complet du passager
 - **Téléphone** : Numéro de contact
-- **Document** : CIN ou Passeport
+- ~~**Document**~~ : ❌ SUPPRIMÉ - Ce champ n'est plus demandé
 
 **Actions sur chaque ligne** :
 - ✏️ **Modifier** : Éditer les informations
@@ -402,8 +418,10 @@ La page **Passagers** permet de gérer la base de données des clients.
 2. Remplir le formulaire :
    - **Nom complet**
    - **Téléphone**
-   - **Document** : Numéro CIN ou Passeport
+   - ~~**Document**~~ : ❌ Ce champ a été supprimé
 3. Cliquer sur **Enregistrer**
+
+**💡 Note** : Le champ "Document" (CIN/Passeport) a été retiré de l'application pour simplifier la saisie
 
 #### ✏️ Modifier un Passager
 
@@ -876,17 +894,19 @@ Pour suggérer une amélioration :
 
 | Terme | Définition |
 |-------|------------|
-| **Brouillon** | Réservation non confirmée, provisoire (مسودة) |
-| **Confirmée** | Réservation validée et payée (مؤكدة) |
+| **En attente** | Réservation créée, en attente de validation (قيد الانتظار) |
+| **Validée** | Réservation validée et payée (مؤكدة) |
 | **Ticket bilingue** | Document d'impression en français et arabe pour réservations |
 | **En transit** | Colis en cours d'acheminement |
 | **Livré** | Colis remis au destinataire |
 | **KPI** | Indicateur clé de performance |
+| **MRU** | Ouguiya Mauritanien (devise officielle de la Mauritanie) |
 | **Acompte** | Paiement partiel initial |
 | **Solde** | Paiement final du reste dû |
 | **RBAC** | Contrôle d'accès basé sur les rôles |
 | **RTL** | Right-to-Left (lecture de droite à gauche pour l'arabe) |
 | **Format thermique 80mm** | Format standard pour imprimantes à ticket (caisses, transport) |
+| **Menu dynamique** | Menu qui affiche uniquement les liens autorisés selon le rôle |
 
 ---
 
@@ -911,14 +931,28 @@ Pour suggérer une amélioration :
 
 ---
 
-**Documentation mise à jour le** : 26 Octobre 2025
-**Version de l'application** : 0.0.4
+**Documentation mise à jour le** : 28 Octobre 2025
+**Version de l'application** : 0.0.5
 
 ---
 
 ## Historique des Versions
 
-### Version 0.0.4 (Actuelle)
+### Version 0.0.5 (Actuelle)
+- ✅ **Conversion EUR → MRU** : Toute l'application utilise maintenant l'Ouguiya mauritanien
+- ✅ **Format monétaire amélioré** : Affichage "1500.00 MRU" au lieu de "MRU1500.00"
+- ✅ **Menu dynamique** : Les liens s'affichent selon le rôle de l'utilisateur
+- ✅ **Deux numéros de téléphone** : Chaque réservation peut avoir 2 contacts
+- ✅ **Suppression du document** : Plus besoin de CIN/Passeport pour les passagers
+- ✅ **Affichage nom passager** : Le nom s'affiche dans les réservations (au lieu de l'ID)
+- ✅ **Permissions avancées** : Comptoir ne peut supprimer que les réservations "En attente"
+- ✅ **Nouveaux libellés** : "En attente" et "Validée" (au lieu de "Brouillon" et "Confirmée")
+- ✅ **Contexte mauritanien** : Trajets réels (Nouakchott-Nouadhibou), noms mauritaniens
+- ✅ **Pagination** : Toutes les tables d'administration sont paginées
+- ✅ **Access caissier aux rapports** : Le caissier peut maintenant consulter les rapports
+- ✅ Documentation complète mise à jour
+
+### Version 0.0.4
 - ✅ Migration complète vers API Mockoon (29 endpoints)
 - ✅ Chargement automatique des données depuis l'API
 - ✅ **Ticket de réservation bilingue (Français/Arabe)**

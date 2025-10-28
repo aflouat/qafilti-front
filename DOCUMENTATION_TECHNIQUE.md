@@ -228,13 +228,15 @@ interface Reservation {
   passager?: string;
   passengerName?: string;
   passengerPhone?: string;
+  telephone1?: string;  // ✅ NOUVEAU: Premier numéro de téléphone
+  telephone2?: string;  // ✅ NOUVEAU: Second numéro de téléphone (optionnel)
   tripId?: string;
   trajet?: string;
   date?: Date | string;
   prix?: number;
   netAmount?: number;
   seatNumber?: string;
-  statut?: 'Brouillon' | 'Confirmée' | 'CONFIRMED' | 'PENDING' | 'CREATED';
+  statut?: 'En attente' | 'Validée' | 'CONFIRMED' | 'PENDING' | 'CREATED';  // ✅ MODIFIÉ: Libellés mis à jour
   status?: string;
   createdAt?: string;
 }
@@ -246,7 +248,8 @@ interface Reservation {
 - `create()`: Créer une réservation (génère code auto)
 - `update()`: Modifier une réservation
 - `delete()`: Supprimer une réservation
-- `confirm()`: Confirmer une réservation (Brouillon → Confirmée)
+- `confirm()`: Confirmer une réservation (En attente → Validée)
+- `validate()`: Valider une réservation (alias de confirm)
 
 **Signals** :
 - `reservations`: Liste des réservations
@@ -270,7 +273,7 @@ interface Passager {
   id: number;
   nom: string;
   telephone: string;
-  document: string;
+  // document: string;  // ❌ SUPPRIMÉ: Le champ document a été retiré
 }
 ```
 
@@ -351,7 +354,7 @@ interface Paiement {
 
 **Fichier** : `src/app/core/services/trajets.service.ts`
 
-**API Endpoint** : `GET /api/trips` (Mockoon)
+**API Endpoint** : `GET /api/trajets` (Mockoon) - ✅ CORRIGÉ de `/api/trips`
 
 **Interface** :
 ```typescript
@@ -749,13 +752,20 @@ canActivate: [authGuard, roleGuard(['admin', 'comptoir'])]
 
 | Route | Comptoir | Caissier | Admin |
 |-------|----------|----------|-------|
-| `/` | ✅ | ✅ | ✅ |
-| `/reservations` | ✅ | ❌ | ✅ |
-| `/passagers` | ✅ | ❌ | ✅ |
-| `/colis` | ❌ | ✅ | ✅ |
+| `/` (Dashboard) | ✅ | ✅ | ✅ |
+| `/reservations` | ✅ (Création "En attente") | ✅ (Validation) | ✅ (Complet) |
+| `/passagers` | ✅ | ✅ | ✅ |
+| `/colis` | ✅ | ✅ | ✅ |
 | `/paiements` | ❌ | ✅ | ✅ |
-| `/rapports` | ❌ | ❌ | ✅ |
+| `/rapports` | ❌ | ✅ | ✅ |
 | `/admin` | ❌ | ❌ | ✅ |
+
+**Permissions spéciales** :
+- **Validation réservations** : Caissier et Admin uniquement
+- **Impression tickets** : Caissier et Admin uniquement
+- **Suppression réservations** :
+  - Comptoir : Peut supprimer uniquement les réservations "En attente"
+  - Caissier/Admin : Peuvent supprimer toutes les réservations
 
 ---
 
@@ -1193,9 +1203,81 @@ Pour toute question technique, consulter :
 
 ---
 
+## Devise et Formatage
+
+**Devise officielle** : MRU (Ouguiya Mauritanien)
+
+Toute l'application a été convertie de EUR (Euro) à MRU pour refléter le contexte mauritanien.
+
+**Format d'affichage** :
+- Pattern utilisé : `{{ montant | number:'1.2-2' }} MRU`
+- Exemple : `1500.00 MRU`
+- Le pipe `number` avec suffixe est utilisé au lieu de `currency:'MRU'` pour un meilleur contrôle du format
+
+**Fichiers concernés** :
+- reservations.component.html
+- paiements.component.html
+- rapports.component.html
+- dashboard.component.html
+- colis.component.html
+- admin.component.html (section tarifs)
+
+**Imports requis** : `DecimalPipe` depuis `@angular/common`
+
+---
+
+## Menu Dynamique par Rôle
+
+**Fichier** : `src/app/app.ts`
+
+Le menu principal s'adapte automatiquement selon le rôle de l'utilisateur connecté.
+
+**Affichage par rôle** :
+
+**Comptoir** :
+- Tableau de bord
+- Opérations : Réservations, Passagers, Colis
+- ❌ Paiements (caché)
+- ❌ Rapports (caché)
+- ❌ Administration (caché)
+
+**Caissier** :
+- Tableau de bord
+- Opérations : Réservations, Passagers, Colis, Paiements
+- Rapports
+- ❌ Administration (caché)
+
+**Admin** :
+- Accès complet (tous les menus visibles)
+- Administration visible
+
+Le menu affiche également le rôle de l'utilisateur : "Bonjour, Nom (role)"
+
+**Sécurité** : Double protection via menu (affichage) + route guards (accès direct URL)
+
+---
+
 ## Changelog Technique
 
-### v0.0.4 (Actuel)
+### v0.0.5 (Actuel)
+- ✅ **Conversion complète EUR → MRU** (Ouguiya mauritanien)
+- ✅ **Format monétaire amélioré** : `555.00 MRU` au lieu de `MRU555.00`
+- ✅ **Menu dynamique basé sur les rôles** (affichage conditionnel)
+- ✅ **Deux numéros de téléphone** dans les réservations (telephone1, telephone2)
+- ✅ **Suppression du champ document** des passagers
+- ✅ **Affichage du nom du passager** au lieu de l'ID dans réservations
+- ✅ **Permissions avancées** : Comptoir peut supprimer uniquement réservations "En attente"
+- ✅ **Changement libellés statuts** : "Brouillon" → "En attente", "Confirmée" → "Validée"
+- ✅ **Correction endpoint Trajets** : `/api/trips` → `/api/trajets`
+- ✅ **Pagination ajoutée** à toutes les tables d'administration
+- ✅ **Suppression de la page Véhicules** de l'administration
+- ✅ **Ajout trajetCode dans Trips** avec dropdown dans le formulaire
+- ✅ **Données mauritaniennes** : Trajets (Nouakchott-Nouadhibou), tarifs en MRU, noms mauritaniens
+- ✅ **Imports DecimalPipe** corrigés pour pipe `number`
+- ✅ **Tooltips PrimeNG** : `tooltip` → `pTooltip`
+- ✅ Documentation technique et fonctionnelle complètement mise à jour
+
+### v0.0.4
 - ✅ Migration complète vers Mockoon API (29 endpoints)
 - ✅ Tous les services utilisent HttpClient pour charger les données
 - ✅ Correction workflow réservations (Comptoir → Caissier)
@@ -1223,6 +1305,6 @@ Pour toute question technique, consulter :
 
 ---
 
-**Documentation mise à jour le** : 26 Octobre 2025
-**Version de l'application** : 0.0.4
+**Documentation mise à jour le** : 28 Octobre 2025
+**Version de l'application** : 0.0.5
 **Angular** : 20.2.0
