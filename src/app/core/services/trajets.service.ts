@@ -33,9 +33,10 @@ export class TrajetsService {
 
   // Load data from API
   loadTrajets(): void {
-    this.http.get<Trajet[]>(`${environment.apiUrl}/trips`)
+    this.http.get<Trajet[]>(`${environment.apiUrl}/trajets`)
       .subscribe({
         next: (trajets) => {
+          console.log('Trajets loaded:', trajets);
           this._trajets.set(trajets || []);
         },
         error: (error) => {
