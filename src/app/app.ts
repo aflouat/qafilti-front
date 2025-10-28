@@ -63,35 +63,52 @@ export class App {
 
   // Use a computed signal to stabilize the Menubar model identity and avoid re-creation every CD cycle
   readonly items = computed(() => {
-    const base = [
-      { label: 'Tableau de bord', icon: 'pi pi-home', routerLink: [''] },
-      {
-        label: 'Opérations', icon: 'pi pi-briefcase', items: [
-          { label: 'Réservations', icon: 'pi pi-ticket', routerLink: ['reservations'] },
-          { label: 'Passagers', icon: 'pi pi-users', routerLink: ['passagers'] },
-          { label: 'Colis', icon: 'pi pi-inbox', routerLink: ['colis'] },
-          { label: 'Paiements', icon: 'pi pi-wallet', routerLink: ['paiements'] }
-        ]
-      },
-      { label: 'Rapports', icon: 'pi pi-chart-line', routerLink: ['rapports'] },
-      {
+    const isAuth = this.auth.isAuthenticated();
+    const user = this.auth.user();
+    const role = user?.role || 'comptoir';
+
+    // Tableau de bord - accessible à tous
+    const menuItems: any[] = [
+      { label: 'Tableau de bord', icon: 'pi pi-home', routerLink: [''] }
+    ];
+
+    // Menu Opérations - varie selon le rôle
+    const operationsItems: any[] = [
+      { label: 'Réservations', icon: 'pi pi-ticket', routerLink: ['reservations'] },
+      { label: 'Passagers', icon: 'pi pi-users', routerLink: ['passagers'] },
+      { label: 'Colis', icon: 'pi pi-inbox', routerLink: ['colis'] }
+    ];
+
+    // Paiements - accessible uniquement au caissier et admin
+    if (role === 'caissier' || role === 'admin') {
+      operationsItems.push({ label: 'Paiements', icon: 'pi pi-wallet', routerLink: ['paiements'] });
+    }
+
+    menuItems.push({
+      label: 'Opérations', icon: 'pi pi-briefcase', items: operationsItems
+    });
+
+    // Rapports - accessible uniquement au caissier et admin
+    if (role === 'caissier' || role === 'admin') {
+      menuItems.push({ label: 'Rapports', icon: 'pi pi-chart-line', routerLink: ['rapports'] });
+    }
+
+    // Administration - accessible uniquement à l'admin
+    if (role === 'admin') {
+      menuItems.push({
         label: 'Administration', icon: 'pi pi-cog', items: [
           { label: 'Bus', icon: 'pi pi-car', routerLink: ['admin'], queryParams: { tab: 'bus' } },
           { label: 'Villes', icon: 'pi pi-map-marker', routerLink: ['admin'], queryParams: { tab: 'villes' } },
           { label: 'Trips', icon: 'pi pi-calendar', routerLink: ['admin'], queryParams: { tab: 'trips' } },
           { label: 'Trajets', icon: 'pi pi-directions', routerLink: ['admin'], queryParams: { tab: 'trajets' } },
-          { label: 'Véhicules', icon: 'pi pi-truck', routerLink: ['admin'], queryParams: { tab: 'vehicules' } },
           { label: 'Tarifs', icon: 'pi pi-dollar', routerLink: ['admin'], queryParams: { tab: 'tarifs' } }
         ]
-      }
-    ];
-
-    const isAuth = this.auth.isAuthenticated();
-    const user = this.auth.user();
+      });
+    }
 
     const authItems = isAuth
       ? [
-          { label: `Bonjour, ${user?.name ?? 'Utilisateur'}`, icon: 'pi pi-user' },
+          { label: `Bonjour, ${user?.name ?? 'Utilisateur'} (${role})`, icon: 'pi pi-user' },
           { label: 'Déconnexion', icon: 'pi pi-sign-out', command: () => this.logout() }
         ]
       : [
@@ -99,7 +116,7 @@ export class App {
           { label: 'Inscription', icon: 'pi pi-user-plus', routerLink: ['/inscription'] }
         ];
 
-    return [...base, ...authItems];
+    return [...menuItems, ...authItems];
   });
 
   logout() {
