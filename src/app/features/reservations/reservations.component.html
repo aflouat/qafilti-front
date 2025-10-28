@@ -18,7 +18,7 @@
       <td>{{ r.passager }}</td>
       <td>{{ r.trajet }}</td>
       <td>{{ r.date | date:'shortDate' }}</td>
-      <td>{{ r.prix | currency:'EUR' }}</td>
+      <td>{{ r.prix | currency:'MRU' }}</td>
       <td><p-tag [value]="r.statut" [severity]="r.statut==='Validée' ? 'success' : 'warning'"/></td>
       <td class="flex gap-2">
         <button pButton icon="pi pi-pencil" (click)="edit(r)"></button>

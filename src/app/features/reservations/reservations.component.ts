@@ -99,12 +99,19 @@ export class ReservationsComponent {
     } else {
       // Create new
       if (this.form.passager && this.form.trajet && this.form.date && this.form.prix !== undefined && this.form.statut) {
+        // Trouver le nom du passager à partir de son ID
+        const passagerId = parseInt(this.form.passager);
+        const passager = this.passagersService.passagers().find(p => p.id === passagerId);
+        const passagerNom = passager?.nom || this.form.passager;
+
         this.reservationsService.create({
-          passager: this.form.passager,
+          passager: passagerNom,
           trajet: this.form.trajet,
           date: this.form.date,
           prix: this.form.prix,
-          statut: this.form.statut
+          statut: this.form.statut,
+          telephone1: this.form.telephone1,
+          telephone2: this.form.telephone2
         });
       }
     }

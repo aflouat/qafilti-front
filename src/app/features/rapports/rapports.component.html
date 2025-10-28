@@ -1,12 +1,12 @@
 <div class="grid" style="row-gap:1rem">
   <div class="col-12 md:col-4">
     <p-card header="Ventes billets (mois)">
-      <div class="text-2xl font-bold">{{ kpis().billets | currency:'EUR' }}</div>
+      <div class="text-2xl font-bold">{{ kpis().billets | currency:'MRU' }}</div>
     </p-card>
   </div>
   <div class="col-12 md:col-4">
     <p-card header="Ventes colis (mois)">
-      <div class="text-2xl font-bold">{{ kpis().colis | currency:'EUR' }}</div>
+      <div class="text-2xl font-bold">{{ kpis().colis | currency:'MRU' }}</div>
     </p-card>
   </div>
   <div class="col-12 md:col-4">
@@ -18,7 +18,7 @@
     <p-card header="Revenus par trajet (mock)">
       <p-table [value]="revenusTrajets()">
         <ng-template pTemplate="header">
-          <tr><th>Trajet</th><th>Réservations</th><th>Revenu (€)</th></tr>
+          <tr><th>Trajet</th><th>Réservations</th><th>Revenu (MRU)</th></tr>
         </ng-template>
         <ng-template pTemplate="body" let-r>
           <tr><td>{{ r.trajet }}</td><td>{{ r.count }}</td><td>{{ r.revenu | number:'1.2-2' }}</td></tr>
