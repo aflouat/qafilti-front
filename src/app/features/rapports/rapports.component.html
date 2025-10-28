@@ -1,12 +1,12 @@
 <div class="grid" style="row-gap:1rem">
   <div class="col-12 md:col-4">
     <p-card header="Ventes billets (mois)">
-      <div class="text-2xl font-bold">{{ kpis().billets | currency:'MRU' }}</div>
+      <div class="text-2xl font-bold">{{ kpis().billets | number:'1.2-2' }} MRU</div>
     </p-card>
   </div>
   <div class="col-12 md:col-4">
     <p-card header="Ventes colis (mois)">
-      <div class="text-2xl font-bold">{{ kpis().colis | currency:'MRU' }}</div>
+      <div class="text-2xl font-bold">{{ kpis().colis | number:'1.2-2' }} MRU</div>
     </p-card>
   </div>
   <div class="col-12 md:col-4">
