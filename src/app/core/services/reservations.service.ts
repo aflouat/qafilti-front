@@ -10,6 +10,8 @@ export interface Reservation {
   passager?: string;
   passengerName?: string;
   passengerPhone?: string;
+  telephone1?: string;
+  telephone2?: string;
   trajet?: string;
   date?: Date | string;
   prix?: number;

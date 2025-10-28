@@ -73,12 +73,22 @@
     </div>
     <div class="grid">
       <div class="col-6">
+        <label>Téléphone 1</label>
+        <input pInputText [(ngModel)]="form.telephone1" placeholder="222-XX-XX-XX-XX" [style]="{width:'100%'}" />
+      </div>
+      <div class="col-6">
+        <label>Téléphone 2 (optionnel)</label>
+        <input pInputText [(ngModel)]="form.telephone2" placeholder="222-XX-XX-XX-XX" [style]="{width:'100%'}" />
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-6">
         <label>Date</label>
         <p-datepicker [(ngModel)]="form.date" dateFormat="dd/mm/yy" [style]="{width:'100%'}"></p-datepicker>
       </div>
       <div class="col-6">
         <label>Prix</label>
-        <p-inputNumber [(ngModel)]="form.prix" mode="currency" currency="EUR" [style]="{width:'100%'}"></p-inputNumber>
+        <p-inputNumber [(ngModel)]="form.prix" mode="currency" currency="MRU" [style]="{width:'100%'}"></p-inputNumber>
       </div>
     </div>
     <div>

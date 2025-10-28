@@ -153,7 +153,7 @@
       "responses": [
         {
           "uuid": "response-reservation-get-200",
-          "body": "[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"passengerPhone\":\"222-44-55-66-77\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"passengerPhone\":\"222-88-77-66-55\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"passengerPhone\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]",
+          "body": "[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"telephone1\":\"222-44-55-66-77\",\"telephone2\":\"222-99-88-77-66\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"telephone1\":\"222-88-77-66-55\",\"telephone2\":\"222-33-44-55-66\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"telephone1\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]",
           "latency": 0,
           "statusCode": 200,
           "label": "Success",
@@ -679,12 +679,12 @@
     {
       "uuid": "bucket-reservations",
       "name": "reservations",
-      "value": "[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"passengerPhone\":\"222-44-55-66-77\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"passengerPhone\":\"222-88-77-66-55\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"passengerPhone\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]"
+      "value": "[{\"reservationId\":\"RES001\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"12A\",\"passengerName\":\"Aliou Diallo\",\"telephone1\":\"222-44-55-66-77\",\"telephone2\":\"222-99-88-77-66\",\"status\":\"CONFIRMED\",\"createdAt\":\"2025-08-29T10:00:00Z\"},{\"reservationId\":\"RES002\",\"tripId\":\"TR002\",\"netAmount\":1000,\"seatNumber\":\"5C\",\"passengerName\":\"Fatou Fall\",\"telephone1\":\"222-88-77-66-55\",\"telephone2\":\"222-33-44-55-66\",\"status\":\"PENDING\",\"createdAt\":\"2025-08-30T12:30:00Z\"},{\"reservationId\":\"RES003\",\"tripId\":\"TR001\",\"netAmount\":1500,\"seatNumber\":\"15B\",\"passengerName\":\"Ahmed Ould Mohamed\",\"telephone1\":\"222-11-22-33-44\",\"status\":\"CREATED\",\"createdAt\":\"2025-08-31T14:00:00Z\"}]"
     },
     {
       "uuid": "bucket-passagers",
       "name": "passagers",
-      "value": "[{\"id\":1,\"nom\":\"Aliou Diallo\",\"telephone\":\"222-44-55-66-77\",\"document\":\"CIN123456\"},{\"id\":2,\"nom\":\"Fatou Fall\",\"telephone\":\"222-88-77-66-55\",\"document\":\"CIN654321\"},{\"id\":3,\"nom\":\"Ahmed Ould Mohamed\",\"telephone\":\"222-11-22-33-44\",\"document\":\"CIN112233\"}]"
+      "value": "[{\"id\":1,\"nom\":\"Aliou Diallo\",\"telephone\":\"222-44-55-66-77\"},{\"id\":2,\"nom\":\"Fatou Fall\",\"telephone\":\"222-88-77-66-55\"},{\"id\":3,\"nom\":\"Ahmed Ould Mohamed\",\"telephone\":\"222-11-22-33-44\"}]"
     },
     {
       "uuid": "bucket-colis",

@@ -6,7 +6,6 @@ export interface Passager {
   id: number;
   nom: string;
   telephone: string;
-  document: string;
 }
 
 @Injectable({ providedIn: 'root' })
